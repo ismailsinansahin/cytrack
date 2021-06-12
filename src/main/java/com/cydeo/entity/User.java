@@ -2,16 +2,15 @@ package com.cydeo.entity;
 
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
+import com.cydeo.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,18 +24,28 @@ public class User extends BaseEntity{
     private String email;
     private String password;
     private String phone;
-
-    private boolean enabled = true;
-
-    @DateTimeFormat
+    private boolean enabled;
     private LocalDate birthday;
+
     @Enumerated(EnumType.STRING)
     private Country country;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-//    private Task task;
+    @ManyToOne
+    private Role role;
+
+    @ManyToMany(mappedBy = "instructorSet")
+    private Set<Lesson> lessonSet = new HashSet<>();
+
+    @ManyToOne
+    private Group group;
+
+    @ManyToMany(mappedBy = "studentSet")
+    private Set<Task> taskSet = new HashSet<>();
 
 }

@@ -4,45 +4,31 @@ import com.cydeo.enums.BatchStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
+@Table(name = "batches")
 @Getter
 @Setter
 @NoArgsConstructor
+@Where(clause="is_deleted=false")
 public class Batch extends BaseEntity{
 
-    private String batchName;
-    private String batchStartDate;
-    private String endDate;
+    private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate batchStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate batchEndDate;
+
+    @Column(columnDefinition = "text")
     private String notes;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private BatchStatus batchStatus;
-
-    @ManyToMany
-    @JoinTable(name = "batch_instructor_rel",
-    joinColumns = {@JoinColumn(name = "batch_id")},
-    inverseJoinColumns = {@JoinColumn(name = "instructor_id")})
-    private Set<Instructor> instructorList;
-
-    @ManyToMany
-    @JoinTable(name = "batch_cybertekMentor_rel",
-    joinColumns = {@JoinColumn(name = "batch_id")},
-    inverseJoinColumns = {@JoinColumn(name = "cybertekMentor_id")})
-    private Set<CybertekMentor> cybertekMentorList;
-
-    @ManyToMany
-    @JoinTable(name = "batch_alumniMentor_rel",
-    joinColumns = {@JoinColumn(name = "batch_id")},
-    inverseJoinColumns = {@JoinColumn(name = "alumniMentor_id")})
-    private Set<AlumniMentor> alumniMentorList;
-
-//    private List<Group> groupList;
-
-//    private List<Student> studentList;
 
 }

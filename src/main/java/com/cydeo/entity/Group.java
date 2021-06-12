@@ -3,20 +3,21 @@ package com.cydeo.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "groups")
 @Getter
 @Setter
 @NoArgsConstructor
+@Where(clause="is_deleted=false")
 public class Group extends BaseEntity{
 
-    private String groupName;
+    private String name;
     private String mascot;
 
     @ManyToOne
@@ -25,12 +26,10 @@ public class Group extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "cybertekMentor_id")
-    private CybertekMentor cybertekMentor;
+    private User cybertekMentor;
 
     @ManyToOne
     @JoinColumn(name = "alumniMentor_id")
-    private AlumniMentor alumniMentor;
-
-//    private List<Student> studentList;
+    private User alumniMentor;
 
 }
