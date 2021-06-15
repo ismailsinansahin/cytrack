@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/head :: header"></head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content">
+                <div class="ecommerce-widget">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <section class="panel panel-transparent">
+                                <header class="panel-heading">
+                                    <h2 class="panel-title">Project Create</h2>
+                                </header>
+                                <div class="panel-body">
+                                    <!-- ------------------------FORM START----------------------------- -->
+                                    <form>
+
+
+                                    </form>
+                                    <!-- ------------------------FORM END----------------------------- -->
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <!-- ------------------------TABLE START----------------------------- -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="col-md-12">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    <h2 class="panel-title">User List</h2>
+                                </header>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ------------------------TABLE END----------------------------- -->
+            </div>
+        </div>
+    </div>
+    <div th:replace="/fragments/footer :: footer"></div>
+</div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+
+</html>
