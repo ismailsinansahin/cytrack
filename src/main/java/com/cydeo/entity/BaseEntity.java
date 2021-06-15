@@ -1,8 +1,17 @@
 package com.cydeo.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @MappedSuperclass //Inheritance is only evident in the class, but not in the entity model
 public class BaseEntity {
 
