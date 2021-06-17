@@ -20,12 +20,12 @@
                     <input class="form-control" id="myInput" type="text" placeholder="Search..">
                   </div>
                   <div class="col-auto">
-                    <button id="createButton" type="button" class="btn">Create New Cybertek Mentor</button><br>
+                    <button id="createButton" type="button" class="btn">Create New Alumni Mentor</button><br>
                   </div>
                 </div><br>
                 <section class="panel">
                   <header class="panel-heading">
-                    <h2 class="panel-title">Cybertek Mentor List</h2>
+                    <h2 class="panel-title">Alumni Mentor List</h2>
                   </header>
                   <div class="panel-body">
                     <div class="table-responsive">
@@ -43,14 +43,14 @@
                         </tr>
                         </thead>
                         <tbody id="myTable">
-                        <tr th:each="mentor: ${cybertekMentors.keySet()}">
+                        <tr th:each="mentor: ${alumniMentors.keySet()}">
                           <td th:text="${mentor.firstName + ' ' + mentor.lastName}"></td>
                           <td th:text="${mentor.country.value}"></td>
                           <td th:text="${mentor.gender.value}"></td>
                           <td th:text="${mentor.email}"></td>
                           <td th:text="${mentor.phone}"></td>
                           <td th:text="${mentor.birthday}"></td>
-                          <td th:text="${cybertekMentors.get(mentor)}"></td>
+                          <td th:text="${alumniMentors.get(mentor)}"></td>
                           <td class="actions">
 <!--                            <a th:href="@{/admin/show-admin/{id}(id=${admin.email})}" class="btn btn-facebook rounded-0">Show</a>-->
 <!--                            <a th:href="@{/admin/update-admin/{id}(id=${admin.email})}"><button type="button" class="btn btn-warning btn-sm">Update</button></a>-->

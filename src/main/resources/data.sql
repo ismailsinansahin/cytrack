@@ -22,14 +22,14 @@ values (now(), 1, false, now(), 1, '1980-12-30', 'USA', 'mike@ct.com', true, 'Mi
        (now(), 1, false, now(), 1, '1981-04-20', 'GERMANY', 'akbar@ct.com', true, 'Akbar', 'MALE', 'Red', 'Abc123', '5054523311', null, null, 2),
        (now(), 1, false, now(), 1, '1999-11-01', 'ITALY', 'baha@ct.com', true, 'Baha', 'MALE', 'Darkblue', 'Abc123', '5425213654', null, null, 3),
        (now(), 1, false, now(), 1, '2000-10-05', 'NETHERLAND', 'cihat@ct.com', true, 'Cihat', 'MALE', 'Green', 'Abc123', '5423625411', null, null, 3),
-       (now(), 1, false, now(), 1, '1996-08-30', 'USA', 'osman@ct.com', true, 'Osman', 'MALE', 'White', 'Abc123', '5329885588', 'NEW',null, 4),
-       (now(), 1, false, now(), 1, '1994-07-21', 'UK', 'pelin@ct.com', true, 'Pelin', 'MALE', 'Black', 'Abc123', '5302556633', 'NEW',null, 4),
-       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', 'Abc123', '5312147789', 'NEW',null, 5),
-       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', 'Abc123', '5423665523', 'NEW',null, 5),
-       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', 'Abc123', '5054587895', 'RETURNING',null, 5),
-       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', 'Abc123', '5056669568', 'NEW',null, 5),
-       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', 'Abc123', '5423124655', 'RETURNING',null, 5),
-       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', 'Abc123', '5325123655', 'NEW',null, 5);
+       (now(), 1, false, now(), 1, '1996-08-30', 'USA', 'osman@ct.com', true, 'Osman', 'MALE', 'White', 'Abc123', '5329885588', null, null, 4),
+       (now(), 1, false, now(), 1, '1994-07-21', 'UK', 'pelin@ct.com', true, 'Pelin', 'FEMALE', 'Black', 'Abc123', '5302556633', null, null, 4),
+       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', 'Abc123', '5312147789', 'NEW', null, 5),
+       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', 'Abc123', '5423665523', 'NEW', null, 5),
+       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', 'Abc123', '5054587895', 'RETURNING', null, 5),
+       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', 'Abc123', '5056669568', 'NEW', null, 5),
+       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', 'Abc123', '5423124655', 'RETURNING', null, 5),
+       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', 'Abc123', '5325123655', 'NEW', null, 5);
 
 insert into lessons (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name, batch_id)
 values (now(), 1, false, now(), 1,'Java', 1),
@@ -44,14 +44,16 @@ values (1, 3),
        (3, 3),
        (4, 3),
        (4, 4),
-       (1, 15);
+       (1, 5),
+       (5, 2),
+       (5, 3);
 
 insert into groups (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                     mascot, name, alumni_mentor_id, batch_id, cybertek_mentor_id)
-values (now(), 1, false, now(), 1, 'Eagles', 'Group-1', 7, 1, 5),
-       (now(), 1, false, now(), 1, 'Falcons', 'Group-2', 7, 1, 5),
-       (now(), 1, false, now(), 1, 'Tigers', 'Group-3', 8, 1, 6),
-       (now(), 1, false, now(), 1, 'Lions', 'Group-4', 8, 1, 6);
+values (now(), 1, false, now(), 1, 'Eagles', 'Group-1', 8, 1, 6),
+       (now(), 1, false, now(), 1, 'Falcons', 'Group-2', 9, 1, 6),
+       (now(), 1, false, now(), 1, 'Tigers', 'Group-3', 8, 1, 7),
+       (now(), 1, false, now(), 1, 'Lions', 'Group-4', 9, 1, 7);
 
 insert into tasks (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                    assign_date, due_date, name, type, lesson_id)
@@ -78,4 +80,4 @@ values (1, 9),
        (4, 10),
        (5, 11);
 
-update users set group_id = 1 where users.id between 9 and 14;
+update users set group_id = 1 where users.id between 10 and 15;

@@ -13,12 +13,5 @@ public interface LessonRepository extends JpaRepository<Lesson,Long> {
 
     List<Lesson> findAllByInstructorSet (User user);
 
-//    @Query("select b from Book b where b.publisher.idd = ?1")
-//
-//    @Query("select b from Blog b join fetch b.tags where b.name = :name")
-//    Blog getBlog(@Param("name") String blogName);
-//
-//    @Query("select l from Lesson l join fetch l.instructorSet where l.=?1")
-//    Optional<Lesson> getLessonOfInstuctor(String username);
 
 }

@@ -1,6 +1,7 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.LessonDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Lesson;
 import com.cydeo.entity.User;
 import com.cydeo.mapper.MapperUtil;
@@ -9,7 +10,9 @@ import com.cydeo.repository.UserRepository;
 import com.cydeo.service.LessonService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

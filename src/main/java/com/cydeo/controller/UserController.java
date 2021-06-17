@@ -33,6 +33,31 @@ public class UserController {
         return "user/admin-list";
     }
 
+    @GetMapping("/instructorList")
+    public String instructorList(Model model) {
+        model.addAttribute("instructors", userService.getInstructorsAndLessonsMap());
+        return "user/instructor-list";
+    }
+
+    @GetMapping("/cybertekMentorList")
+    public String cybertekMentorList(Model model) {
+        model.addAttribute("cybertekMentors", userService.getCybertekMentorsAndGroupsMap());
+        return "user/cybertekmentor-list";
+    }
+
+    @GetMapping("/alumniMentorList")
+    public String alumniMentorList(Model model) {
+        model.addAttribute("alumniMentors", userService.getAlumniMentorsAndGroupsMap());
+        return "user/alumnimentor-list";
+    }
+
+    @GetMapping("/studentList")
+    public String studentList(Model model) {
+        model.addAttribute("students", userService.listAllUsersByRole("Student"));
+        return "user/student-list";
+    }
+
+
 
 
 }
