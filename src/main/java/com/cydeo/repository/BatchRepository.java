@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BatchRepository extends JpaRepository<Batch, Long> {
+
+
+
 }

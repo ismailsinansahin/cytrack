@@ -1,24 +1,15 @@
 package com.cydeo.dto;
 
-import com.cydeo.entity.Group;
-import com.cydeo.entity.Role;
-import com.cydeo.entity.Task;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
 import com.cydeo.enums.Status;
+import com.cydeo.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,7 +29,7 @@ public class UserDTO {
     private Country country;
     private Gender gender;
     private Status status;
-    private RoleDTO role;
+    private UserRole userRole;
 //    private List<LessonDTO> lesson;
     private GroupDTO group;
 //    private List<TaskDTO> tasks;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -14,10 +15,17 @@ import java.time.LocalDate;
 @Setter
 public class BatchDTO {
 
+    private Long id;
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate batchStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate batchEndDate;
     private String notes;
     private BatchStatus batchStatus;
+
+    public BatchDTO(BatchStatus batchStatus) {
+        this.batchStatus = batchStatus;
+    }
 
 }

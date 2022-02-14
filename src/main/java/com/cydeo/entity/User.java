@@ -3,6 +3,7 @@ package com.cydeo.entity;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
 import com.cydeo.enums.Status;
+import com.cydeo.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class User extends BaseEntity{
     private String password;
     private String phone;
     private boolean enabled;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
@@ -38,8 +40,8 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
     @ManyToMany(mappedBy = "instructorSet")
     private Set<Lesson> lessonSet = new HashSet<>();
