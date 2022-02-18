@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="/fragments/head :: header"><title>Lesson Edit</title></head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content">
+                <div class="ecommerce-widget">
+                    <header class="panel-heading">
+                        <h2 class="panel-title">Edit Lesson</h2>
+                    </header>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
+                                                 aria-labelledby="account-tab">
+                                                <form class="needs-validation" novalidate
+                                                      th:action="@{/lessons/lessonUpdate/{id}(id=${lesson.getId()})}"
+                                                      th:method="post" th:object="${lesson}">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Lesson Name</label>
+                                                                    <input type="text" th:t="*{name}" placeholder="Lesson Name"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                        <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
+                                                                type="submit" name="action" value="save">Save
+                                                        </button>
+                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                type="reset">Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div th:replace="/fragments/footer :: footer"></div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+
+</html>

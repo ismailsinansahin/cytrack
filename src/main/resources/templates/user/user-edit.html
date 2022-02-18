@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="/fragments/head :: header"><title>User Edit</title></head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content">
+                <div class="ecommerce-widget">
+                    <header class="panel-heading">
+                        <h2 class="panel-title">Edit User</h2>
+                    </header>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
+                                                 aria-labelledby="account-tab">
+                                                <form class="needs-validation" novalidate
+                                                      th:action="@{/users/userUpdate/{id}(id=${user.getId()})}"
+                                                      th:method="post" th:object="${user}">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-8">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label for="country">Role</label><br>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option1" name="option1" class="custom-control-input"
+                                                                               value="ADMIN" th:field="*{userRole}" checked="checked">
+                                                                        <label class="custom-control-label" for="option1">Admin</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option2" name="option2" class="custom-control-input"
+                                                                               value="INSTRUCTOR" th:field="*{userRole}">
+                                                                        <label class="custom-control-label" for="option2">Instructor</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option3" name="option3" class="custom-control-input"
+                                                                               value="CYDEO MENTOR" th:field="*{userRole}">
+                                                                        <label class="custom-control-label" for="option3">Cydeo Mentor</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option4" name="option4" class="custom-control-input"
+                                                                               value="ALUMNI MENTOR" th:field="*{userRole}">
+                                                                        <label class="custom-control-label" for="option4">Alumni Mentor</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option5" name="option5" class="custom-control-input"
+                                                                               value="STUDENT" th:field="*{userRole}">
+                                                                        <label class="custom-control-label" for="option5">Student</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>First Name</label>
+                                                                    <input type="text" th:field="*{firstName}" placeholder="First Name"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Last Name</label>
+                                                                    <input type="text" th:field="*{lastName}" placeholder="Last Name"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>E-Mail</label>
+                                                                    <input type="text" th:field="*{email}" placeholder="E-Mail"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Phone</label>
+                                                                    <input type="text" th:field="*{phone}" placeholder="Phone"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Birthday</label>
+                                                                    <input type="date" th:text="*{birthday}" th:field="*{birthday}" placeholder="Birthday"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="country">Country</label>
+                                                                    <select id="country" class="form-control" th:field="*{country}" required>
+                                                                        <option th:value="''" th:text="'Select Country'" selected></option>
+                                                                        <option th:each= "country:${countries}"
+                                                                                th:value="${country}"
+                                                                                th:text="${country.value}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Password</label>
+                                                                    <input type="text" th:field="*{password}" placeholder="Password"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Confirm Password</label>
+                                                                    <input type="text" th:field="*{confirmPassword}" placeholder="Confirm Password"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label for="country">Gender</label><br>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option10" name="option10" class="custom-control-input"
+                                                                               value="FEMALE" th:field="*{gender}" th:checked>
+                                                                        <label class="custom-control-label" for="option10">Female</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                                        <input type="radio" id="option12" name="option12" class="custom-control-input"
+                                                                               value="MALE" th:field="*{gender}">
+                                                                        <label class="custom-control-label" for="option12">Male</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                        <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
+                                                                type="submit" name="action" value="save">Save
+                                                        </button>
+                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                type="reset">Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div th:replace="/fragments/footer :: footer"></div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+
+</html>

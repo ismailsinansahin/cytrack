@@ -7,6 +7,7 @@ import com.cydeo.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Where(clause="is_deleted=false")
 public class User extends BaseEntity{
 
     private String firstName;
@@ -43,13 +45,7 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @ManyToMany(mappedBy = "instructorSet")
-    private Set<Lesson> lessonSet = new HashSet<>();
-
     @ManyToOne
     private Group group;
-
-    @ManyToMany(mappedBy = "studentSet")
-    private Set<Task> taskSet = new HashSet<>();
 
 }

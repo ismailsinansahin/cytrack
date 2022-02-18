@@ -3,12 +3,18 @@ package com.cydeo.implementation;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.dto.UserDTO;
+import com.cydeo.entity.InstructorLesson;
+import com.cydeo.entity.Lesson;
 import com.cydeo.entity.User;
+import com.cydeo.enums.UserRole;
 import com.cydeo.mapper.MapperUtil;
+import com.cydeo.repository.InstructorLessonRepository;
+import com.cydeo.repository.LessonRepository;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.GroupService;
 import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,59 +27,90 @@ public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
     MapperUtil mapperUtil;
-    LessonService lessonService;
-    GroupService groupService;
+    InstructorLessonRepository instructorLessonRepository;
+    LessonRepository lessonRepository;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, LessonService lessonService, GroupService groupService) {
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil,
+                           InstructorLessonRepository instructorLessonRepository, LessonRepository lessonRepository) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
-        this.lessonService = lessonService;
-        this.groupService = groupService;
+        this.instructorLessonRepository = instructorLessonRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Override
-    public List<UserDTO> listAllUsersByRole(String role) {
-        List<User> userList = userRepository.findAllByRoleDescriptionIgnoreCase(role);
+    public List<UserDTO> listAllUsers() {
+        List<User> userList = userRepository.findAll();
         return userList.stream().map(obj -> mapperUtil.convert(obj, new UserDTO())).collect(Collectors.toList());
     }
 
     @Override
-    public Map<UserDTO, String> getInstructorsAndLessonsMap() {
-        Map<UserDTO,String> instructorsLessonsMap = new HashMap<>();
-        List<UserDTO> instructors = listAllUsersByRole("Instructor");
-        for (UserDTO instructor : instructors) {
-            List<LessonDTO> lessonsDTO = lessonService.listAllLessonsOfInstructor(instructor.getEmail());
-            String lessons = lessonsDTO.stream().map(obj -> obj.getName()).reduce("",(x,y)-> x + y + " / ");
-            lessons = lessons.substring(0,lessons.length()-2);
-            instructorsLessonsMap.put(instructor,lessons);
-        }
-        return instructorsLessonsMap;
+    public List<UserDTO> listAllUsersByRole(UserRole userRole) {
+        List<User> userList = userRepository.findAllByUserRole(userRole);
+        return userList.stream().map(obj -> mapperUtil.convert(obj, new UserDTO())).collect(Collectors.toList());
     }
 
     @Override
-    public Map<UserDTO, String> getCybertekMentorsAndGroupsMap() {
-        Map<UserDTO,String> cybertekMentorsGroupsMap = new HashMap<>();
-        List<UserDTO> cybertekMentors = listAllUsersByRole("CybertekMentor");
-        for (UserDTO mentor : cybertekMentors) {
-            List<GroupDTO> groupDTO = groupService.listAllGroupsOfCybertekMentor(mentor.getEmail());
-            String groups = groupDTO.stream().map(obj -> (obj.getBatch().getName() + " " + obj.getName())).reduce("",(x,y)-> x + y + " / ");
-            groups = groups.substring(0,groups.length()-2);
-            cybertekMentorsGroupsMap.put(mentor,groups);
-        }
-        return cybertekMentorsGroupsMap;
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id).get();
+        return mapperUtil.convert(user, new UserDTO());
     }
 
     @Override
-    public Map<UserDTO, String> getAlumniMentorsAndGroupsMap() {
-        Map<UserDTO,String> alumniMentorsGroupsMap = new HashMap<>();
-        List<UserDTO> alumniMentors = listAllUsersByRole("AlumniMentor");
-        for (UserDTO mentor : alumniMentors) {
-            List<GroupDTO> groupDTO = groupService.listAllGroupsOfAlumniMentor(mentor.getEmail());
-            String groups = groupDTO.stream().map(obj -> (obj.getBatch().getName() + " " + obj.getName())).reduce("",(x,y)-> x + y + " / ");
-            groups = groups.substring(0,groups.length()-2);
-            alumniMentorsGroupsMap.put(mentor,groups);
-        }
-        return alumniMentorsGroupsMap;
+    public UserDTO save(UserDTO userDTO) {
+        userDTO.setEnabled(true);
+        User user = mapperUtil.convert(userDTO, new User());
+        userRepository.save(user);
+        return mapperUtil.convert(user, new UserDTO());
     }
+
+    @Override
+    public void delete(Long id) {
+        User user = userRepository.findById(id).get();
+        user.setIsDeleted(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDTO> listAllInstructorsOfLesson(Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId).get();
+        List<InstructorLesson> instructorLessonListByLesson = instructorLessonRepository.findAllByLesson(lesson);
+        return instructorLessonListByLesson
+                .stream()
+                .map(obj -> mapperUtil.convert(obj.getInstructor(), new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+//    @Override
+//    public Map<UserDTO, String> getCydeoMentorsAndGroupsMap() {
+//        Map<UserDTO,String> cydeoMentorsGroupsMap = new HashMap<>();
+//        List<UserDTO> cydeoMentors = listAllUsersByRole(UserRole.CYDEO_MENTOR);
+//        for (UserDTO mentor : cydeoMentors) {
+//            List<GroupDTO> groupDTO = groupService.listAllGroupsOfCydeoMentor(mentor.getEmail());
+//            String groups = groupDTO
+//                    .stream()
+//                    .map(obj -> (obj.getBatch().getName() + " " + obj.getName())).reduce("",(x,y)-> x + y + " / ");
+//            groups = (groups.equals("")) ? "-" : groups.substring(0,groups.length()-2);
+//            cydeoMentorsGroupsMap.put(mentor,groups);
+//        }
+//        return cydeoMentorsGroupsMap;
+//    }
+//
+//    @Override
+//    public Map<UserDTO, String> getAlumniMentorsAndGroupsMap() {
+//        Map<UserDTO,String> alumniMentorsGroupsMap = new HashMap<>();
+//        List<UserDTO> alumniMentors = listAllUsersByRole(UserRole.ALUMNI_MENTOR);
+//        for (UserDTO mentor : alumniMentors) {
+//            List<GroupDTO> groupDTO = groupService.listAllGroupsOfAlumniMentor(mentor.getEmail());
+//            String groups = groupDTO
+//                    .stream()
+//                    .map(obj -> (obj.getBatch().getName() + " " + obj.getName())).reduce("",(x,y)-> x + y + " / ");
+//            groups = (groups.equals("")) ? "-" : groups.substring(0,groups.length()-2);
+//            alumniMentorsGroupsMap.put(mentor,groups);
+//        }
+//        return alumniMentorsGroupsMap;
+//    }
+
+
 
 }

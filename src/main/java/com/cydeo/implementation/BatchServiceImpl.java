@@ -31,6 +31,14 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
+    public List<BatchDTO> listAllNonCompletedBatches() {
+        return batchRepository.findAllByBatchStatusIsNot(BatchStatus.COMPLETED)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public BatchDTO save(BatchDTO batchDTO) {
         Batch batch = mapperUtil.convert(batchDTO, new Batch());
         batchRepository.save(batch);

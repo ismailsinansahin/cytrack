@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Batch Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Group Edit</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -12,7 +12,7 @@
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
                     <header class="panel-heading">
-                        <h2 class="panel-title">Create New Batch</h2>
+                        <h2 class="panel-title">Edit Group</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -23,46 +23,26 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/batches/batchCreate}"
-                                                      th:method="post" th:object="${newBatch}">
+                                                      th:action="@{/groups/groupUpdate/{id}(id=${group.getId()})}"
+                                                      th:method="post" th:object="${group}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Batch Name</label>
-                                                                    <input type="text" th:field="*{name}" placeholder="Batch Name"
-                                                                           class="form-control" required="required" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="batchStatus">Status</label>
-                                                                    <select id="batchStatus" class="form-control" th:field="*{batchStatus}" disabled required>
-                                                                        <option th:each= "batchStatus:${batchStatuses}"
-                                                                                th:value="${batchStatuses.get(0).value}"
-                                                                                th:text="${batchStatuses.get(0).value}"></option>
+                                                                    <label for="batch">Batch</label>
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required>
+                                                                        <option th:each= "batch:${batches}"
+                                                                                th:value="${batch.id}"
+                                                                                th:text="${batch.name}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Start Date</label>
-                                                                    <input type="date" th:text="*{batchStartDate}" th:field="*{batchStartDate}" placeholder="Start Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label>End Date</label>
-                                                                    <input type="date" th:value="*{batchEndDate}" th:field="*{batchEndDate}" placeholder="End Date"
+                                                                    <label>Group Name</label>
+                                                                    <input type="text" th:field="*{name}" placeholder="Group Name"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -72,9 +52,24 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Notes</label>
-                                                                    <input type="text" th:field="*{notes}" placeholder="Notes..."
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <label for="cydeoMentor">Cydeo Mentor</label>
+                                                                    <select id="cydeoMentor" class="form-control" th:field="*{cydeoMentor}" required>
+                                                                        <option th:each= "cydeoMentor:${cydeoMentors}"
+                                                                                th:value="${cydeoMentor.id}"
+                                                                                th:text="${cydeoMentor.firstName}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="alumniMentor">Alumni Mentor</label>
+                                                                    <select id="alumniMentor" class="form-control" th:field="*{alumniMentor}" required>
+                                                                        <option th:each= "alumniMentor:${alumniMentors}"
+                                                                                th:value="${alumniMentor.id}"
+                                                                                th:text="${alumniMentor.firstName}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>

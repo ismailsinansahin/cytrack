@@ -20,20 +20,8 @@ import java.util.Set;
 public class Task extends BaseEntity{
 
     private String name;
-    private String type;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate assignDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dueDate;
 
     @ManyToOne
     private Lesson lesson;
-
-    @ManyToMany
-    @JoinTable(name = "task_student_rel",
-            joinColumns = {@JoinColumn(name = "task_id")},
-            inverseJoinColumns = {@JoinColumn(name = "student_id")})
-    private Set<Task> studentSet = new HashSet<>();
 
 }

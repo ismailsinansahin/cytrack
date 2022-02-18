@@ -11,7 +11,4 @@ import java.util.Set;
 
 public interface LessonRepository extends JpaRepository<Lesson,Long> {
 
-    List<Lesson> findAllByInstructorSet (User user);
-
-
 }

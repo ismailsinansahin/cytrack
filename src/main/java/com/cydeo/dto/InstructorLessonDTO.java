@@ -9,9 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RoleDTO {
+public class InstructorLessonDTO {
 
     private Long id;
-    private String description;
+    private UserDTO userDTO;
+    private LessonDTO lessonDTO;
 
 }

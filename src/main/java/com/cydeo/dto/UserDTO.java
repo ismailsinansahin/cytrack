@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -25,13 +26,12 @@ public class UserDTO {
     private String confirmPassword;
     private String phone;
     private boolean enabled;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     private Country country;
     private Gender gender;
     private Status status;
     private UserRole userRole;
-//    private List<LessonDTO> lesson;
     private GroupDTO group;
-//    private List<TaskDTO> tasks;
 
 }

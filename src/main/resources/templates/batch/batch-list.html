@@ -55,7 +55,7 @@
                                                       <tbody>
                                                           <tr th:each="batch: ${batches}" class="text-dark"
                                                               th:style="${batch.batchStatus.value}=='In Progress' ? 'background-color:#d6feab' :
-                                                              (${batch.batchStatus.value}=='Completed' ? 'background-color:#eb4549': 'background-color:#abd6fe')">
+                                                              (${batch.batchStatus.value}=='Completed' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
                                                               <td th:text="${batch.name}"></td>
                                                               <td th:text="${batch.batchStartDate}"></td>
                                                               <td th:text="${batch.getBatchEndDate()}"></td>

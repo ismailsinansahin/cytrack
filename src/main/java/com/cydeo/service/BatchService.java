@@ -7,6 +7,7 @@ import java.util.List;
 public interface BatchService {
 
     List<BatchDTO> listAllBatches();
+    List<BatchDTO> listAllNonCompletedBatches();
     BatchDTO save(BatchDTO batchDTO);
     BatchDTO edit(BatchDTO batchDTO);
     void delete(Long batchId);

@@ -18,15 +18,14 @@ import java.util.Set;
 public class Group extends BaseEntity{
 
     private String name;
-    private String mascot;
 
     @ManyToOne
     @JoinColumn(name="batch_id")
     private Batch batch;
 
     @ManyToOne
-    @JoinColumn(name = "cybertekMentor_id")
-    private User cybertekMentor;
+    @JoinColumn(name = "cydeoMentor_id")
+    private User cydeoMentor;
 
     @ManyToOne
     @JoinColumn(name = "alumniMentor_id")
