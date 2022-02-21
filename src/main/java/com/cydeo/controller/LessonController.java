@@ -63,24 +63,35 @@ public class LessonController {
 
     @GetMapping("/lessonAddRemoveInstructor/{lessonId}")
     public String lessonAddRemoveInstructor(@PathVariable("lessonId") Long lessonId, Model model){
-        model.addAttribute("lesson", lessonService.getLessonByLessonId(lessonId));
+        model.addAttribute("lesson", lessonService.getLessonByLessonIdWithTempInstructorList(lessonId));
         model.addAttribute("instructors", userService.listAllUsersByRole(UserRole.INSTRUCTOR));
         model.addAttribute("newInstructor", new UserDTO());
         return "lesson/lesson-addRemoveInstructor";
     }
 
     @PostMapping(value = "/addRemoveInstructor/{lessonId}", params = {"action=addInstructor"})
-    public String addInstructor(@PathVariable("lessonId") Long lessonId, UserDTO instructor){
-        lessonService.addInstructor(lessonId, instructor);
+    public String addInstructor(@PathVariable("lessonId") Long lessonId, UserDTO instructorDTO){
+        lessonService.addInstructor(lessonId, instructorDTO);
         return "redirect:/lessons/lessonAddRemoveInstructor/" + lessonId;
     }
 
     @PostMapping(value = "/addRemoveInstructor/{lessonId}", params = {"action=removeInstructor"})
-    public String removeInstructor(@PathVariable("lessonId") Long lessonId, UserDTO instructor){
-        lessonService.removeInstructor(lessonId, instructor);
+    public String removeInstructor(@PathVariable("lessonId") Long lessonId, UserDTO instructorDTO){
+        lessonService.removeInstructor(lessonId, instructorDTO);
         return "redirect:/lessons/lessonAddRemoveInstructor/" + lessonId;
     }
 
+    @PostMapping(value = "/addRemoveInstructor/{lessonId}", params = {"action=save"})
+    public String updateInstructorList(@PathVariable("lessonId") Long lessonId){
+        lessonService.updateInstructorList(lessonId);
+        return "redirect:/lessons/lessonList";
+    }
+
+    @PostMapping(value = "/addRemoveInstructor/{lessonId}", params = {"action=cancel"})
+    public String cancelEditingInstructorList(@PathVariable("lessonId") Long lessonId){
+        lessonService.cancelEditingInstructorList(lessonId);
+        return "redirect:/lessons/lessonAddRemoveInstructor/" + lessonId;
+    }
 
     @PostMapping(value = "/addRemoveInstructorEditDelete/{lessonId}", params = {"action=addInstructor"})
     public String goAddInstructorPage(@PathVariable("lessonId") Long lessonId){
@@ -97,7 +108,5 @@ public class LessonController {
         lessonService.delete(lessonId);
         return "redirect:/lessons/lessonList";
     }
-
-
 
 }

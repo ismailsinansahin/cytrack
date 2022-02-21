@@ -55,16 +55,24 @@
                                                                                 th:value="${instructor.id}"
                                                                                 th:text="${instructor.firstName + ' ' + instructor.lastName}"></option>
                                                                     </select>
+                                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                type="submit" name="action" value="addInstructor">Add
+                                                                        </button>
+                                                                        <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action" value="removeInstructor">Remove
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
                                                         <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit" name="action" value="addInstructor">Add
+                                                                type="submit" name="action" value="save">Save
                                                         </button>
                                                         <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit" name="action" value="removeInstructor">Remove
+                                                                type="submit" name="action" value="cancel">Cancel
                                                         </button>
                                                     </div>
                                                 </form>

@@ -1,12 +1,12 @@
 package com.cydeo.enums;
 
-public enum Status {
+public enum StudentStatus {
 
     RETURNING("Returning"), NEW("New");
 
     private String value;
 
-    Status(String value) {
+    StudentStatus(String value) {
         this.value = value;
     }
 

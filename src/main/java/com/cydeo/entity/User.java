@@ -2,7 +2,7 @@ package com.cydeo.entity;
 
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
-import com.cydeo.enums.Status;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -40,7 +38,7 @@ public class User extends BaseEntity{
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StudentStatus studentStatus;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

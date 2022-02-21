@@ -1,15 +1,10 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.GroupDTO;
-import com.cydeo.dto.UserDTO;
-import com.cydeo.enums.Country;
-import com.cydeo.enums.Gender;
-import com.cydeo.enums.Status;
 import com.cydeo.enums.UserRole;
 import com.cydeo.service.BatchService;
 import com.cydeo.service.GroupService;
 import com.cydeo.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller

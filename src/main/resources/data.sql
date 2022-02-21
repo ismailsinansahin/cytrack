@@ -7,7 +7,7 @@ values (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'COMPLETED', 'EU-
        (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'PLANNED', 'EU-5', 'EU only');
 
 insert into users (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, birthday,
-                   country, email, enabled, first_name, gender, last_name, password, phone, status, group_id, user_role)
+                   country, email, enabled, first_name, gender, last_name, password, phone, student_status, group_id, user_role)
 values (now(), 1, false, now(), 1, '1980-12-30', 'USA', 'mike@ct.com', true, 'Mike', 'MALE', 'Black', 'Abc123', '5412589874', null, null, 'ADMIN'),
        (now(), 1, false, now(), 1, '1975-01-12', 'TURKEY', 'omer@ct.com', true, 'Omer', 'MALE', 'Bright', 'Abc123', '5325698754', null, null, 'INSTRUCTOR'),
        (now(), 1, false, now(), 1, '1965-02-23', 'UK', 'ozzy@ct.com', true, 'Ozzy', 'MALE', 'Red', 'Abc123', '5052569847', null, null, 'INSTRUCTOR'),

@@ -2,7 +2,7 @@ package com.cydeo.dto;
 
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
-import com.cydeo.enums.Status;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class UserDTO {
     private LocalDate birthday;
     private Country country;
     private Gender gender;
-    private Status status;
+    private StudentStatus studentStatus;
     private UserRole userRole;
     private GroupDTO group;
 

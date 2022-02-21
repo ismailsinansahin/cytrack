@@ -3,7 +3,7 @@ package com.cydeo.controller;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
-import com.cydeo.enums.Status;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.UserRole;
 import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
@@ -40,7 +40,7 @@ public class UserController {
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
         model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
-        model.addAttribute("userStatuses", Arrays.asList(Status.values()));
+        model.addAttribute("userStatuses", Arrays.asList(StudentStatus.values()));
         return "user/user-create";
     }
 
@@ -56,7 +56,7 @@ public class UserController {
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
         model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
-        model.addAttribute("userStatuses", Arrays.asList(Status.values()));
+        model.addAttribute("userStatuses", Arrays.asList(StudentStatus.values()));
         return "user/user-edit";
     }
 
