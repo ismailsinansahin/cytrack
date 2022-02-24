@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Cydeo Mentor Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Student Create</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -11,8 +11,29 @@
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
+                    <div class="input-group row">
+                        <div class="col-4 mr-auto"></div>
+                        <div class="col-auto">
+                            <form>
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                                    <a id="staffListLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
+                                        Staff List</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
+                                        Create Staff</a>&nbsp&nbsp
+                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div><br>
                     <header class="panel-heading">
-                        <h2 class="panel-title">Create Cydeo Mentor</h2>
+                        <h2 class="panel-title">Create Student</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -23,42 +44,8 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/users/userCreate/}"
+                                                      th:action="@{/users/studentCreate/}"
                                                       th:method="post" th:object="${newUser}">
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-8">
-                                                            <div class="form-group">
-                                                                <div class="form-group">
-                                                                    <label for="country">Role</label><br>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option1" name="option1" class="custom-control-input"
-                                                                               value="ADMIN" th:field="*{userRole}" required>
-                                                                        <label class="custom-control-label" for="option1">Admin</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option2" name="option2" class="custom-control-input"
-                                                                               value="INSTRUCTOR" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option2">Instructor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option3" name="option3" class="custom-control-input"
-                                                                               value="CYDEO_MENTOR" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option3">Cydeo Mentor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option4" name="option4" class="custom-control-input"
-                                                                               value="ALUMNI_MENTOR" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option4">Alumni Mentor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option5" name="option5" class="custom-control-input"
-                                                                               value="STUDENT" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option5">Student</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
@@ -140,6 +127,34 @@
                                                                     <label>Confirm Password</label>
                                                                     <input type="text" th:field="*{confirmPassword}" placeholder="Confirm Password"
                                                                            class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="batch">Batch</label>
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required="required">
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "batch:${batches}"
+                                                                                th:value="${batch.id}"
+                                                                                th:text="${batch.name}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="studentStatus">Student Status</label>
+                                                                    <select id="studentStatus" class="form-control" th:field="*{studentStatus}" required="required">
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "studentStatus:${studentStatuses}"
+                                                                                th:value="${studentStatus}"
+                                                                                th:text="${studentStatus.value}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>

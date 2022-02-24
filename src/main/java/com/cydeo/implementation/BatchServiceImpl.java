@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class BatchServiceImpl implements BatchService {
 
-    BatchRepository batchRepository;
     MapperUtil mapperUtil;
+    BatchRepository batchRepository;
 
     public BatchServiceImpl(BatchRepository batchRepository, MapperUtil mapperUtil) {
         this.batchRepository = batchRepository;
@@ -31,23 +31,19 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
-    public List<BatchDTO> listAllNonCompletedBatches() {
-        return batchRepository.findAllByBatchStatusIsNot(BatchStatus.COMPLETED)
-                .stream()
-                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public BatchDTO save(BatchDTO batchDTO) {
+    public BatchDTO create(BatchDTO batchDTO) {
         Batch batch = mapperUtil.convert(batchDTO, new Batch());
+        batch.setBatchStatus(BatchStatus.PLANNED);
         batchRepository.save(batch);
         return mapperUtil.convert(batch, new BatchDTO());
     }
 
     @Override
-    public BatchDTO edit(BatchDTO batchDTO) {
-        Batch batch = batchRepository.save(mapperUtil.convert(batchDTO, new Batch()));
+    public BatchDTO save(BatchDTO batchDTO, Long batchId) {
+        batchDTO.setId(batchId);
+        Batch batch = mapperUtil.convert(batchDTO, new Batch());
+        batch.setBatchStatus(BatchStatus.PLANNED);
+        batchRepository.save(batch);
         return mapperUtil.convert(batch, new BatchDTO());
     }
 

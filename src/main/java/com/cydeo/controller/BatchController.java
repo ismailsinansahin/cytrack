@@ -23,36 +23,34 @@ public class BatchController {
     }
 
     @GetMapping("/batchList")
-    public String batchList(Model model){
+    public String goBatchList(Model model){
         model.addAttribute("batches", batchService.listAllBatches());
         return "batch/batch-list";
     }
 
     @GetMapping("/batchCreate")
-    public String batchCreate(Model model){
+    public String goBatchCreate(Model model){
         model.addAttribute("newBatch", new BatchDTO());
         model.addAttribute("batchStatuses", Arrays.asList(BatchStatus.values()));
         return "batch/batch-create";
     }
 
     @PostMapping("/batchCreate")
-    public String batchSave(BatchDTO batchDto){
-        batchDto.setBatchStatus(BatchStatus.PLANNED);
-        batchService.save(batchDto);
+    public String createBatch(BatchDTO batchDto){
+        batchService.create(batchDto);
         return "redirect:/batches/batchList";
     }
 
     @GetMapping("/batchEdit/{batchId}")
-    public String batchEdit(@PathVariable("batchId") Long batchId, Model model){
+    public String goBatchEdit(@PathVariable("batchId") Long batchId, Model model){
         model.addAttribute("batch", batchService.getByBatchId(batchId));
         model.addAttribute("batchStatuses", Arrays.asList(BatchStatus.values()));
         return "batch/batch-edit";
     }
 
     @PostMapping("/batchUpdate/{batchId}")
-    public String batchUpdate(@PathVariable("batchId") Long batchId, BatchDTO batchDTO){
-        batchDTO.setId(batchId);
-        batchService.edit(batchDTO);
+    public String updateBatch(@PathVariable("batchId") Long batchId, BatchDTO batchDTO){
+        batchService.save(batchDTO, batchId);
         return "redirect:/batches/batchList";
     }
 

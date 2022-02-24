@@ -12,6 +12,8 @@ import java.util.List;
 public interface InstructorLessonRepository extends JpaRepository<InstructorLesson, Long> {
 
     List<InstructorLesson> findAllByLesson(Lesson lesson);
+    List<InstructorLesson> findAllByInstructor(User user);
     InstructorLesson findByLessonAndInstructor(Lesson lesson, User instructor);
+
 
 }

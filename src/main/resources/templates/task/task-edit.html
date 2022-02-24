@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Batch Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Task Edit</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -17,14 +17,14 @@
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
                                     <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
-                                        Batch List</a>
+                                       th:href="@{/tasks/taskList}"><i class="fa fa-list mr-1"></i>
+                                        Task List</a>
                                 </div>
                             </form>
                         </div>
                     </div><br>
                     <header class="panel-heading">
-                        <h2 class="panel-title">Create New Batch</h2>
+                        <h2 class="panel-title">Edit Task</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -35,26 +35,31 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/batches/batchCreate}"
-                                                      th:method="post" th:object="${newBatch}">
+                                                      th:action="@{/tasks/taskEdit/{id}(id=${task.getId()})}"
+                                                      th:method="post" th:object="${task}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Batch Name</label>
-                                                                    <input type="text" th:field="*{name}" placeholder="Batch Name"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <label for="batch">Batch</label>
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required>
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "batch:${batches}"
+                                                                                th:value="${batch.id}"
+                                                                                th:text="${batch.name}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="batchStatus">Status</label>
-                                                                    <select id="batchStatus" class="form-control" th:field="*{batchStatus}" disabled required>
-                                                                        <option th:each= "batchStatus:${batchStatuses}"
-                                                                                th:value="${batchStatuses.get(0).value}"
-                                                                                th:text="${batchStatuses.get(0).value}"></option>
+                                                                    <label for="lesson">Lesson</label>
+                                                                    <select id="lesson" class="form-control" th:field="*{lesson}" required>
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "lesson:${lessons}"
+                                                                                th:value="${lesson.id}"
+                                                                                th:text="${lesson.name}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -64,18 +69,22 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Start Date</label>
-                                                                    <input type="date" th:text="*{batchStartDate}" th:field="*{batchStartDate}" placeholder="Start Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <label for="taskType">Task Type</label>
+                                                                    <select id="taskType" class="form-control" th:field="*{taskType}" required>
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "taskType:${taskTypes}"
+                                                                                th:value="${taskType}"
+                                                                                th:text="${taskType.value}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label>End Date</label>
-                                                                    <input type="date" th:value="*{batchEndDate}" th:field="*{batchEndDate}" placeholder="End Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                            <div class="col-12 col-md-4">
+                                                                <div class="form-group">
+                                                                    <div class="controls">
+                                                                        <label>Task Name</label>
+                                                                        <input type="text" th:field="*{name}" placeholder="Task Name"
+                                                                               class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -84,8 +93,17 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Notes</label>
-                                                                    <input type="text" th:field="*{notes}" placeholder="Notes..."
+                                                                    <label>Publishing Date</label>
+                                                                    <input type="date" th:value="*{publishingDate}" th:field="*{publishingDate}" placeholder="Publishing Date"
+                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Due Date</label>
+                                                                    <input type="date" th:value="*{dueDate}" th:field="*{dueDate}" placeholder="Due Date"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>

@@ -32,6 +32,7 @@ public class UserDTO {
     private Gender gender;
     private StudentStatus studentStatus;
     private UserRole userRole;
+    private BatchDTO batch;
     private GroupDTO group;
 
 }

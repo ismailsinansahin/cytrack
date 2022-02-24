@@ -1,57 +1,80 @@
 package com.cydeo.implementation;
 
+import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.InstructorLesson;
 import com.cydeo.entity.Lesson;
 import com.cydeo.entity.User;
 import com.cydeo.enums.UserRole;
 import com.cydeo.mapper.MapperUtil;
+import com.cydeo.repository.BatchRepository;
 import com.cydeo.repository.InstructorLessonRepository;
 import com.cydeo.repository.LessonRepository;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
     MapperUtil mapperUtil;
-    InstructorLessonRepository instructorLessonRepository;
+    UserRepository userRepository;
     LessonRepository lessonRepository;
+    BatchRepository batchRepository;
+    InstructorLessonRepository instructorLessonRepository;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil,
-                           InstructorLessonRepository instructorLessonRepository, LessonRepository lessonRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, LessonRepository lessonRepository,
+                           BatchRepository batchRepository, InstructorLessonRepository instructorLessonRepository) {
         this.mapperUtil = mapperUtil;
-        this.instructorLessonRepository = instructorLessonRepository;
+        this.userRepository = userRepository;
         this.lessonRepository = lessonRepository;
+        this.batchRepository = batchRepository;
+        this.instructorLessonRepository = instructorLessonRepository;
     }
 
     @Override
     public List<UserDTO> listAllUsers() {
-        List<User> userList = userRepository.findAll();
-        return userList.stream().map(obj -> mapperUtil.convert(obj, new UserDTO())).collect(Collectors.toList());
+        return userRepository.findAll()
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDTO> listAllUsersByRole(UserRole userRole) {
-        List<User> userList = userRepository.findAllByUserRole(userRole);
-        return userList.stream().map(obj -> mapperUtil.convert(obj, new UserDTO())).collect(Collectors.toList());
+    public List<UserDTO> getAllStaffs() {
+        return userRepository.findAllByUserRoleNot(UserRole.STUDENT)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllStudents() {
+        return userRepository.findAllByUserRole(UserRole.STUDENT)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BatchDTO> getAllBatches() {
+        return batchRepository.findAll()
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserDTO getUserById(Long id) {
-        User user = userRepository.findById(id).get();
-        return mapperUtil.convert(user, new UserDTO());
+        return mapperUtil.convert(userRepository.findById(id).get(), new UserDTO());
     }
 
     @Override
     public UserDTO save(UserDTO userDTO) {
+        if(userDTO.getUserRole()==null) userDTO.setUserRole(UserRole.STUDENT);
         userDTO.setEnabled(true);
         User user = mapperUtil.convert(userDTO, new User());
         userRepository.save(user);
@@ -65,17 +88,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Override
-    public List<UserDTO> listAllInstructorsOfLesson(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId).get();
-        List<InstructorLesson> instructorLessonListByLesson = instructorLessonRepository.findAllByLesson(lesson);
-        return instructorLessonListByLesson
-                .stream()
-                .map(obj -> mapperUtil.convert(obj.getInstructor(), new UserDTO()))
-                .collect(Collectors.toList());
-    }
-
-//    @Override
+    //    @Override
 //    public Map<UserDTO, String> getCydeoMentorsAndGroupsMap() {
 //        Map<UserDTO,String> cydeoMentorsGroupsMap = new HashMap<>();
 //        List<UserDTO> cydeoMentors = listAllUsersByRole(UserRole.CYDEO_MENTOR);
@@ -104,7 +117,5 @@ public class UserServiceImpl implements UserService {
 //        }
 //        return alumniMentorsGroupsMap;
 //    }
-
-
 
 }

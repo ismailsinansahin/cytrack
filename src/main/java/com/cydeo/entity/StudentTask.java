@@ -22,16 +22,6 @@ public class StudentTask extends BaseEntity{
 
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dueDate;
-
-    @Enumerated(EnumType.STRING)
-    private TaskType taskType;
-
-    @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
-
     @ManyToOne
     @JoinColumn(name = "student_id")
     private User student;

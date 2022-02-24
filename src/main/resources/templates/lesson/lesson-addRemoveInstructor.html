@@ -11,6 +11,18 @@
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
+                    <div class="input-group row">
+                        <div class="col-4 mr-auto"></div>
+                        <div class="col-auto">
+                            <form>
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                                    <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/lessons/lessonList}"><i class="fa fa-list mr-1"></i>
+                                        Lesson List</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div><br>
                     <header class="panel-heading">
                         <h2 class="panel-title">Add/Remove Instructor</h2>
                     </header>
@@ -22,9 +34,6 @@
                                         <div class="tab-content">
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
-                                                <form class="needs-validation" novalidate
-                                                      th:action="@{/lessons/addRemoveInstructor/{id}(id=${lesson.getId()})}"
-                                                      th:method="post" th:object="${newInstructor}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
@@ -35,47 +44,57 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label>Instructors</label>
-                                                                    <a type="text" th:text="${lesson.instructorList}"
-                                                                       class="form-control" required="required" aria-invalid="false"></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label for="instructors">Select Instructor</label>
-                                                                    <select id="instructors" class="form-control" th:field="*{id}" required>
-                                                                        <option th:each= "instructor:${instructors}"
-                                                                                th:value="${instructor.id}"
-                                                                                th:text="${instructor.firstName + ' ' + instructor.lastName}"></option>
-                                                                    </select>
-                                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
-                                                                                type="submit" name="action" value="addInstructor">Add
-                                                                        </button>
-                                                                        <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action" value="removeInstructor">Remove
-                                                                        </button>
+                                                </div><br>
+                                                    <section class="panel">
+                                                        <header class="panel-heading">
+                                                            <h2 class="panel-title">Instructor List</h2>
+                                                        </header>
+                                                        <div class="panel-body">
+                                                            <div class="users-list-table">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="card">
+                                                                            <div class="card-content fw-container">
+                                                                                <div class="card-body fw-body">
+                                                                                    <div class="table-responsive content demo-html">
+                                                                                        <table id="example" class="table table-striped table-bordered file-export" style="width:100%">
+                                                                                            <thead>
+                                                                                            <tr>
+                                                                                                <th scope="col">Instructor Name</th>
+                                                                                                <th scope="col">Lessons</th>
+                                                                                                <th scope="col">Add/Remove</th>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                            <tr th:each="instructor: ${instructorAndLessons.keySet()}" class="text-dark"
+                                                                                                th:style="${instructorIdsOfLesson.contains(instructor.getId())} ? 'background-color:#d6feab':'background-color:#ebbec3'">
+                                                                                                <td th:text="${instructor.firstName + ' ' + instructor.lastName}"></td>
+                                                                                                <td th:text="${instructorAndLessons.get(instructor)}"></td>
+                                                                                                <td class="actions">
+                                                                                                    <form class="needs-validation" novalidate
+                                                                                                        th:action="@{/lessons/addRemoveInstructor/{instructorId}/{lessonId}(instructorId=${instructor.getId()}, lessonId=${lesson.getId()})}"
+                                                                                                        th:method="post">
+                                                                                                        <button class="ft-minus btn-info bg-light-primary text-dark"
+                                                                                                                type="submit" name="action" value="addInstructor"
+                                                                                                                th:if="${!instructorIdsOfLesson.contains(instructor.getId())}">+ Add</button>
+                                                                                                        <button class="ft-minus btn-danger bg-light-primary"
+                                                                                                                type="submit" name="action" value="removeInstructor"
+                                                                                                                th:if="${instructorIdsOfLesson.contains(instructor.getId())}">- Remove</button>
+                                                                                                    </form>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
-                                                        <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit" name="action" value="save">Save
-                                                        </button>
-                                                        <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                type="submit" name="action" value="cancel">Cancel
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                    </section>
                                                 </div>
                                             </div>
                                         </div>

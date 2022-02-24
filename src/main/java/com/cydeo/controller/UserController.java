@@ -5,7 +5,6 @@ import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
 import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.UserRole;
-import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,61 +20,106 @@ import java.util.*;
 public class UserController {
 
     UserService userService;
-    LessonService lessonService;
 
-    public UserController(UserService userService, LessonService lessonService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.lessonService = lessonService;
     }
 
-    @GetMapping("/userList")
-    public String goUserList(Model model) {
-        model.addAttribute("users", userService.listAllUsers());
-        return "user/user-list";
+    @GetMapping("/staffList")
+    public String goStaffList(Model model) {
+        model.addAttribute("staffs", userService.getAllStaffs());
+        return "user/staff-list";
     }
 
-    @GetMapping("/userCreate")
-    public String goUserCreate(Model model) {
+    @GetMapping("/studentList")
+    public String goStudentList(Model model) {
+        model.addAttribute("students", userService.getAllStudents());
+        return "user/student-list";
+    }
+
+    @GetMapping("/staffCreate")
+    public String goStaffCreate(Model model) {
         model.addAttribute("newUser", new UserDTO());
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
         model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
-        model.addAttribute("userStatuses", Arrays.asList(StudentStatus.values()));
-        return "user/user-create";
+        return "user/staff-create";
     }
 
-    @PostMapping("/userCreate")
-    public String createUser(UserDTO userDTO){
+    @GetMapping("/studentCreate")
+    public String goStudentCreate(Model model) {
+        model.addAttribute("newUser", new UserDTO());
+        model.addAttribute("countries", Arrays.asList(Country.values()));
+        model.addAttribute("genders", Arrays.asList(Gender.values()));
+        model.addAttribute("studentStatuses", Arrays.asList(StudentStatus.values()));
+        model.addAttribute("batches", userService.getAllBatches());
+        return "user/student-create";
+    }
+
+    @PostMapping("/staffCreate")
+    public String createStaff(UserDTO userDTO){
         userService.save(userDTO);
-        return "redirect:/users/userList";
+        return "redirect:/users/staffList";
     }
 
-    @GetMapping("/userEdit/{id}")
-    public String goUserEdit(@PathVariable("id") Long id, Model model) {
+    @PostMapping("/studentCreate")
+    public String createStudent(UserDTO userDTO){
+        userService.save(userDTO);
+        return "redirect:/users/studentList";
+    }
+
+    @GetMapping("/staffEdit/{id}")
+    public String goStaffEdit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
         model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
-        model.addAttribute("userStatuses", Arrays.asList(StudentStatus.values()));
-        return "user/user-edit";
+        return "user/staff-edit";
     }
 
-    @PostMapping("/userUpdate/{id}")
-    public String updateUser(@PathVariable("id") Long id, UserDTO userDTO) {
+    @GetMapping("/studentEdit/{id}")
+    public String goStudentEdit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("countries", Arrays.asList(Country.values()));
+        model.addAttribute("genders", Arrays.asList(Gender.values()));
+        model.addAttribute("studentStatuses", Arrays.asList(StudentStatus.values()));
+        model.addAttribute("batches", userService.getAllBatches());
+        return "user/student-edit";
+    }
+
+    @PostMapping("/staffUpdate/{id}")
+    public String updateStaff(@PathVariable("id") Long id, UserDTO userDTO) {
         userDTO.setId(id);
         userService.save(userDTO);
-        return "redirect:/users/userList";
+        return "redirect:/users/staffList";
     }
 
-    @PostMapping(value = "/userEditDelete/{id}", params = {"action=edit"})
-    public String editUser(@PathVariable("id") Long id){
-        return "redirect:/users/userEdit/" + id;
+    @PostMapping("/studentUpdate/{id}")
+    public String updateStudent(@PathVariable("id") Long id, UserDTO userDTO) {
+        userDTO.setId(id);
+        userService.save(userDTO);
+        return "redirect:/users/studentList";
     }
 
-    @PostMapping(value = "/userEditDelete/{id}", params = {"action=delete"})
-    public String deleteUser(@PathVariable("id") Long id){
+    @PostMapping(value = "/staffEditDelete/{id}", params = {"action=edit"})
+    public String editStaff(@PathVariable("id") Long id){
+        return "redirect:/users/staffEdit/" + id;
+    }
+
+    @PostMapping(value = "/staffEditDelete/{id}", params = {"action=delete"})
+    public String deleteStaff(@PathVariable("id") Long id){
         userService.delete(id);
-        return "redirect:/users/userList";
+        return "redirect:/users/staffList";
+    }
+    @PostMapping(value = "/studentEditDelete/{id}", params = {"action=edit"})
+    public String editStudent(@PathVariable("id") Long id){
+        return "redirect:/users/studentEdit/" + id;
+    }
+
+    @PostMapping(value = "/studentEditDelete/{id}", params = {"action=delete"})
+    public String deleteStudent(@PathVariable("id") Long id){
+        userService.delete(id);
+        return "redirect:/users/studentList";
     }
 
 }

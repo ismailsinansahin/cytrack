@@ -1,5 +1,7 @@
 package com.cydeo.entity;
 
+import com.cydeo.enums.TaskStatus;
+import com.cydeo.enums.TaskType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +23,24 @@ public class Task extends BaseEntity{
 
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate publishingDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dueDate;
+
+    @Enumerated(EnumType.STRING)
+    private TaskType taskType;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus;
+
     @ManyToOne
+    @JoinColumn(name = "batch_id")
+    private Batch batch;
+
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
 }

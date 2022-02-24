@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Group List</title></head>
+<head th:replace="/fragments/head :: header"><title>Task List</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -22,19 +22,16 @@
                                     <div class="col-auto">
                                         <form>
                                             <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                                <a id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
-                                                   th:href="@{/groups/addRemoveStudent}"><i class="fa fa-plus mr-1"></i>
-                                                    Add/Remove Student</a>&nbsp&nbsp
-                                                <a id="groupCreateLink" class="btn bg-dark text-light mb-1x"
-                                                   th:href="@{/groups/groupCreate}"><i class="fa fa-plus mr-1"></i>
-                                                    Create Group</a>
+                                                <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
+                                                   th:href="@{/tasks/taskCreate}"><i class="fa fa-plus mr-1"></i>
+                                                    Create Task</a>
                                             </div>
                                         </form>
                                     </div>
                                 </div><br>
                                 <section class="panel">
                                     <header class="panel-heading">
-                                        <h2 class="panel-title">Group List</h2>
+                                        <h2 class="panel-title">Task List</h2>
                                     </header>
                                     <div class="panel-body">
                                         <div class="users-list-table">
@@ -48,26 +45,44 @@
                                                                         <thead>
                                                                         <tr>
                                                                             <th scope="col">Batch</th>
-                                                                            <th scope="col">Group Name</th>
-                                                                            <th scope="col">Cydeo Mentor</th>
-                                                                            <th scope="col">Alumni Mentor</th>
-                                                                            <th scope="col">Actions</th>
+                                                                            <th scope="col">Lesson</th>
+                                                                            <th scope="col">Task Type</th>
+                                                                            <th scope="col">Name</th>
+                                                                            <th scope="col">Publishing Date</th>
+                                                                            <th scope="col">Due Date</th>
+                                                                            <th scope="col">Task Status</th>
+                                                                            <th scope="col">Action</th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr th:each="group: ${groups}" class="text-dark">
-                                                                            <td th:text="${group.batch.name}"></td>
-                                                                            <td th:text="${group.name}"></td>
-                                                                            <td th:text="${group.cydeoMentor.firstName}"></td>
-                                                                            <td th:text="${group.alumniMentor.firstName}"></td>
+                                                                        <tr th:each="task: ${tasks}" class="text-dark"
+                                                                            th:style="${task.taskStatus.value}=='Published' ? 'background-color:#d6feab' :
+                                                                                     (${task.taskStatus.value}=='Out Of Time' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
+                                                                            <td th:text="${task.batch.name}"></td>
+                                                                            <td th:text="${task.lesson.name}"></td>
+                                                                            <td th:text="${task.taskType.value}"></td>
+                                                                            <td th:text="${task.name}"></td>
+                                                                            <td th:text="${task.publishingDate}"></td>
+                                                                            <td th:text="${task.dueDate}"></td>
+                                                                            <td th:text="${task.taskStatus.value}"></td>
                                                                             <td class="actions">
-                                                                                <form action="#" data-th-action="@{/groups/groupEditDelete/{id}(id=${group.getId()})}"
+                                                                                <form action="#" data-th-action="@{/tasks/publishCompleteEditDelete/{id}(id=${task.getId()})}"
                                                                                       method="post">
-                                                                                    <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                                    <button th:if="${task.taskStatus.value} == 'Planned'"
+                                                                                            class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
+                                                                                            type="submit" name="action" value="publish">Publish
+                                                                                    </button>
+                                                                                    <button th:if="${task.taskStatus.value} == 'Planned'"
+                                                                                            class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
                                                                                             type="submit" name="action" value="edit">Edit
                                                                                     </button>
-                                                                                    <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                                    <button th:if="${task.taskStatus.value} == 'Planned'"
+                                                                                            class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
                                                                                             type="submit" name="action" value="delete">Delete
+                                                                                    </button>
+                                                                                    <button th:if="${task.taskStatus.value} == 'Published'"
+                                                                                            class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                            type="submit" name="action" value="complete">Complete
                                                                                     </button>
                                                                                 </form>
                                                                             </td>

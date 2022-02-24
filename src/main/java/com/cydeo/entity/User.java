@@ -44,6 +44,9 @@ public class User extends BaseEntity{
     private UserRole userRole;
 
     @ManyToOne
+    private Batch batch;
+
+    @ManyToOne
     private Group group;
 
 }

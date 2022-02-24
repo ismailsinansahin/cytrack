@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     @GetMapping(value = {"/","/login"})
-    public String login(){
+    public String goLoginPage(){
         return "login";
     }
 
     @PostMapping("/welcome")
-    public String welcome(){
+    public String goWelcomePage(){
         return "welcome";
     }
 

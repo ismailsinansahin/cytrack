@@ -1,16 +1,20 @@
 package com.cydeo.service;
 
+import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
+import com.cydeo.dto.UserDTO;
+import com.cydeo.enums.UserRole;
 
 import java.util.List;
 
 public interface GroupService {
 
-    List<GroupDTO> listAllGroups();
-    List<GroupDTO> listAllGroupsOfCydeoMentor(String username);
-    List<GroupDTO> listAllGroupsOfAlumniMentor(String username);
+    List<GroupDTO> getAllGroups();
+    List<UserDTO> getAllUsersByRole(UserRole userRole);
     GroupDTO getGroupById(Long id);
-    GroupDTO save(GroupDTO groupDTO);
+    GroupDTO create(GroupDTO groupDTO);
+    GroupDTO save(GroupDTO groupDTO, Long groupId);
     void delete(Long id);
+    List<BatchDTO> getAllNonCompletedBatches();
 
 }

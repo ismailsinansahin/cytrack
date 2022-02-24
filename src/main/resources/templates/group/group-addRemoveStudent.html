@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Batch Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Group Add/Remove Student</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -17,14 +17,14 @@
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
                                     <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
-                                        Batch List</a>
+                                       th:href="@{/groups/groupList}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>
                                 </div>
                             </form>
                         </div>
                     </div><br>
                     <header class="panel-heading">
-                        <h2 class="panel-title">Create New Batch</h2>
+                        <h2 class="panel-title">Add/Remove Student</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -35,27 +35,37 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/batches/batchCreate}"
-                                                      th:method="post" th:object="${newBatch}">
+                                                      th:action="@{/groups/addRemoveStudent/{id}(id=${group.getId()})}"
+                                                      th:method="post" th:object="${newStudent}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Batch Name</label>
-                                                                    <input type="text" th:field="*{name}" placeholder="Batch Name"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <label>Group Name</label>
+                                                                    <input type="text" th:field="${group.name}" placeholder="Group Name"
+                                                                           class="form-control" required="required" aria-invalid="false" disabled>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="batchStatus">Status</label>
-                                                                    <select id="batchStatus" class="form-control" th:field="*{batchStatus}" disabled required>
-                                                                        <option th:each= "batchStatus:${batchStatuses}"
-                                                                                th:value="${batchStatuses.get(0).value}"
-                                                                                th:text="${batchStatuses.get(0).value}"></option>
+                                                                    <label for="instructors">Select Student</label>
+                                                                    <select id="instructors" class="form-control" th:field="*{id}" required>
+                                                                        <option th:each= "student:${students}"
+                                                                                th:value="${student.id}"
+                                                                                th:text="${student.firstName + ' ' + student.lastName}"></option>
                                                                     </select>
+                                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                type="submit" name="action" value="addStudent">Add
+                                                                        </button>
+                                                                        <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action" value="removeStudent">Remove
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -64,29 +74,9 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Start Date</label>
-                                                                    <input type="date" th:text="*{batchStartDate}" th:field="*{batchStartDate}" placeholder="Start Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label>End Date</label>
-                                                                    <input type="date" th:value="*{batchEndDate}" th:field="*{batchEndDate}" placeholder="End Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-group">
-                                                                <div class="controls">
-                                                                    <label>Notes</label>
-                                                                    <input type="text" th:field="*{notes}" placeholder="Notes..."
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <label>Students</label>
+                                                                    <a type="text" th:text="${group.name}"
+                                                                       class="form-control" required="required" aria-invalid="false"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -96,11 +86,10 @@
                                                                 type="submit" name="action" value="save">Save
                                                         </button>
                                                         <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                type="reset">Cancel
+                                                                type="submit" name="action" value="cancel">Cancel
                                                         </button>
                                                     </div>
                                                 </form>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -112,6 +101,7 @@
             </div>
         </div>
     </div>
+</div>
 <div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>

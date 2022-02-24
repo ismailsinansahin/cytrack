@@ -5,6 +5,7 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.InstructorLesson;
 import com.cydeo.entity.Lesson;
 import com.cydeo.entity.User;
+import com.cydeo.enums.UserRole;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.InstructorLessonRepository;
 import com.cydeo.repository.LessonRepository;
@@ -13,7 +14,6 @@ import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +37,6 @@ public class LessonServiceImpl implements LessonService {
         this.userRepository = userRepository;
     }
 
-    List<UserDTO> tempInstructorsOfLesson = new ArrayList<>();
-    boolean isTempUsedBefore = false;
-
     @Override
     public List<LessonDTO> listAllLessons() {
         List<Lesson> lessons = lessonRepository.findAll();
@@ -51,7 +48,7 @@ public class LessonServiceImpl implements LessonService {
         Map<LessonDTO,String> lessonsInstructorsMap = new HashMap<>();
         List<LessonDTO> lessons = listAllLessons();
         for (LessonDTO lesson : lessons) {
-            List<UserDTO> instructorList = userService.listAllInstructorsOfLesson(lesson.getId());
+            List<UserDTO> instructorList = listAllInstructorsOfLesson(lesson.getId());
             String instructors = instructorList
                     .stream()
                     .map(obj -> obj.getFirstName() + " " + obj.getLastName())
@@ -63,9 +60,36 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public Map<UserDTO, String> getInstructorsAndLessonsMap() {
+        Map<UserDTO,String> instructorsLessonsMap = new HashMap<>();
+        List<UserDTO> instructors = userRepository.findAllByUserRole(UserRole.INSTRUCTOR)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+        for (UserDTO instructor : instructors) {
+            List<LessonDTO> lessonsList = listAllLessonsOfInstructor(instructor.getId());
+            String lessons = lessonsList
+                    .stream()
+                    .map(obj -> obj.getName())
+                    .reduce("",(x,y)-> x + y + " / ");
+            lessons = (lessons.equals("")) ? "-" : lessons.substring(0,lessons.length()-2);
+            instructorsLessonsMap.put(instructor,lessons);
+        }
+        return instructorsLessonsMap;
+    }
+
+    @Override
+    public List<UserDTO> getAllInstructors() {
+        return userRepository.findAllByUserRole(UserRole.INSTRUCTOR)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public LessonDTO getLessonByLessonId(Long lessonId) {
         LessonDTO lessonDTO = mapperUtil.convert(lessonRepository.findById(lessonId).get(), new LessonDTO());
-        List<UserDTO> instructorsOfLesson = userService.listAllInstructorsOfLesson(lessonId);
+        List<UserDTO> instructorsOfLesson = listAllInstructorsOfLesson(lessonId);
         String instructors = "";
         for (UserDTO instructor : instructorsOfLesson) {
             String fullName = instructor.getFirstName() + " " + instructor.getLastName();
@@ -77,7 +101,15 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDTO save(LessonDTO lessonDTO) {
+    public LessonDTO create(LessonDTO lessonDTO) {
+        Lesson lesson = mapperUtil.convert(lessonDTO, new Lesson());
+        lessonRepository.save(lesson);
+        return mapperUtil.convert(lesson, new LessonDTO());
+    }
+
+    @Override
+    public LessonDTO save(LessonDTO lessonDTO, Long lessonId) {
+        lessonDTO.setId(lessonId);
         Lesson lesson = mapperUtil.convert(lessonDTO, new Lesson());
         lessonRepository.save(lesson);
         return mapperUtil.convert(lesson, new LessonDTO());
@@ -91,109 +123,50 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonDTO getLessonByLessonIdWithTempInstructorList(Long lessonId) {
-        LessonDTO lessonDTO = mapperUtil.convert(lessonRepository.findById(lessonId).get(), new LessonDTO());
-        tempInstructorsOfLesson = getTempInstructorListFromDB(lessonId);
-        isTempUsedBefore = true;
-        String instructors = "";
-        for (UserDTO instructor : tempInstructorsOfLesson) {
-            String fullName = instructor.getFirstName() + " " + instructor.getLastName();
-            instructors += fullName + " / ";
+    public void addInstructor(Long lessonId, Long instructorId) {
+        if(!getInstructorIdsOfLesson(lessonId).contains(instructorId)){
+            User instructor = userRepository.findById(instructorId).get();
+            Lesson lesson = lessonRepository.findById(lessonId).get();
+            instructorLessonRepository.save(new InstructorLesson(instructor, lesson));
         }
-        instructors = (instructors.equals("")) ? "-" : instructors.substring(0,instructors.length()-2);
-        lessonDTO.setInstructorList(instructors);
-        return lessonDTO;
     }
 
     @Override
-    public void addInstructor(Long lessonId, UserDTO instructorDTO) {
-        getTempInstructorListFromDB(lessonId);
-        List<Long> instructorListOfLessonInTemp = tempInstructorsOfLesson
+    public void removeInstructor(Long lessonId, Long instructorId) {
+        if(getInstructorIdsOfLesson(lessonId).contains(instructorId)) {
+            User instructor = userRepository.findById(instructorId).get();
+            Lesson lesson = lessonRepository.findById(lessonId).get();
+            InstructorLesson instructorLessonToBeDeleted = instructorLessonRepository.findByLessonAndInstructor(lesson, instructor);
+            instructorLessonToBeDeleted.setIsDeleted(true);
+            instructorLessonRepository.save(instructorLessonToBeDeleted);
+        }
+    }
+
+    @Override
+    public List<LessonDTO> listAllLessonsOfInstructor(Long userId) {
+        User user = userRepository.findById(userId).get();
+        List<InstructorLesson> instructorLessonListByInstructor = instructorLessonRepository.findAllByInstructor(user);
+        return instructorLessonListByInstructor
                 .stream()
-                .map(UserDTO::getId)
+                .map(obj -> mapperUtil.convert(obj.getLesson(), new LessonDTO()))
                 .collect(Collectors.toList());
-        if(!instructorListOfLessonInTemp.contains(instructorDTO.getId())){
-            instructorDTO = mapperUtil.convert(userRepository.findById(instructorDTO.getId()).get(), instructorDTO);
-            tempInstructorsOfLesson.add(instructorDTO);
-        }
     }
 
     @Override
-    public void removeInstructor(Long lessonId, UserDTO instructorDTO) {
-        Long instructorDTOId = instructorDTO.getId();
-        getTempInstructorListFromDB(lessonId);
-        List<Long> instructorListOfLessonInTemp = tempInstructorsOfLesson
-                .stream()
-                .map(UserDTO::getId)
-                .collect(Collectors.toList());
-        if(instructorListOfLessonInTemp.contains(instructorDTO.getId())){
-            UserDTO instructorToBeRemoved = tempInstructorsOfLesson
-                    .stream()
-                    .filter(obj -> obj.getId()==instructorDTOId)
-                    .findAny().get();
-            tempInstructorsOfLesson.remove(instructorToBeRemoved);
-        }
+    public List<Long> getInstructorIdsOfLesson(Long lessonId) {
+        List<InstructorLesson> instructorsOfLessonList = instructorLessonRepository.findAllByLesson(lessonRepository.findById(lessonId).get());
+        List<Long> instructorIdsOfLesson = instructorsOfLessonList.stream().map(obj -> obj.getInstructor().getId()).collect(Collectors.toList());
+        return instructorIdsOfLesson;
     }
 
     @Override
-    public void updateInstructorList(Long lessonId) {
+    public List<UserDTO> listAllInstructorsOfLesson(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).get();
-        List<Long> instructorListOfLessonInDB = userService.listAllInstructorsOfLesson(lessonId)
+        List<InstructorLesson> instructorLessonListByLesson = instructorLessonRepository.findAllByLesson(lesson);
+        return instructorLessonListByLesson
                 .stream()
-                .map(UserDTO::getId)
+                .map(obj -> mapperUtil.convert(obj.getInstructor(), new UserDTO()))
                 .collect(Collectors.toList());
-        List<Long> instructorListOfLessonInTemp = tempInstructorsOfLesson
-                .stream()
-                .map(UserDTO::getId)
-                .collect(Collectors.toList());
-        for(Long instructorInTemp : instructorListOfLessonInTemp){
-            if(!(instructorListOfLessonInDB.contains(instructorInTemp))){
-                User instructor = mapperUtil.convert(userService.getUserById(instructorInTemp), new User());
-                instructorLessonRepository.save(new InstructorLesson(instructor, lesson));
-            }
-        }
-        for(Long instructorInDB : instructorListOfLessonInDB){
-            if(!(instructorListOfLessonInTemp.contains(instructorInDB))){
-                User instructorToBeRemoved = mapperUtil.convert(userService.getUserById(instructorInDB), new User());
-                InstructorLesson instructorLesson = instructorLessonRepository.findByLessonAndInstructor(lesson, instructorToBeRemoved);
-                instructorLesson.setIsDeleted(true);
-                instructorLessonRepository.save(instructorLesson);
-            }
-        }
-        tempInstructorsOfLesson.clear();
-        isTempUsedBefore = false;
-    }
-
-    @Override
-    public LessonDTO cancelEditingInstructorList(Long lessonId) {
-        LessonDTO lessonDTO = mapperUtil.convert(lessonRepository.findById(lessonId).get(), new LessonDTO());
-        tempInstructorsOfLesson = instructorLessonRepository.findAll()
-                .stream()
-                .filter(obj -> obj.getLesson().getId()==lessonId)
-                .map(InstructorLesson::getInstructor)
-                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
-                .collect(Collectors.toList());
-        String instructors = "";
-        for (UserDTO instructor : tempInstructorsOfLesson) {
-            String fullName = instructor.getFirstName() + " " + instructor.getLastName();
-            instructors += fullName + " / ";
-        }
-        instructors = (instructors.equals("")) ? "-" : instructors.substring(0,instructors.length()-2);
-        lessonDTO.setInstructorList(instructors);
-        tempInstructorsOfLesson = getTempInstructorListFromDB(lessonId);
-        return lessonDTO;
-    }
-
-    private List<UserDTO> getTempInstructorListFromDB(Long lessonId){
-        if(!isTempUsedBefore){
-            tempInstructorsOfLesson = instructorLessonRepository.findAll()
-                    .stream()
-                    .filter(obj -> obj.getLesson().getId()==lessonId)
-                    .map(InstructorLesson::getInstructor)
-                    .map(obj -> mapperUtil.convert(obj, new UserDTO()))
-                    .collect(Collectors.toList());
-        }
-        return tempInstructorsOfLesson;
     }
 
 }

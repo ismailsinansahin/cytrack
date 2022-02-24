@@ -7,12 +7,11 @@ import java.util.List;
 public interface BatchService {
 
     List<BatchDTO> listAllBatches();
-    List<BatchDTO> listAllNonCompletedBatches();
-    BatchDTO save(BatchDTO batchDTO);
-    BatchDTO edit(BatchDTO batchDTO);
+    BatchDTO getByBatchId(Long batchId);
+    BatchDTO create(BatchDTO batchDTO);
+    BatchDTO save(BatchDTO batchDTO, Long batchId);
     void delete(Long batchId);
     void start(Long batchId);
     void complete(Long batchId);
-    BatchDTO getByBatchId(Long batchId);
 
 }
