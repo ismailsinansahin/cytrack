@@ -3,6 +3,7 @@ package com.cydeo.implementation;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
+import com.cydeo.entity.Batch;
 import com.cydeo.entity.Group;
 import com.cydeo.enums.BatchStatus;
 import com.cydeo.enums.UserRole;
@@ -13,6 +14,7 @@ import com.cydeo.repository.UserRepository;
 import com.cydeo.service.GroupService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +49,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<UserDTO> getAllStudentsOfBatch(Long batchId) {
+        Batch batch = batchRepository.findById(batchId).get();
+        return userRepository.findAllByBatch(batch)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public GroupDTO getGroupById(Long id) {
         return mapperUtil.convert(groupRepository.findById(id).get(), new GroupDTO());
     }
@@ -74,6 +85,23 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<BatchDTO> getAllGroupsOfBatch(Long batchId) {
+        Batch batch = batchRepository.findById(batchId).get();
+        return groupRepository.findAllByBatch(batch)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BatchDTO> getAllBatches() {
+        return batchRepository.findAll()
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<BatchDTO> getAllNonCompletedBatches() {
         return batchRepository.findAllByBatchStatusIsNot(BatchStatus.COMPLETED)
                 .stream()
@@ -81,7 +109,30 @@ public class GroupServiceImpl implements GroupService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
+    @Override
+    public BatchDTO getLastOngoingBatch() {
+        Batch batch = batchRepository.findAllByBatchStatusIsNot(BatchStatus.COMPLETED)
+                .stream()
+                .max(Comparator.comparing(Batch::getBatchStartDate)).get();
+        return mapperUtil.convert(batch, new BatchDTO());
+    }
+
+    @Override
+    public void assignStudentToGroup(Long studentId) {
+
+    }
+
+    @Override
+    public void addStudentToGroup(Long groupId) {
+
+    }
+
+    @Override
+    public void removeStudentFromGroup(Long groupId) {
+
+    }
+
+    //    @Override
 //    public List<GroupDTO> listAllGroupsOfAlumniMentor(String username) {
 //        List<Group> groups = groupRepository.findAllByAlumniMentorEmail(username);
 //        return groups.stream().map(obj -> mapperUtil.convert(obj, new GroupDTO())).collect(Collectors.toList());

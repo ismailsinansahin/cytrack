@@ -1,10 +1,10 @@
 insert into batches (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                      batch_end_date, batch_start_date, batch_status, name, notes)
-values (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'COMPLETED', 'EU-1', 'EU only'),
-       (now(), 1, false, now(), 1, '2022-12-30', '2021-06-30', 'INPROGRESS', 'EU-2', 'EU only'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'INPROGRESS', 'EU-3', 'EU only'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'PLANNED', 'EU-4', 'EU only'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'PLANNED', 'EU-5', 'EU only');
+values (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'INPROGRESS', 'EU-1', 'EU only'),
+       (now(), 1, false, now(), 1, '2022-12-30', '2021-06-26', 'INPROGRESS', 'EU-2', 'EU only'),
+       (now(), 1, false, now(), 1, '2020-12-30', '2021-07-27', 'INPROGRESS', 'EU-3', 'EU only'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-28', 'PLANNED', 'EU-4', 'EU only'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-29', 'COMPLETED', 'EU-5', 'EU only');
 
 insert into users (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, birthday,
                    country, email, enabled, first_name, gender, last_name, password, phone, student_status, group_id, user_role, batch_id)
@@ -17,12 +17,12 @@ values (now(), 1, false, now(), 1, '1980-12-30', 'USA', 'mike@ct.com', true, 'Mi
        (now(), 1, false, now(), 1, '2000-10-05', 'NETHERLAND', 'cihat@ct.com', true, 'Cihat', 'MALE', 'Green', 'Abc123', '5423625411', null, null, 'CYDEO_MENTOR', null),
        (now(), 1, false, now(), 1, '1996-08-30', 'USA', 'osman@ct.com', true, 'Osman', 'MALE', 'White', 'Abc123', '5329885588', null, null, 'ALUMNI_MENTOR', null),
        (now(), 1, false, now(), 1, '1994-07-21', 'UK', 'pelin@ct.com', true, 'Pelin', 'FEMALE', 'Black', 'Abc123', '5302556633', null, null, 'ALUMNI_MENTOR', null),
-       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', 'Abc123', '5312147789', 'NEW', null, 'STUDENT', 1),
-       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', 'Abc123', '5423665523', 'NEW', null, 'STUDENT', 1),
-       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', 'Abc123', '5054587895', 'RETURNING', null, 'STUDENT', 1),
-       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', 'Abc123', '5056669568', 'NEW', null, 'STUDENT', 1),
-       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', 'Abc123', '5423124655', 'RETURNING', null, 'STUDENT', 1),
-       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', 'Abc123', '5325123655', 'NEW', null, 'STUDENT', 1);
+       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', 'Abc123', '5312147789', 'NEW', null, 'STUDENT', 3),
+       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', 'Abc123', '5423665523', 'NEW', null, 'STUDENT', 3),
+       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', 'Abc123', '5054587895', 'RETURNING', null, 'STUDENT', 3),
+       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', 'Abc123', '5056669568', 'NEW', null, 'STUDENT', 3),
+       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', 'Abc123', '5423124655', 'RETURNING', null, 'STUDENT', 3),
+       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', 'Abc123', '5325123655', 'NEW', null, 'STUDENT', 3);
 
 insert into lessons (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name)
 values (now(), 1, false, now(), 1,'Java'),
