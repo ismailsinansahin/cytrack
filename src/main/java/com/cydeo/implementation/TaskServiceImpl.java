@@ -82,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
         Batch batch = batchRepository.findById(batchId).get();
         List<User> allStudents = userRepository.findAllByUserRoleAndBatch(UserRole.STUDENT, batch);
         for (User student : allStudents) {
-            StudentTask studentTask = new StudentTask(task.getName(), student, task);
+            StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
             studentTaskRepository.save(studentTask);
         }
     }
