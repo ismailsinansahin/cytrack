@@ -50,17 +50,17 @@ values (now(), 1, false, now(), 1, 'Group-1', 8, 3, 6),
 
 insert into tasks (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                    publishing_date, due_date, name, task_type, lesson_id, batch_id, task_status)
-values (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'JavaEU1Day01Recording', 'RECORDING', 1, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Assignment01','ASSIGNMENT', 1, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Quiz02','QUIZ', 1, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day02','RECORDING', 2, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Assessment-01','QUIZ', 2, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day03','RECORDING', 3, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day04','RECORDING', 1, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week01','FLIPGRID', 1, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day03','RECORDING', 2, 1, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week02','WEEKLY_MENTOR_MEETING', 3, 1, 'OUT_OF_TIME'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day06','RECORDING', 3, 1, 'PUBLISHED');
+values (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'JavaEU1Day01Recording', 'RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Assignment01','ASSIGNMENT', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Quiz02','QUIZ', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day02','RECORDING', 2, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Assessment-01','QUIZ', 2, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day03','RECORDING', 3, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day04','RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week01','FLIPGRID', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day03','RECORDING', 2, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week02','WEEKLY_MENTOR_MEETING', 3, 3, 'OUT_OF_TIME'),
+       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day06','RECORDING', 3, 3, 'PUBLISHED');
 
 -- insert into student_task (task_id, student_id)
 -- values (1, 9),

@@ -21,6 +21,7 @@ import java.time.LocalDate;
 public class StudentTask extends BaseEntity{
 
     private String name;
+    private boolean isCompleted;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
