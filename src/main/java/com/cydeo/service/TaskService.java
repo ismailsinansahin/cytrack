@@ -14,7 +14,7 @@ public interface TaskService {
     List<BatchDTO> getAllBatches();
     List<LessonDTO> getAllLessons();
     void delete(Long taskId);
-    void publish(Long taskId);
+    void publish(Long taskId, Long batchId);
     void complete(Long taskId);
 
 }
