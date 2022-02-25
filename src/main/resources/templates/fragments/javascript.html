@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <body>
 <div th:fragment="js">
@@ -29,15 +29,15 @@
     <script th:src="@{/assets/vendor/datepicker/moment.js}"></script>
     <script th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
     <script th:href="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
-    <script type="text/javascript" language="javascript"
+    <script type="text/javascript"
             th:src="@{https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js}"></script>
-    <script type="text/javascript" language="javascript"
+    <script type="text/javascript"
             th:src="@{https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js}"></script>
     <!-- list search -->
     <script>
         $(document).ready(function () {
             $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
+                let value = $(this).val().toLowerCase();
                 $("#myTable tr").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
