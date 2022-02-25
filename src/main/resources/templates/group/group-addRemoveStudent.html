@@ -22,7 +22,8 @@
                                 </div>
                             </form>
                         </div>
-                    </div><br>
+                    </div>
+                    <br>
                     <header class="panel-heading">
                         <h2 class="panel-title">Add/Remove Student</h2>
                     </header>
@@ -42,8 +43,9 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batches">Select Batch</label>
-                                                                    <select id="batches" class="form-control" required="required" th:field="*{id}">
-                                                                        <option th:each= "batch:${batches}"
+                                                                    <select id="batches" class="form-control"
+                                                                            required="required" th:field="*{id}">
+                                                                        <option th:each="batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
                                                                     </select>
@@ -73,12 +75,17 @@
                                                                         <div class="card-content fw-container">
                                                                             <div class="card-body fw-body">
                                                                                 <div class="table-responsive content demo-html">
-                                                                                    <table id="example" class="table table-striped table-bordered file-export" style="width:100%">
+                                                                                    <table id="example"
+                                                                                           class="table table-striped table-bordered file-export"
+                                                                                           style="width:100%">
                                                                                         <thead>
                                                                                         <tr>
                                                                                             <th scope="col">Name</th>
                                                                                             <th scope="col">Country</th>
-                                                                                            <th scope="col">Student Status</th>
+                                                                                            <th scope="col">Email</th>
+                                                                                            <th scope="col">Student
+                                                                                                Status
+                                                                                            </th>
                                                                                             <th scope="col">Gender</th>
                                                                                             <th scope="col">Group</th>
                                                                                             <th scope="col">Action</th>
@@ -89,19 +96,23 @@
                                                                                             class="text-dark">
                                                                                             <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                                             <td th:text="${student.country.value}"></td>
+<!--                                                                                            <td th:field="*{id}" th:text="${student.id}"></td>-->
                                                                                             <td th:text="${student.studentStatus.value}"></td>
                                                                                             <td th:text="${student.gender.value}"></td>
+                                                                                            <input type="hidden" th:value="${student.id}" id="id" name="id" />
                                                                                             <td class="dropdown">
-                                                                                                <select id="batch" class="form-control" required="required">
-                                                                                                    <option th:each= "group:${groups}"
+                                                                                                <select th:field="*{group}" id="batch"
+                                                                                                        class="form-control"
+                                                                                                        required="required">
+                                                                                                    <option th:each="group:${groups}"
                                                                                                             th:value="${group.id}"
                                                                                                             th:text="${group.name}"></option>
                                                                                                 </select>
                                                                                             </td>
                                                                                             <td class="actions">
-                                                                                                <button th:href="@{/groups/assignToGroup/{studentId}{groupId}(studentId=${student.getId()}, groupId=${group.getId()})}"
-                                                                                                        class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
-                                                                                                        type="submit">Assign to Group
+                                                                                                <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                                        type="submit">
+                                                                                                    Assign to Group
                                                                                                 </button>
                                                                                             </td>
                                                                                         </tr>

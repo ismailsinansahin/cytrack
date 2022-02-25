@@ -23,10 +23,11 @@ public class User extends BaseEntity{
 
     private String firstName;
     private String lastName;
-    private String email;
     private String password;
     private String phone;
     private boolean enabled;
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;

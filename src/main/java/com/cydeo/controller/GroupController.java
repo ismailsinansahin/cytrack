@@ -5,6 +5,7 @@ import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.UserRole;
 import com.cydeo.service.GroupService;
+import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.websocket.server.PathParam;
 
 @Controller
 @RequestMapping("/groups")
 public class GroupController {
 
     GroupService groupService;
+    UserService userService;
 
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, UserService userService) {
         this.groupService = groupService;
+        this.userService = userService;
     }
 
     @GetMapping("/groupList")
@@ -77,11 +79,15 @@ public class GroupController {
         return "redirect:/groups/groupAddRemoveStudent/" + batchDTO.getId();
     }
 
-    @PostMapping(value = "/assignToGroup/{studentId}{groupId}")
-    public String assignStudentToGroup(@PathVariable("studentId") Long studentId, @PathVariable("groupId") Long groupId){
-        System.out.println("studentId = " + studentId);
-        System.out.println("groupId = " + groupId);
-        return "redirect:/groups/groupAddRemoveStudent/" + 3;
+    @PostMapping(value = "/assignToGroup")
+    public String assignStudentToGroup(UserDTO student){
+        System.out.println(student.getGroup());
+        System.out.println(student.getId());
+        UserDTO studentDto = userService.getUserById(student.getId());
+        System.out.println(studentDto);
+        studentDto.setGroup(student.getGroup());
+        userService.save(studentDto);
+        return "redirect:/groups/groupAddRemoveStudent/3";
     }
 
 //    @PostMapping(value = "/assignToGroup/{studentId}{groupId}", params = {"action=add"})
