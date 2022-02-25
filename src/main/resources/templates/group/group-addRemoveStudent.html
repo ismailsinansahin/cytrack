@@ -97,9 +97,12 @@
                                                                                             <td th:text="${student.email}"></td>
                                                                                             <td th:text="${student.studentStatus.value}"></td>
                                                                                             <td th:text="${student.gender.value}"></td>
-                                                                                            <input type="hidden" th:value="${student.id}" id="id" name="id" />
+                                                                                            <input type="hidden"
+                                                                                                   th:value="${student.id}"
+                                                                                                   id="id" name="id"/>
                                                                                             <td class="dropdown">
-                                                                                                <select th:field="*{group}" id="batch"
+                                                                                                <select th:field="*{group}"
+                                                                                                        id="batch"
                                                                                                         class="form-control"
                                                                                                         required="required">
                                                                                                     <option th:each="group:${groups}"
