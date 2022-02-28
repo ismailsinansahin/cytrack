@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationPropertiesBinding
 public class BatchDTOConverter implements Converter<String, BatchDTO> {
 
-    BatchService batchService;
+    private final BatchService batchService;
 
     public BatchDTOConverter(@Lazy BatchService batchService) {
         this.batchService = batchService;

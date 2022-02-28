@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="/fragments/head :: header">
     <title>Log in</title>
 </head>
@@ -12,10 +11,6 @@
             <img class="logo-img" th:src="@{/images/CydeoLogoMini.jpg}" height="45" alt="logo">
         </div>
         <div class="card-body">
-            <div th:if="${param.error}">
-                <div class="alert alert-danger"> Invalid email or password.
-                </div>
-            </div>
             <form th:action="@{/welcome}" method="post">
                 <div class="form-group">
                     <label for="username">Email</label>:
@@ -24,6 +19,10 @@
                 <div class="form-group">
                     <label for="password">Password</label>:
                     <input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
+                </div>
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger"> Invalid email or password.
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="custom-control custom-checkbox">

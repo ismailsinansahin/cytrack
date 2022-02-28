@@ -3,9 +3,7 @@ package com.cydeo.controller;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.enums.UserRole;
 import com.cydeo.service.GroupService;
-import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @Controller
 @RequestMapping("/groups")
 public class GroupController {
 
-    GroupService groupService;
-    UserService userService;
+    private final GroupService groupService;
 
-    public GroupController(GroupService groupService, UserService userService) {
+    public GroupController(GroupService groupService) {
         this.groupService = groupService;
-        this.userService = userService;
     }
 
     @GetMapping("/groupList")
@@ -37,8 +32,8 @@ public class GroupController {
     public String goGroupCreate(Model model){
         model.addAttribute("newGroup", new GroupDTO());
         model.addAttribute("batches", groupService.getAllNonCompletedBatches());
-        model.addAttribute("cydeoMentors", groupService.getAllUsersByRole(UserRole.CYDEO_MENTOR));
-        model.addAttribute("alumniMentors", groupService.getAllUsersByRole(UserRole.ALUMNI_MENTOR));
+        model.addAttribute("cydeoMentors", groupService.getAllUsersByRole("Cydeo Mentor"));
+        model.addAttribute("alumniMentors", groupService.getAllUsersByRole("Alumni Mentor"));
         return "group/group-create";
     }
 
@@ -52,8 +47,8 @@ public class GroupController {
     public String goGroupEdit(@PathVariable("id") Long groupId, Model model) {
         model.addAttribute("group", groupService.getGroupById(groupId));
         model.addAttribute("batches", groupService.getAllNonCompletedBatches());
-        model.addAttribute("cydeoMentors", groupService.getAllUsersByRole(UserRole.CYDEO_MENTOR));
-        model.addAttribute("alumniMentors", groupService.getAllUsersByRole(UserRole.ALUMNI_MENTOR));
+        model.addAttribute("cydeoMentors", groupService.getAllUsersByRole("Cydeo Mentor"));
+        model.addAttribute("alumniMentors", groupService.getAllUsersByRole("Alumni Mentor"));
         return "group/group-edit";
     }
 
@@ -80,23 +75,10 @@ public class GroupController {
     }
 
     @PostMapping(value = "/assignToGroup")
-    public String assignStudentToGroup(UserDTO student){
-        System.out.println(student.getGroup());
-        System.out.println(student.getId());
-        UserDTO studentDto = userService.getUserById(student.getId());
-        System.out.println(studentDto);
-        studentDto.setGroup(student.getGroup());
-        userService.save(studentDto);
+    public String assignStudentToGroup(UserDTO studentDTO){
+        groupService.assignStudentToGroup(studentDTO);
         return "redirect:/groups/groupAddRemoveStudent/3";
     }
-
-//    @PostMapping(value = "/assignToGroup/{studentId}{groupId}", params = {"action=add"})
-//    public String addStudentToGroup(@PathVariable("studentId") Long studentId, @PathVariable("groupId") Long groupId){
-//        System.out.println("studentId = " + studentId);
-//        System.out.println("groupId = " + groupId);
-//        groupService.addStudentToGroup(groupId);
-//        return "redirect:/groups/groupEdit/" + groupId;
-//    }
 
     @PostMapping(value = "/groupEditDelete/{id}", params = {"action=edit"})
     public String editGroup(@PathVariable("id") Long groupId){

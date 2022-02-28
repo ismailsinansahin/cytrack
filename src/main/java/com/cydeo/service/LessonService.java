@@ -2,7 +2,6 @@ package com.cydeo.service;
 
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.enums.UserRole;
 
 import java.util.List;
 import java.util.Map;

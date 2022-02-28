@@ -16,7 +16,7 @@ import java.util.Arrays;
 @RequestMapping("/batches")
 public class BatchController {
 
-    BatchService batchService;
+    private final BatchService batchService;
 
     public BatchController(BatchService batchService) {
         this.batchService = batchService;

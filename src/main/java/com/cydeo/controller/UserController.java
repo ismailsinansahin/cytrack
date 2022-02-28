@@ -4,7 +4,6 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
 import com.cydeo.enums.StudentStatus;
-import com.cydeo.enums.UserRole;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +18,7 @@ import java.util.*;
 @RequestMapping("/users")
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -40,9 +39,9 @@ public class UserController {
     @GetMapping("/staffCreate")
     public String goStaffCreate(Model model) {
         model.addAttribute("newUser", new UserDTO());
+        model.addAttribute("userRoles", userService.getAllUserRoles());
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
-        model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
         return "user/staff-create";
     }
 
@@ -71,9 +70,9 @@ public class UserController {
     @GetMapping("/staffEdit/{id}")
     public String goStaffEdit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("userRoles", userService.getAllUserRoles());
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
-        model.addAttribute("userRoles", Arrays.asList(UserRole.values()));
         return "user/staff-edit";
     }
 

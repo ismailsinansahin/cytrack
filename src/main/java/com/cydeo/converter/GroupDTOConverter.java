@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationPropertiesBinding
 public class GroupDTOConverter implements Converter<String, GroupDTO> {
 
-    GroupService groupService;
+    private final GroupService groupService;
 
     public GroupDTOConverter(@Lazy GroupService groupService) {
         this.groupService = groupService;

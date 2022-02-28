@@ -3,7 +3,7 @@ package com.cydeo.repository;
 import com.cydeo.entity.Batch;
 import com.cydeo.entity.Group;
 import com.cydeo.entity.User;
-import com.cydeo.enums.UserRole;
+import com.cydeo.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
