@@ -23,35 +23,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()      //All requests should be authorized
-                .antMatchers("/users/**").hasAnyAuthority("Admin")
-                .antMatchers("/batches/**").hasAnyAuthority("Admin")
-                .antMatchers("/lessons/**").hasAnyAuthority("Admin")
-                .antMatchers("/groups/**").hasAnyAuthority("Admin")
-                .antMatchers("/tasks/**").hasAnyAuthority("Admin","Instructor", "Cydeo Mentor")
-                .antMatchers("/dashboards/**").hasAnyAuthority("Admin","Instructor","Cydeo Mentor", "Alumni Mentor", "Student")
-//                .antMatchers("/statistics/**").hasAnyAuthority("Admin")
-                .antMatchers(             //All public permits are declared here
-                    "/",
-                    "/login/**",
-                    "/fragments/**",  //Otherwise our page does not look fancy
-                    "/assets/**",
-                    "/images/**")
-                .permitAll()          //Give the access permit to all user types for these pages
+                .antMatchers("/", "/login/**", "/fragments/**", "/assets/**", "/images/**").permitAll()
+                .antMatchers("/dashboard/**").hasAnyAuthority("Admin","Instructor","Cydeo Mentor", "Alumni Mentor", "Student")
+                .antMatchers("/user/**").hasAnyAuthority("Admin")
+                .antMatchers("/batch/**").hasAnyAuthority("Admin")
+                .antMatchers("/lesson/**").hasAnyAuthority("Admin")
+                .antMatchers("/group/**").hasAnyAuthority("Admin")
+                .antMatchers("/task/**").hasAnyAuthority("Admin","Instructor", "Cydeo Mentor")
             .and()
             .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/welcome")     //Successful login mapping for all users
-//                .successHandler(authSuccessHandler)  //Delegate login mapping to AuthSuccessHandler class
-//                .failureUrl("login?error=true")      //Unsuccessful login mapping
-                .permitAll()                         //They are same for all user types
+                .successHandler(authSuccessHandler)
+                .failureUrl("/login?error=true")
+                .permitAll()
+            .and()
+            .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
             .and()
             .rememberMe()
                 .tokenValiditySeconds(120)
                 .key("cytrack")
-                .userDetailsService(securityService)
-            .and()
-            .logout()                                //fix logout code
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .userDetailsService(securityService);
     }
+
 }

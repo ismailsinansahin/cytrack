@@ -80,11 +80,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByEmail(String email) {
-        return mapperUtil.convert(userRepository.findByEmail(email), new UserDTO());
-    }
-
-    @Override
     public UserDTO getUserById(Long id) {
         return mapperUtil.convert(userRepository.findById(id).get(), new UserDTO());
     }
@@ -93,6 +88,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO save(UserDTO userDTO) {
         UserRoleDTO userRoleDTO = mapperUtil.convert(userRoleRepository.findByName("Student"), new UserRoleDTO());
         if (userDTO.getUserRole() == null) userDTO.setUserRole(userRoleDTO);
+        userDTO.setUserName(userDTO.getEmail());
         userDTO.setEnabled(true);
         User user = mapperUtil.convert(userDTO, new User());
         user.setPassword(passwordEncoder.encode(user.getPassword()));

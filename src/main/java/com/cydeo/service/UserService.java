@@ -16,6 +16,5 @@ public interface UserService {
     UserDTO save(UserDTO userDTO);
     void delete(Long id);
     List<BatchDTO> getAllBatches();
-    UserDTO getUserByEmail(String email);
 
 }

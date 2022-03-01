@@ -22,6 +22,7 @@ public class User extends BaseEntity{
 
     private String firstName;
     private String lastName;
+    private String userName;
     private String password;
     private String phone;
     private boolean enabled;

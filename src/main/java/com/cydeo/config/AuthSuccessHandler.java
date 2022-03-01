@@ -17,7 +17,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if(roles.contains("Admin"))response.sendRedirect("/users/staffList");
+        if(roles.contains("Admin"))response.sendRedirect("/dashboards/adminDashboard");
         if(roles.contains("Instructor"))response.sendRedirect("/dashboards/instructorDashboard");
         if(roles.contains("Cydeo Mentor")) response.sendRedirect("/dashboards/cydeoMentorDashboard");
         if(roles.contains("Alumni Mentor")) response.sendRedirect("/dashboards/alumniMentorDashboard");

@@ -38,14 +38,26 @@ public class DashboardController {
 
     @GetMapping("/cydeoMentorDashboard")
     public String showCydeoMentorDashboard(Model model){
-        model.addAttribute("students", dashboardService.getAllStudentsOfMentor(7L));
+
         return "dashboard/cydeoMentor-dashboard";
     }
 
     @GetMapping("/alumniMentorDashboard")
     public String showAlumniMentorDashboard(Model model){
-        model.addAttribute("students", dashboardService.getAllStudentsOfMentor(7L));
+
         return "dashboard/alumniMentor-dashboard";
+    }
+
+    @GetMapping("/instructorDashboard")
+    public String showInstructorDashboard(Model model){
+
+        return "dashboard/instructor-dashboard";
+    }
+
+    @GetMapping("/adminDashboard")
+    public String showAdminDashboard(Model model){
+
+        return "dashboard/admin-dashboard";
     }
 
 }

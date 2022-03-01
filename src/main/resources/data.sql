@@ -14,22 +14,22 @@ values (now(), 1, false, now(), 1, 'Admin'),
        (now(), 1, false, now(), 1, 'Student');
 
 insert into users (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, birthday,
-                   country, email, enabled, first_name, gender, last_name, password, phone, student_status, group_id, user_role_id, batch_id)
-values (now(), 1, false, now(), 1, '1980-12-30', 'USA', 'mike@ct.com', true, 'Mike', 'MALE', 'Black', 'Abc123', '5412589874', null, null, 1, null),
-       (now(), 1, false, now(), 1, '1975-01-12', 'TURKEY', 'omer@ct.com', true, 'Omer', 'MALE', 'Bright', 'Abc123', '5325698754', null, null, 2, null),
-       (now(), 1, false, now(), 1, '1965-02-23', 'UK', 'ozzy@ct.com', true, 'Ozzy', 'MALE', 'Red', 'Abc123', '5052569847', null, null, 2, null),
-       (now(), 1, false, now(), 1, '1986-05-25', 'FRANCE', 'jamal@ct.com', true, 'Jamal', 'MALE', 'Orange', 'Abc123', '5336549855', null, null, 2, null),
-       (now(), 1, false, now(), 1, '1981-04-20', 'GERMANY', 'akbar@ct.com', true, 'Akbar', 'MALE', 'Red', 'Abc123', '5054523311', null, null, 2, null),
-       (now(), 1, false, now(), 1, '1999-11-01', 'ITALY', 'baha@ct.com', true, 'Baha', 'MALE', 'Darkblue', 'Abc123', '5425213654', null, null, 3, null),
-       (now(), 1, false, now(), 1, '2000-10-05', 'NETHERLAND', 'cihat@ct.com', true, 'Cihat', 'MALE', 'Green', 'Abc123', '5423625411', null, null, 3, null),
-       (now(), 1, false, now(), 1, '1996-08-30', 'USA', 'osman@ct.com', true, 'Osman', 'MALE', 'White', 'Abc123', '5329885588', null, null, 4, null),
-       (now(), 1, false, now(), 1, '1994-07-21', 'UK', 'pelin@ct.com', true, 'Pelin', 'FEMALE', 'Black', 'Abc123', '5302556633', null, null, 4, null),
-       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', 'Abc123', '5312147789', 'NEW', null, 5, 3),
-       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', 'Abc123', '5423665523', 'NEW', null, 5, 3),
-       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', 'Abc123', '5054587895', 'RETURNING', null, 5, 3),
-       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', 'Abc123', '5056669568', 'NEW', null, 5, 3),
-       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', 'Abc123', '5423124655', 'RETURNING', null, 5, 3),
-       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', 'Abc123', '5325123655', 'NEW', null, 5, 3);
+                   country, email, enabled, first_name, gender, last_name, password, phone, student_status, group_id, user_role_id, batch_id, user_name)
+values (now(), 1, false, now(), 1, '1980-12-30', 'USA', 'mike@ct.com', true, 'Mike', 'MALE', 'Black', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5412589874', null, null, 1, null, 'mike@ct.com'),
+       (now(), 1, false, now(), 1, '1975-01-12', 'TURKEY', 'omer@ct.com', true, 'Omer', 'MALE', 'Bright', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5325698754', null, null, 2, null, 'omer@ct.com'),
+       (now(), 1, false, now(), 1, '1965-02-23', 'UK', 'ozzy@ct.com', true, 'Ozzy', 'MALE', 'Red', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5052569847', null, null, 2, null, 'ozzy@ct.com'),
+       (now(), 1, false, now(), 1, '1986-05-25', 'FRANCE', 'jamal@ct.com', true, 'Jamal', 'MALE', 'Orange', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5336549855', null, null, 2, null, 'jamal@ct.com'),
+       (now(), 1, false, now(), 1, '1981-04-20', 'GERMANY', 'akbar@ct.com', true, 'Akbar', 'MALE', 'Red', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5054523311', null, null, 2, null, 'akbar@ct.com'),
+       (now(), 1, false, now(), 1, '1999-11-01', 'ITALY', 'baha@ct.com', true, 'Baha', 'MALE', 'Darkblue', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5425213654', null, null, 3, null, 'baha@ct.com'),
+       (now(), 1, false, now(), 1, '2000-10-05', 'NETHERLAND', 'cihat@ct.com', true, 'Cihat', 'MALE', 'Green', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423625411', null, null, 3, null, 'cihat@ct.com'),
+       (now(), 1, false, now(), 1, '1996-08-30', 'USA', 'osman@ct.com', true, 'Osman', 'MALE', 'White', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5329885588', null, null, 4, null, 'osman@ct.com'),
+       (now(), 1, false, now(), 1, '1994-07-21', 'UK', 'pelin@ct.com', true, 'Pelin', 'FEMALE', 'Black', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5302556633', null, null, 4, null, 'pelin@ct.com'),
+       (now(), 1, false, now(), 1, '1983-09-16', 'FRANCE', 'messi@ct.com', true, 'Messi', 'MALE', 'Purple', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5312147789', 'NEW', null, 5, 3, 'messi@ct.com'),
+       (now(), 1, false, now(), 1, '1981-12-08', 'ITALY', 'ronaldo@ct.com', true, 'Ronaldo', 'MALE', 'Pink', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423665523', 'NEW', null, 5, 3, 'ronaldo@ct.com'),
+       (now(), 1, false, now(), 1, '1988-11-17', 'USA', 'iniesta@ct.com', true, 'Iniesta', 'MALE', 'Brown', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5054587895', 'RETURNING', null, 5, 3, 'iniesta@ct.com'),
+       (now(), 1, false, now(), 1, '2005-01-06', 'TURKEY', 'falcao@ct.com', true, 'Falcao', 'MALE', 'Gray', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5056669568', 'NEW', null, 5, 3, 'falcao@ct.com'),
+       (now(), 1, false, now(), 1, '2000-03-13', 'UK', 'sneider@ct.com', true, 'Sneider', 'MALE', 'Yellow', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423124655', 'RETURNING', null, 5, 3, 'sneider@ct.com'),
+       (now(), 1, false, now(), 1, '1980-05-10', 'GERMANY', 'ribery@ct.com', true, 'Ribery', 'MALE', 'Blue', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5325123655', 'NEW', null, 5, 3, 'ribery@ct.com');
 
 insert into lessons (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name)
 values (now(), 1, false, now(), 1,'Java'),
