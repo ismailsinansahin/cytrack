@@ -3,7 +3,6 @@ package com.cydeo.entity;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
 import com.cydeo.enums.StudentStatus;
-import com.cydeo.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +22,7 @@ public class User extends BaseEntity{
 
     private String firstName;
     private String lastName;
+    private String userName;
     private String password;
     private String phone;
     private boolean enabled;
@@ -41,7 +41,7 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private StudentStatus studentStatus;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private UserRole userRole;
 
     @ManyToOne

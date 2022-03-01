@@ -5,11 +5,12 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.InstructorLesson;
 import com.cydeo.entity.Lesson;
 import com.cydeo.entity.User;
-import com.cydeo.enums.UserRole;
+import com.cydeo.entity.UserRole;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.InstructorLessonRepository;
 import com.cydeo.repository.LessonRepository;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.repository.UserRoleRepository;
 import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Service;
@@ -22,19 +23,22 @@ import java.util.stream.Collectors;
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    LessonRepository lessonRepository;
-    MapperUtil mapperUtil;
-    UserService userService;
-    InstructorLessonRepository instructorLessonRepository;
-    UserRepository userRepository;
+    private final LessonRepository lessonRepository;
+    private final MapperUtil mapperUtil;
+    private final UserService userService;
+    private final InstructorLessonRepository instructorLessonRepository;
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public LessonServiceImpl(LessonRepository lessonRepository, MapperUtil mapperUtil, UserService userService,
-                             InstructorLessonRepository instructorLessonRepository, UserRepository userRepository) {
+                             InstructorLessonRepository instructorLessonRepository, UserRepository userRepository,
+                             UserRoleRepository userRoleRepository) {
         this.lessonRepository = lessonRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
         this.instructorLessonRepository = instructorLessonRepository;
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -62,7 +66,8 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Map<UserDTO, String> getInstructorsAndLessonsMap() {
         Map<UserDTO,String> instructorsLessonsMap = new HashMap<>();
-        List<UserDTO> instructors = userRepository.findAllByUserRole(UserRole.INSTRUCTOR)
+        UserRole userRole = userRoleRepository.findByName("instructor");
+        List<UserDTO> instructors = userRepository.findAllByUserRole(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
@@ -80,7 +85,8 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public List<UserDTO> getAllInstructors() {
-        return userRepository.findAllByUserRole(UserRole.INSTRUCTOR)
+        UserRole userRole = userRoleRepository.findByName("instructor");
+        return userRepository.findAllByUserRole(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());

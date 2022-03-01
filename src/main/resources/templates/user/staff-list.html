@@ -65,11 +65,11 @@
                                                             <tbody id="myTable">
                                                                 <tr th:each="staff : ${staffs}"
                                                                     class="text-dark"
-                                                                    th:style="${staff.userRole.value}=='Admin' ? 'background-color:#e6dec5':
-                                                                           (${staff.userRole.value}=='Instructor' ? 'background-color:#abd6fe':
-                                                                           (${staff.userRole.value}=='Cydeo Mentor' ? 'background-color:#d6feab':
-                                                                           (${staff.userRole.value}=='Alumni Mentor' ? 'background-color:#feabd6':'background-color:#d3abfe')))">
-                                                                    <td th:text="${staff.userRole.value}"></td>
+                                                                    th:style="${staff.userRole.name}=='Admin' ? 'background-color:#e6dec5':
+                                                                           (${staff.userRole.name}=='Instructor' ? 'background-color:#abd6fe':
+                                                                           (${staff.userRole.name}=='Cydeo Mentor' ? 'background-color:#d6feab':
+                                                                           (${staff.userRole.name}=='Alumni Mentor' ? 'background-color:#feabd6':'background-color:#d3abfe')))">
+                                                                    <td th:text="${staff.userRole.name}"></td>
                                                                     <td th:text="${staff.firstName + ' ' + staff.lastName}"></td>
                                                                     <td th:text="${staff.country.value}"></td>
                                                                     <td th:text="${staff.gender.value}"></td>

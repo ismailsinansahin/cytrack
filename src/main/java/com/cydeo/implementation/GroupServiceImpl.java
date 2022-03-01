@@ -5,12 +5,14 @@ import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Batch;
 import com.cydeo.entity.Group;
+import com.cydeo.entity.User;
+import com.cydeo.entity.UserRole;
 import com.cydeo.enums.BatchStatus;
-import com.cydeo.enums.UserRole;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.BatchRepository;
 import com.cydeo.repository.GroupRepository;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.repository.UserRoleRepository;
 import com.cydeo.service.GroupService;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +23,20 @@ import java.util.stream.Collectors;
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    MapperUtil mapperUtil;
-    UserRepository userRepository;
-    GroupRepository groupRepository;
-    BatchRepository batchRepository;
+    private final MapperUtil mapperUtil;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final BatchRepository batchRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public GroupServiceImpl(UserRepository userRepository, GroupRepository groupRepository,
-                            BatchRepository batchRepository, MapperUtil mapperUtil) {
+                            BatchRepository batchRepository, MapperUtil mapperUtil,
+                            UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
         this.batchRepository = batchRepository;
         this.mapperUtil = mapperUtil;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -41,7 +46,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<UserDTO> getAllUsersByRole(UserRole userRole) {
+    public List<UserDTO> getAllUsersByRole(String userRoleName) {
+        UserRole userRole = userRoleRepository.findByName(userRoleName);
         return userRepository.findAllByUserRole(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
@@ -118,24 +124,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void assignStudentToGroup(Long studentId) {
-
+    public void assignStudentToGroup(UserDTO studentDTO) {
+        User student = userRepository.findById(studentDTO.getId()).get();
+        Group group = mapperUtil.convert(studentDTO.getGroup(), new Group());
+        student.setGroup(group);
+        userRepository.save(student);
     }
 
     @Override
-    public void addStudentToGroup(Long groupId) {
-
+    public UserDTO getUserById(Long userId) {
+        return mapperUtil.convert(userRepository.findById(userId), new UserDTO());
     }
-
-    @Override
-    public void removeStudentFromGroup(Long groupId) {
-
-    }
-
-    //    @Override
-//    public List<GroupDTO> listAllGroupsOfAlumniMentor(String username) {
-//        List<Group> groups = groupRepository.findAllByAlumniMentorEmail(username);
-//        return groups.stream().map(obj -> mapperUtil.convert(obj, new GroupDTO())).collect(Collectors.toList());
-//    }
 
 }

@@ -3,7 +3,7 @@ package com.cydeo.repository;
 import com.cydeo.entity.Batch;
 import com.cydeo.entity.Group;
 import com.cydeo.entity.User;
-import com.cydeo.enums.UserRole;
+import com.cydeo.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +17,6 @@ public interface UserRepository extends JpaRepository <User,Long>{
     List<User> findAllByUserRoleAndBatch(UserRole userRole, Batch batch);
     List<User> findAllByGroup(Group group);
     List<User> findAllByBatch(Batch batch);
-    User findByEmail(String email);
+    User findByUserName(String userName);
 
 }

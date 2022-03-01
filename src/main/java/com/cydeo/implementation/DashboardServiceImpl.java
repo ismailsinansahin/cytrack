@@ -4,7 +4,6 @@ import com.cydeo.entity.Group;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.Task;
 import com.cydeo.entity.User;
-import com.cydeo.enums.UserRole;
 import com.cydeo.repository.GroupRepository;
 import com.cydeo.repository.StudentTaskRepository;
 import com.cydeo.repository.TaskRepository;
@@ -18,10 +17,10 @@ import java.util.List;
 @Service
 public class DashboardServiceImpl implements DashboardService {
 
-    StudentTaskRepository studentTaskRepository;
-    UserRepository userRepository;
-    TaskRepository taskRepository;
-    GroupRepository groupRepository;
+    private final StudentTaskRepository studentTaskRepository;
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
+    private final GroupRepository groupRepository;
 
     public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository, TaskRepository taskRepository, GroupRepository groupRepository) {
         this.studentTaskRepository = studentTaskRepository;

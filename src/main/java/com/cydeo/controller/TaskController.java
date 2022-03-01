@@ -16,7 +16,7 @@ import java.util.Arrays;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    TaskService taskService;
+    private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;

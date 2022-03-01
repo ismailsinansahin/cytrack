@@ -3,12 +3,8 @@ package com.cydeo.implementation;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.dto.TaskDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.Task;
-import com.cydeo.entity.User;
+import com.cydeo.entity.*;
 import com.cydeo.enums.TaskStatus;
-import com.cydeo.enums.UserRole;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
 import com.cydeo.service.TaskService;
@@ -20,22 +16,24 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    MapperUtil mapperUtil;
-    TaskRepository taskRepository;
-    UserRepository userRepository;
-    BatchRepository batchRepository;
-    LessonRepository lessonRepository;
-    StudentTaskRepository studentTaskRepository;
+    private final MapperUtil mapperUtil;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final BatchRepository batchRepository;
+    private final LessonRepository lessonRepository;
+    private final StudentTaskRepository studentTaskRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public TaskServiceImpl(MapperUtil mapperUtil, TaskRepository taskRepository, UserRepository userRepository,
                            BatchRepository batchRepository, LessonRepository lessonRepository,
-                           StudentTaskRepository studentTaskRepository) {
+                           StudentTaskRepository studentTaskRepository, UserRoleRepository userRoleRepository) {
         this.mapperUtil = mapperUtil;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.lessonRepository = lessonRepository;
         this.studentTaskRepository = studentTaskRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -80,7 +78,8 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskStatus(TaskStatus.PUBLISHED);
         taskRepository.save(task);
         Batch batch = batchRepository.findById(batchId).get();
-        List<User> allStudents = userRepository.findAllByUserRoleAndBatch(UserRole.STUDENT, batch);
+        UserRole userRole = userRoleRepository.findByName("Student");
+        List<User> allStudents = userRepository.findAllByUserRoleAndBatch(userRole, batch);
         for (User student : allStudents) {
             StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
             studentTaskRepository.save(studentTask);

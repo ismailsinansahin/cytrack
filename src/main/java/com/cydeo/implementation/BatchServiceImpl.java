@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class BatchServiceImpl implements BatchService {
 
-    MapperUtil mapperUtil;
-    BatchRepository batchRepository;
+    private final MapperUtil mapperUtil;
+    private final BatchRepository batchRepository;
 
     public BatchServiceImpl(BatchRepository batchRepository, MapperUtil mapperUtil) {
         this.batchRepository = batchRepository;
