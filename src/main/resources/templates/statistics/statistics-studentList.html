@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<head th:replace="/fragments/head :: header"><title>Lesson List</title></head>
+<head th:replace="/fragments/head :: header"><title>Student Statistics</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -14,20 +13,9 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div class="col-md-12">
-                                <div class="input-group row">
-                                    <div class="col-auto">
-                                        <form>
-                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                                <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                                   th:href="@{/lessons/lessonCreate}"><i class="fa fa-plus mr-1"></i>
-                                                    Create Lesson</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div><br>
                                 <section class="panel">
                                     <header class="panel-heading">
-                                        <h2 class="panel-title">Lesson List</h2>
+                                        <h2 class="panel-title">Students</h2>
                                     </header>
                                     <div class="panel-body">
                                         <div class="users-list-table">
@@ -37,29 +25,32 @@
                                                         <div class="card-content fw-container">
                                                             <div class="card-body fw-body">
                                                                 <div class="table-responsive content demo-html">
-                                                                    <table id="example" class="table table-striped table-bordered file-export" style="width:100%">
+                                                                    <table id="example"
+                                                                           class="table table-striped table-bordered file-export"
+                                                                           style="width:100%">
                                                                         <thead>
                                                                         <tr>
-                                                                            <th scope="col">Lesson Name</th>
-                                                                            <th scope="col">Instructor List</th>
-                                                                            <th scope="col">Action</th>
+                                                                            <th scope="col">Batch</th>
+                                                                            <th scope="col">Group</th>
+                                                                            <th scope="col">Name</th>
+                                                                            <th scope="col">Student Progress</th>
+                                                                            <th scope="col">Cydeo Mentor</th>
+                                                                            <th scope="col">Alumni Mentor</th>
+                                                                            <th scope="col">Details</th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr th:each="lesson: ${lessonsAndInstructors.keySet()}" class="text-dark">
-                                                                            <td th:text="${lesson.name}"></td>
-                                                                            <td th:text="${lessonsAndInstructors.get(lesson)}"></td>
+                                                                        <tr th:each="student: ${students}" class="text-dark">
+                                                                            <td th:text="${student.batch.name}"></td>
+                                                                            <td th:text="${student.group.name}"></td>
+                                                                            <td th:text="${student.firstName + ' ' + student.lastName}"></td>
+                                                                            <td>% 36</td>
+                                                                            <td th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></td>
+                                                                            <td th:text="${student.group.alumniMentor.firstName + ' ' + student.group.alumniMentor.lastName}"></td>
                                                                             <td class="actions">
-                                                                                <form action="#" data-th-action="@{/lessons/addRemoveInstructorEditDelete/{id}(id=${lesson.getId()})}"
-                                                                                      method="post">
+                                                                                <form action="#" data-th-action="@{/statistics/student/{studentId}(studentId=${student.getId()})}" method="post">
                                                                                     <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
-                                                                                            type="submit" name="action" value="addInstructor">Add/Remove Instructor
-                                                                                    </button>
-                                                                                    <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
-                                                                                            type="submit" name="action" value="edit">Edit
-                                                                                    </button>
-                                                                                    <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                                            type="submit" name="action" value="delete">Delete
+                                                                                            type="submit" name="action" value="go">Go
                                                                                     </button>
                                                                                 </form>
                                                                             </td>
@@ -82,9 +73,8 @@
             </div>
         </div>
     </div>
-    <div th:replace="/fragments/footer :: footer"></div>
 </div>
+<div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
-
 </html>

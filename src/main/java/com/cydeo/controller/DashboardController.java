@@ -56,7 +56,7 @@ public class DashboardController {
 
     @GetMapping("/adminDashboard")
     public String showAdminDashboard(Model model){
-
+        model.addAttribute("batches", dashboardService.getAllBatches());
         return "dashboard/admin-dashboard";
     }
 

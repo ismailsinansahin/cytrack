@@ -1,18 +1,18 @@
 package com.cydeo.implementation;
 
+import com.cydeo.dto.BatchDTO;
 import com.cydeo.entity.Group;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.Task;
 import com.cydeo.entity.User;
-import com.cydeo.repository.GroupRepository;
-import com.cydeo.repository.StudentTaskRepository;
-import com.cydeo.repository.TaskRepository;
-import com.cydeo.repository.UserRepository;
+import com.cydeo.mapper.MapperUtil;
+import com.cydeo.repository.*;
 import com.cydeo.service.DashboardService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DashboardServiceImpl implements DashboardService {
@@ -21,12 +21,18 @@ public class DashboardServiceImpl implements DashboardService {
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final GroupRepository groupRepository;
+    private final BatchRepository batchRepository;
+    private final MapperUtil mapperUtil;
 
-    public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository, TaskRepository taskRepository, GroupRepository groupRepository) {
+    public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository,
+                                TaskRepository taskRepository, GroupRepository groupRepository,
+                                BatchRepository batchRepository, MapperUtil mapperUtil) {
         this.studentTaskRepository = studentTaskRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
         this.groupRepository = groupRepository;
+        this.batchRepository = batchRepository;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
@@ -63,6 +69,14 @@ public class DashboardServiceImpl implements DashboardService {
             allStudentsOfCydeoMentor.addAll(students);
         }
         return allStudentsOfCydeoMentor;
+    }
+
+    @Override
+    public List<BatchDTO> getAllBatches() {
+        return batchRepository.findAll()
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .collect(Collectors.toList());
     }
 
 }

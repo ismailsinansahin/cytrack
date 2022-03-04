@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.MapKeyEnumerated;
 import java.time.LocalDate;
 
 @NoArgsConstructor
