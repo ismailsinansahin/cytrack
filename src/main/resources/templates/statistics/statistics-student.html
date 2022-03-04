@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/fragments/head :: header"><title>Student Statistics</title></head>
+
+<body>
+<div class="dashboard-main-wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+</div>
+<div class="dashboard-wrapper">
+    <div class="dashboard-ecommerce">
+        <div class="container-fluid dashboard-content">
+            <div class="ecommerce-widget">
+                <div class="row">
+                    <div class="col-sm-2 col-lg-2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading text-center p-3 mb-2 bg-primary text-white">Student Profile</div>
+                            <div class="panel panel-primary bg-primary-light text-dark">
+                                <div>Name<br><label></label></div>
+                                <div>Batch / Group<br><label></label></div>
+                                <div>Country<br><label></label></div>
+                                <div>Gender<br><label></label></div>
+                                <div>Status<br><label></label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-lg-5">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading text-center p-3 mb-2 bg-primary text-white"><strong>Task Based Performance</strong></div>
+                            <div class="panel panel-primary bg-primary-light text-dark">
+                                <div class="progress-bar progress-bar-striped bg-info text-dark" role="progressbar" style="width: 80%;"
+                                     aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Recordings<span style="float:right">%80</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-info-light text-dark" role="progressbar" style="width: 60%;"
+                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Saturday Reviews<span style="float:right">%60</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-danger text-dark" role="progressbar" style="width: 85%;"
+                                     aria-valuenow="65" aria-valuemin="0" aria-valuemax="85">
+                                    <p style="text-align:left;">Quizzes<span style="float:right">%85</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-danger-light text-dark" role="progressbar" style="width: 90%;"
+                                     aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Assessments<span style="float:right">%90</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-secondary text-dark" role="progressbar" style="width: 100%;"
+                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Assignments<span style="float:right">%100</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-secondary-light text-dark" role="progressbar" style="width: 69%;"
+                                     aria-valuenow="69" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Repls<span style="float:right">%69</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-warning text-dark" role="progressbar" style="width: 75%;"
+                                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Flipgrids<span style="float:right">%75</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-success text-dark" role="progressbar" style="width: 90%;"
+                                     aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Cybertek Mentor Meetings<span style="float:right">%90</span></p>
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-success-light text-dark" role="progressbar" style="width: 60%;"
+                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Alumni Mentor Meetings<span style="float:right">%60</span></p>
+                                </div>
+                                <div class="pull-right progress-bar progress-bar-striped bg-brand text-dark" role="progressbar" style="width: 75%;"
+                                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                    <p style="text-align:left;">Project Events<span style="float:right">%75</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-lg-5">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading text-center p-3 mb-2 bg-primary text-white"><strong>Week Based Performance</strong></div>
+                            <div class="panel panel-primary bg-primary-light text-dark">
+                                <div><br><br><br><br><br><br><br><br><br><br></div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="ecommerce-widget">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading text-center p-3 mb-2 bg-primary text-white"><strong>Date Based Performance </strong></div>
+                                <div class="panel panel-primary bg-primary-light text-dark">
+                                    <div><br><br><br><br><br><br><br><br><br><br></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="ecommerce-widget">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading text-center p-3 mb-2 bg-primary text-white"><strong>Task Based Performance </strong></div>
+                                <div class="panel panel-primary bg-primary-light text-dark">
+                                    <div><br><br><br><br><br><br><br><br><br><br></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div th:replace="/fragments/footer :: footer"></div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+</html>

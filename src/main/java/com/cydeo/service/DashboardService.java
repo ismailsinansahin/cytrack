@@ -1,5 +1,6 @@
 package com.cydeo.service;
 
+import com.cydeo.dto.BatchDTO;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.User;
 import com.cydeo.repository.StudentTaskRepository;
@@ -11,7 +12,7 @@ public interface DashboardService {
     List<StudentTask> getAllTasksOfStudent(Long currentStudentId);
     void completeStudentTask(Long studentId, Long bathcId);
     void uncompleteStudentTask(Long studentId, Long bathcId);
-
+    List<BatchDTO> getAllBatches();
     List<User> getAllStudentsOfMentor(Long mentorId);
 
 }

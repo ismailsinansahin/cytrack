@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="/fragments/head :: header"><title>Batch List</title></head>
+<head th:replace="/fragments/head :: header"><title>Batch Statistics</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -14,21 +14,9 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
                             <div class="col-md-12">
-                                <div class="input-group row">
-                                    <div class="col-auto">
-                                        <form>
-                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                                <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                                   th:href="@{/batches/batchCreate}"><i class="fa fa-plus mr-1"></i>
-                                                    Create Batch</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <br>
                                 <section class="panel">
                                     <header class="panel-heading">
-                                        <h2 class="panel-title">Batch List</h2>
+                                        <h2 class="panel-title">Batches</h2>
                                     </header>
                                     <div class="panel-body">
                                         <div class="users-list-table">
@@ -46,9 +34,13 @@
                                                                             <th scope="col">Name</th>
                                                                             <th scope="col">Start Date</th>
                                                                             <th scope="col">End Date</th>
+                                                                            <th scope="col">Completion</th>
+                                                                            <th scope="col">Active Students</th>
+                                                                            <th scope="col">Dropped/Transferred</th>
+                                                                            <th scope="col">Student Progress</th>
                                                                             <th scope="col">Status</th>
                                                                             <th scope="col">Notes</th>
-                                                                            <th scope="col">Action</th>
+                                                                            <th scope="col">Details</th>
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -59,31 +51,16 @@
                                                                             <td th:text="${batch.name}"></td>
                                                                             <td th:text="${batch.batchStartDate}"></td>
                                                                             <td th:text="${batch.getBatchEndDate()}"></td>
+                                                                            <td>% 36</td>
+                                                                            <td>235</td>
+                                                                            <td>26</td>
+                                                                            <td>% 79</td>
                                                                             <td th:text="${batch.batchStatus.value}"></td>
                                                                             <td th:text="${batch.notes}"></td>
                                                                             <td class="actions">
-                                                                                <form action="#"
-                                                                                      data-th-action="@{/batches/startCompleteEditDelete/{id}(id=${batch.getId()})}"
-                                                                                      method="post">
-                                                                                    <button th:if="${batch.batchStatus.value} == 'Planned'"
-                                                                                            class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
-                                                                                            type="submit" name="action"
-                                                                                            value="start">Start
-                                                                                    </button>
-                                                                                    <button th:if="${batch.batchStatus.value} == 'Planned'"
-                                                                                            class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
-                                                                                            type="submit" name="action"
-                                                                                            value="edit">Edit
-                                                                                    </button>
-                                                                                    <button th:if="${batch.batchStatus.value} == 'Planned'"
-                                                                                            class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
-                                                                                            type="submit" name="action"
-                                                                                            value="delete">Delete
-                                                                                    </button>
-                                                                                    <button th:if="${batch.batchStatus.value} == 'In Progress'"
-                                                                                            class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
-                                                                                            type="submit" name="action"
-                                                                                            value="complete">Complete
+                                                                                <form action="#" data-th-action="@{/statistics/groupList/{id}(id=${batch.getId()})}" method="post">
+                                                                                    <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                            type="submit" name="action" value="go">Go
                                                                                     </button>
                                                                                 </form>
                                                                             </td>
@@ -106,9 +83,8 @@
             </div>
         </div>
     </div>
-    <div th:replace="/fragments/footer :: footer"></div>
 </div>
+<div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
-
 </html>
