@@ -1,72 +1,49 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.*;
-import com.cydeo.entity.*;
+import com.cydeo.entity.Batch;
+import com.cydeo.entity.StudentTask;
+import com.cydeo.entity.Task;
+import com.cydeo.entity.User;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
-import com.cydeo.service.DashboardService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.cydeo.service.StudentStatisticsService;
 import org.springframework.stereotype.Service;
 import org.threeten.extra.Weeks;
-
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
-public class DashboardServiceImpl implements DashboardService {
+public class StudentStatisticsServiceImpl implements StudentStatisticsService {
 
-    private final StudentTaskRepository studentTaskRepository;
-    private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
-    private final GroupRepository groupRepository;
-    private final BatchRepository batchRepository;
     private final MapperUtil mapperUtil;
+    private final UserRepository userRepository;
+    private final StudentTaskRepository studentTaskRepository;
 
-    public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository,
-                                TaskRepository taskRepository, GroupRepository groupRepository,
-                                BatchRepository batchRepository, MapperUtil mapperUtil) {
-        this.studentTaskRepository = studentTaskRepository;
-        this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
-        this.groupRepository = groupRepository;
-        this.batchRepository = batchRepository;
+    public StudentStatisticsServiceImpl(MapperUtil mapperUtil, UserRepository userRepository,
+                                        StudentTaskRepository studentTaskRepository) {
         this.mapperUtil = mapperUtil;
+        this.userRepository = userRepository;
+        this.studentTaskRepository = studentTaskRepository;
     }
 
     @Override
-    public UserDTO getCurrentUser() {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        Group group = groupRepository.findById(student.getGroup().getId()).get();
-        User cydeoMentor = userRepository.findById(group.getCydeoMentor().getId()).get();
-        User alumniMentor = userRepository.findById(group.getAlumniMentor().getId()).get();
-        Batch batch = batchRepository.findById(group.getId()).get();
-        GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-        groupDTO.setCydeoMentorDTO(mapperUtil.convert(cydeoMentor, new UserDTO()));
-        groupDTO.setAlumniMentorDTO(mapperUtil.convert(alumniMentor, new UserDTO()));
-        BatchDTO batchDTO = mapperUtil.convert(batch, new BatchDTO());
-        groupDTO.setBatchDTO(batchDTO);
+    public UserDTO findStudentById(Long studentId) {
+        User student = userRepository.findById(studentId).get();
+        BatchDTO batchDTO = mapperUtil.convert(student.getBatch(), new BatchDTO());
+        GroupDTO groupDTO = mapperUtil.convert(student.getGroup(), new GroupDTO());
         UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-        studentDTO.setGroupDTO(groupDTO);
         studentDTO.setBatchDTO(batchDTO);
+        studentDTO.setGroupDTO(groupDTO);
         return studentDTO;
     }
 
-    public Long getCurrentUserId(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
-        return userRepository.findByUserName(username).getId();
-    }
-
     @Override
-    public List<StudentTaskDTO> getAllTasksOfCurrentStudent() {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        log.info(student.getFirstName(),"s");
+    public List<StudentTaskDTO> getAllTasksOfStudent(Long studentId) {
+        User student = userRepository.findById(studentId).get();
         List<StudentTaskDTO> studentTaskDTOList = new ArrayList<>();
         List<StudentTask> studentTaskList = studentTaskRepository.findAllByStudent(student);
         for(StudentTask studentTask : studentTaskList){
@@ -81,23 +58,23 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public Map<String, Integer> getTaskBasedNumbers() {
+    public Map<String, Integer> getTaskBasedNumbers(Long studentId) {
         Map<String, Integer> taskBasedNumbersMap = new HashMap<>();
         List<String> tasksTypesList= Arrays
                 .stream(TaskType.values())
                 .map(TaskType::getValue)
                 .collect(Collectors.toList());
         for(String taskType : tasksTypesList){
-            int completionRate = getCompletionOfTask(taskType);
+            int completionRate = getCompletionOfTask(studentId, taskType);
             taskBasedNumbersMap.put(taskType, completionRate);
         }
-        taskBasedNumbersMap.put("Total", getTotalCompletionRate());
+        taskBasedNumbersMap.put("Total", getTotalCompletionRate(studentId));
         return taskBasedNumbersMap;
     }
 
-    private Integer getCompletionOfTask(String taskType) {
+    private Integer getCompletionOfTask(Long studentId, String taskType) {
         int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
+        User student = userRepository.findById(studentId).get();
         int total = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                 .stream()
                 .filter(studentTask -> studentTask.getTask().getTaskType().getValue().equals(taskType))
@@ -115,9 +92,9 @@ public class DashboardServiceImpl implements DashboardService {
         return completionRate;
     }
 
-    private Integer getTotalCompletionRate() {
+    private Integer getTotalCompletionRate(Long studentId) {
         int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
+        User student = userRepository.findById(studentId).get();
         int total = (int) studentTaskRepository.findAllByStudent(student).stream().count();
         int completed = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -132,13 +109,13 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public Map<String, Integer> getWeekBasedNumbers() {
+    public Map<String, Integer> getWeekBasedNumbers(Long studentId) {
         Map<String, Integer> weekBasedNumbersMap = new HashMap<>();
-        User student = userRepository.findById(getCurrentUserId()).get();
+        User student = userRepository.findById(studentId).get();
         Batch studentBatch = student.getBatch();
         int numberOfWeeks = calculateNumberOfWeeks(studentBatch);
         for (int i = 1 ; i < numberOfWeeks ; i++) {
-            weekBasedNumbersMap.put(("W" + i), getNumbersForWeekI(studentBatch, i));
+            weekBasedNumbersMap.put(("W" + i), getNumbersForWeekI(studentId, i));
         }
         return weekBasedNumbersMap;
     }
@@ -147,10 +124,10 @@ public class DashboardServiceImpl implements DashboardService {
         return Weeks.between(studentBatch.getBatchStartDate(), studentBatch.getBatchEndDate()).getAmount();
     }
 
-    private Integer getNumbersForWeekI(Batch studentBatch, int i) {
+    private Integer getNumbersForWeekI(Long studentId, int i) {
         int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
-        LocalDate weekStartDate = studentBatch.getBatchStartDate().plusDays(7 * (i-1));
+        User student = userRepository.findById(studentId).get();
+        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7 * (i-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         int total = (int) studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -169,32 +146,6 @@ public class DashboardServiceImpl implements DashboardService {
             completionRate = 0;
         }
         return completionRate;
-    }
-
-    @Override
-    public void completeStudentTask(Long taskId) {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        Task task = taskRepository.findById(taskId).get();
-        StudentTask studentTask = studentTaskRepository.findByStudentAndTask(student, task);
-        studentTask.setCompleted(true);
-        studentTaskRepository.save(studentTask);
-    }
-
-    @Override
-    public void uncompleteStudentTask(Long taskId) {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        Task task = taskRepository.findById(taskId).get();
-        StudentTask studentTask = studentTaskRepository.findByStudentAndTask(student, task);
-        studentTask.setCompleted(false);
-        studentTaskRepository.save(studentTask);
-    }
-
-    @Override
-    public List<BatchDTO> getAllBatches() {
-        return batchRepository.findAll()
-                .stream()
-                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
-                .collect(Collectors.toList());
     }
 
 }

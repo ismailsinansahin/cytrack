@@ -18,46 +18,51 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping("/studentDashboard")
-    public String showStudentDashboard(Model model){
-        model.addAttribute("studentTasks", dashboardService.getAllTasksOfStudent(15L));
-        return "dashboard/student-dashboard";
+    @GetMapping("/admin")
+    public String showAdminDashboard(Model model){
+        model.addAttribute("batches", dashboardService.getAllBatches());
+        return "dashboard/admin-dashboard";
     }
 
-    @PostMapping(value = "/completeStudentTask/{studentId}/{taskId}",  params = {"action=completed"})
-    public String completeStudentTask(@PathVariable("studentId") Long studentId, @PathVariable("taskId") Long taskId){
-        dashboardService.completeStudentTask(studentId, taskId);
-        return "redirect:/dashboards/studentDashboard";
-    }
-
-    @PostMapping(value = "/completeStudentTask/{studentId}/{taskId}",  params = {"action=uncompleted"})
-    public String uncompleteStudentTask(@PathVariable("studentId") Long studentId, @PathVariable("taskId") Long taskId){
-        dashboardService.uncompleteStudentTask(studentId, taskId);
-        return "redirect:/dashboards/studentDashboard";
-    }
-
-    @GetMapping("/cydeoMentorDashboard")
-    public String showCydeoMentorDashboard(Model model){
-
-        return "dashboard/cydeoMentor-dashboard";
-    }
-
-    @GetMapping("/alumniMentorDashboard")
-    public String showAlumniMentorDashboard(Model model){
-
-        return "dashboard/alumniMentor-dashboard";
-    }
-
-    @GetMapping("/instructorDashboard")
+    @GetMapping("/instructor")
     public String showInstructorDashboard(Model model){
 
         return "dashboard/instructor-dashboard";
     }
 
-    @GetMapping("/adminDashboard")
-    public String showAdminDashboard(Model model){
-        model.addAttribute("batches", dashboardService.getAllBatches());
-        return "dashboard/admin-dashboard";
+    @GetMapping("/cydeoMentor")
+    public String showCydeoMentorDashboard(Model model){
+
+        return "dashboard/cydeoMentor-dashboard";
+    }
+
+    @GetMapping("/alumniMentor")
+    public String showAlumniMentorDashboard(Model model){
+
+        return "dashboard/alumniMentor-dashboard";
+    }
+
+    @GetMapping("/student")
+    public String showStudent(Model model){
+        model.addAttribute("student", dashboardService.getCurrentUser());
+        model.addAttribute("studentTasks", dashboardService.getAllTasksOfCurrentStudent());
+        model.addAttribute("taskBasedNumbers", dashboardService.getTaskBasedNumbers());
+        System.out.println("dashboardService.getTaskBasedNumbers() = " + dashboardService.getTaskBasedNumbers());
+        model.addAttribute("weekBasedNumbers", dashboardService.getWeekBasedNumbers());
+        System.out.println("dashboardService.getWeekBasedNumbers() = " + dashboardService.getWeekBasedNumbers());
+        return "dashboard/student-dashboard";
+    }
+
+    @PostMapping(value = "/completeStudentTask/{taskId}",  params = {"action=completed"})
+    public String completeStudentTask(@PathVariable("taskId") Long taskId){
+        dashboardService.completeStudentTask(taskId);
+        return "redirect:/dashboards/student";
+    }
+
+    @PostMapping(value = "/completeStudentTask/{taskId}",  params = {"action=uncompleted"})
+    public String uncompleteStudentTask(@PathVariable("taskId") Long taskId){
+        dashboardService.uncompleteStudentTask(taskId);
+        return "redirect:/dashboards/student";
     }
 
 }

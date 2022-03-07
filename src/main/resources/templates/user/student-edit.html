@@ -115,7 +115,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Password</label>
-                                                                    <input type="text" th:field="*{password}" placeholder="Password"
+                                                                    <input type="password" th:field="*{password}" placeholder="Password"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -124,7 +124,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Confirm Password</label>
-                                                                    <input type="text" th:field="*{confirmPassword}" placeholder="Confirm Password"
+                                                                    <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -135,7 +135,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batch}" required="required">
+                                                                    <select id="batch" class="form-control" th:field="*{batchDTO}" required="required">
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
@@ -169,7 +169,7 @@
                                                                     </div>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option12" name="option12" class="custom-control-input"
-                                                                               value="MALE" th:field="*{gender}">
+                                                                               value="MALE" th:field="*{gender}" th:checked>
                                                                         <label class="custom-control-label" for="option12">Male</label>
                                                                     </div>
                                                                 </div>

@@ -53,22 +53,22 @@
                                                                     <label for="country">Role</label><br>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option1" name="option1" class="custom-control-input"
-                                                                               value="ADMIN" th:field="*{userRole}" required>
+                                                                               th:value="${userRoles.get(0).name}" th:field="*{userRoleDTO}" required>
                                                                         <label class="custom-control-label" for="option1">Admin</label>
                                                                     </div>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option2" name="option2" class="custom-control-input"
-                                                                               value="INSTRUCTOR" th:field="*{userRole}">
+                                                                               th:value="${userRoles.get(1).name}" th:field="*{userRoleDTO}">
                                                                         <label class="custom-control-label" for="option2">Instructor</label>
                                                                     </div>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option3" name="option3" class="custom-control-input"
-                                                                               value="CYDEO_MENTOR" th:field="*{userRole}">
+                                                                               th:value="${userRoles.get(2).name}" th:field="*{userRoleDTO}">
                                                                         <label class="custom-control-label" for="option3">Cydeo Mentor</label>
                                                                     </div>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option4" name="option4" class="custom-control-input"
-                                                                               value="ALUMNI_MENTOR" th:field="*{userRole}">
+                                                                               th:value="${userRoles.get(3).name}" th:field="*{userRoleDTO}">
                                                                         <label class="custom-control-label" for="option4">Alumni Mentor</label>
                                                                     </div>
                                                                 </div>
