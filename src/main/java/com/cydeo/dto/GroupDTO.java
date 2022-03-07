@@ -14,8 +14,8 @@ public class GroupDTO {
 
     private Long id;
     private String name;
-    private BatchDTO batchDTO;
-    private UserDTO cydeoMentorDTO;
-    private UserDTO alumniMentorDTO;
+    private BatchDTO batch;
+    private UserDTO cydeoMentor;
+    private UserDTO alumniMentor;
 
 }

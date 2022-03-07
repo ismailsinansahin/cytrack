@@ -36,8 +36,8 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
         BatchDTO batchDTO = mapperUtil.convert(student.getBatch(), new BatchDTO());
         GroupDTO groupDTO = mapperUtil.convert(student.getGroup(), new GroupDTO());
         UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-        studentDTO.setBatchDTO(batchDTO);
-        studentDTO.setGroupDTO(groupDTO);
+        studentDTO.setBatch(batchDTO);
+        studentDTO.setGroup(groupDTO);
         return studentDTO;
     }
 
@@ -49,9 +49,9 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
         for(StudentTask studentTask : studentTaskList){
             TaskDTO taskDTO = mapperUtil.convert(studentTask.getTask(), new TaskDTO());
             LessonDTO lessonDTO = mapperUtil.convert(studentTask.getTask().getLesson(), new LessonDTO());
-            taskDTO.setLessonDTO(lessonDTO);
+            taskDTO.setLesson(lessonDTO);
             StudentTaskDTO studentTaskDTO = mapperUtil.convert(studentTask, new StudentTaskDTO());
-            studentTaskDTO.setTaskDTO(taskDTO);
+            studentTaskDTO.setTask(taskDTO);
             studentTaskDTOList.add(studentTaskDTO);
         }
         return studentTaskDTOList;

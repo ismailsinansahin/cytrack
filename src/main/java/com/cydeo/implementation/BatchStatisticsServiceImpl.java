@@ -47,9 +47,9 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
             UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
             UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
             GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-            groupDTO.setBatchDTO(batchDTO);
-            groupDTO.setCydeoMentorDTO(cydeoMentorDTO);
-            groupDTO.setAlumniMentorDTO(alumniMentorDTO);
+            groupDTO.setBatch(batchDTO);
+            groupDTO.setCydeoMentor(cydeoMentorDTO);
+            groupDTO.setAlumniMentor(alumniMentorDTO);
             groupDTOList.add(groupDTO);
         }
         return groupDTOList;

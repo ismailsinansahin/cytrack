@@ -47,13 +47,13 @@ public class DashboardServiceImpl implements DashboardService {
         User alumniMentor = userRepository.findById(group.getAlumniMentor().getId()).get();
         Batch batch = batchRepository.findById(group.getId()).get();
         GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-        groupDTO.setCydeoMentorDTO(mapperUtil.convert(cydeoMentor, new UserDTO()));
-        groupDTO.setAlumniMentorDTO(mapperUtil.convert(alumniMentor, new UserDTO()));
+        groupDTO.setCydeoMentor(mapperUtil.convert(cydeoMentor, new UserDTO()));
+        groupDTO.setAlumniMentor(mapperUtil.convert(alumniMentor, new UserDTO()));
         BatchDTO batchDTO = mapperUtil.convert(batch, new BatchDTO());
-        groupDTO.setBatchDTO(batchDTO);
+        groupDTO.setBatch(batchDTO);
         UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-        studentDTO.setGroupDTO(groupDTO);
-        studentDTO.setBatchDTO(batchDTO);
+//        studentDTO.setGroupDTO(groupDTO);
+//        studentDTO.setBatchDTO(batchDTO);
         return studentDTO;
     }
 
@@ -72,9 +72,9 @@ public class DashboardServiceImpl implements DashboardService {
         for(StudentTask studentTask : studentTaskList){
             TaskDTO taskDTO = mapperUtil.convert(studentTask.getTask(), new TaskDTO());
             LessonDTO lessonDTO = mapperUtil.convert(studentTask.getTask().getLesson(), new LessonDTO());
-            taskDTO.setLessonDTO(lessonDTO);
+            taskDTO.setLesson(lessonDTO);
             StudentTaskDTO studentTaskDTO = mapperUtil.convert(studentTask, new StudentTaskDTO());
-            studentTaskDTO.setTaskDTO(taskDTO);
+            studentTaskDTO.setTask(taskDTO);
             studentTaskDTOList.add(studentTaskDTO);
         }
         return studentTaskDTOList;
