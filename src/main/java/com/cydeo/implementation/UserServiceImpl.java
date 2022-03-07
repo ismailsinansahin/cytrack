@@ -1,6 +1,7 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.BatchDTO;
+import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.dto.UserRoleDTO;
 import com.cydeo.entity.User;
@@ -56,19 +57,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllStaffs() {
         UserRole userRole = userRoleRepository.findByName("Student");
-        return userRepository.findAllByUserRoleNot(userRole)
+        List<UserDTO> staffsDTOList = userRepository.findAllByUserRoleNot(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
+        for(UserDTO staff : staffsDTOList){
+            User user = userRepository.findById(staff.getId()).get();
+            staff.setUserRoleDTO(mapperUtil.convert(user.getUserRole(), new UserRoleDTO()));
+        }
+        return staffsDTOList;
     }
 
     @Override
     public List<UserDTO> getAllStudents() {
         UserRole userRole = userRoleRepository.findByName("Student");
-        return userRepository.findAllByUserRole(userRole)
+        System.out.println("userRole.getName() = " + userRole.getName());
+        List<UserDTO> studentsDTOList =  userRepository.findAllByUserRole(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
+        for(UserDTO student : studentsDTOList){
+            User user = userRepository.findById(student.getId()).get();
+            student.setUserRoleDTO(mapperUtil.convert(userRole, new UserRoleDTO()));
+            student.setBatchDTO(mapperUtil.convert(user.getBatch(), new BatchDTO()));
+            try{
+                student.setGroupDTO(mapperUtil.convert(user.getGroup(), new GroupDTO()));
+            }catch (IllegalArgumentException e){
+                continue;
+            }
+        }
+        return studentsDTOList;
     }
 
     @Override
@@ -86,14 +104,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
-        UserRoleDTO userRoleDTO = mapperUtil.convert(userRoleRepository.findByName("Student"), new UserRoleDTO());
-        if (userDTO.getUserRole() == null) userDTO.setUserRole(userRoleDTO);
+        if(userDTO.getUserRoleDTO() == null) userDTO.setUserRoleDTO(new UserRoleDTO("Student"));
         userDTO.setUserName(userDTO.getEmail());
         userDTO.setEnabled(true);
         User user = mapperUtil.convert(userDTO, new User());
+        user.setUserRole(userRoleRepository.findByName(userDTO.getUserRoleDTO().getName()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return mapperUtil.convert(user, new UserDTO());
+        userDTO = mapperUtil.convert(user, new UserDTO());
+        return userDTO;
     }
 
     @Override

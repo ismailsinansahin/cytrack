@@ -10,6 +10,7 @@ import com.cydeo.repository.*;
 import com.cydeo.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +39,17 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> getAllTasks() {
-        return taskRepository.findAll()
-                .stream()
-                .map(obj -> mapperUtil.convert(obj, new TaskDTO()))
-                .collect(Collectors.toList());
+        List<Task> taskList = taskRepository.findAll();
+        List<TaskDTO> taskDTOList = new ArrayList<>();
+        for(Task task : taskList){
+            TaskDTO taskDTO = mapperUtil.convert(task, new TaskDTO());
+            BatchDTO batchDTO = mapperUtil.convert(task.getBatch(), new BatchDTO());
+            LessonDTO lessonDTO = mapperUtil.convert(task.getLesson(), new LessonDTO());
+            taskDTO.setBatchDTO(batchDTO);
+            taskDTO.setLessonDTO(lessonDTO);
+            taskDTOList.add(taskDTO);
+        }
+        return taskDTOList;
     }
 
     @Override

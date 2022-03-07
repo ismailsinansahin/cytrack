@@ -16,6 +16,7 @@ import com.cydeo.repository.UserRoleRepository;
 import com.cydeo.service.GroupService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +42,19 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAllGroups(){
+        List<GroupDTO> groupDTOList = new ArrayList<>();
         List<Group> groups = groupRepository.findAll();
-        return groups.stream().map(obj -> mapperUtil.convert(obj, new GroupDTO())).collect(Collectors.toList());
+        for (Group group : groups){
+            BatchDTO batchDTO = mapperUtil.convert(group.getBatch(), new BatchDTO());
+            UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
+            UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
+            GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
+            groupDTO.setBatchDTO(batchDTO);
+            groupDTO.setCydeoMentorDTO(cydeoMentorDTO);
+            groupDTO.setAlumniMentorDTO(alumniMentorDTO);
+            groupDTOList.add(groupDTO);
+        }
+        return groupDTOList;
     }
 
     @Override
@@ -126,7 +138,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void assignStudentToGroup(UserDTO studentDTO) {
         User student = userRepository.findById(studentDTO.getId()).get();
-        Group group = mapperUtil.convert(studentDTO.getGroup(), new Group());
+        Group group = mapperUtil.convert(studentDTO.getGroupDTO(), new Group());
         student.setGroup(group);
         userRepository.save(student);
     }

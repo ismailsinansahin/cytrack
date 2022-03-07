@@ -2,7 +2,7 @@ insert into batches (insert_date_time, insert_user_id, is_deleted, last_update_d
                      batch_end_date, batch_start_date, batch_status, name, notes)
 values (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'COMPLETED', 'EU-1', 'EU only'),
        (now(), 1, false, now(), 1, '2022-12-30', '2021-06-26', 'COMPLETED', 'EU-2', 'EU only'),
-       (now(), 1, false, now(), 1, '2020-12-30', '2021-07-27', 'INPROGRESS', 'EU-3', 'EU only'),
+       (now(), 1, false, now(), 1, '2023-01-15', '2022-03-07', 'INPROGRESS', 'EU-3', 'EU only'),
        (now(), 1, false, now(), 1, '2021-12-30', '2021-06-28', 'PLANNED', 'EU-4', 'EU only'),
        (now(), 1, false, now(), 1, '2021-12-30', '2021-06-29', 'PLANNED', 'EU-5', 'EU only');
 
@@ -77,17 +77,18 @@ values (now(), 1, false, now(), 1, 1, 3),
 
 insert into tasks (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                    publishing_date, due_date, name, task_type, lesson_id, batch_id, task_status)
-values (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-01 Intro to Java', 'RECORDING', 1, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-02 Variables','RECORDING', 1, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Quiz-01 Variables','QUIZ', 1, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-03 Data Types','RECORDING', 1, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Assessment-01','QUIZ', 3, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-01 SDLC','RECORDING', 3, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-02 STLC','RECORDING', 3, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week-01 TAY','FLIPGRID', 6, 3, 'OUT_OF_TIME'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-03 Intro to Testing','RECORDING', 3, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Week02','WEEKLY_MENTOR_MEETING', 7, 3, 'PLANNED'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-12-30', 'Day-04 Methods','RECORDING', 1, 3, 'PUBLISHED');
+values (now(), 1, false, now(), 1, '2022-03-07', '2022-03-07', 'Day-01 Intro to Java', 'RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-08', '2022-03-07', 'Day-02 Variables','RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-09', '2022-03-19', 'Quiz-01 Variables','QUIZ', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-10', '2022-03-10', 'Day-03 Data Types','RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-11', '2022-03-20', 'Assessment-01','QUIZ', 3, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-12', '2022-03-12', 'Day-01 SDLC','RECORDING', 3, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-13', '2022-03-13', 'Day-02 STLC','RECORDING', 3, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-14', '2022-03-14', 'Week-01 TAY','FLIPGRID', 6, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-15', '2022-03-15', 'Day-03 Intro to Testing','RECORDING', 3, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-16', '2022-03-16', 'Week02','WEEKLY_MENTOR_MEETING', 7, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-17', '2022-03-17', 'Day-04 Methods','RECORDING', 1, 3, 'PLANNED'),
+       (now(), 1, false, now(), 1, '2022-03-17', '2022-03-21', 'Day-05 Class&Objects','RECORDING', 1, 3, 'PLANNED');
 
 -- insert into student_task (task_id, student_id)
 -- values (1, 1),(2, 1),(3, 1),(4, 1),(5, 1),(6, 1),(7, 1),(8, 1),(9, 1),(10, 1),(11, 1);

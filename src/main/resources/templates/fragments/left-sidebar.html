@@ -28,7 +28,7 @@
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Alumni Mentor')">
                             <a class="nav-link" th:href="@{/dashboards/alumniMentorDashboard}">
-                                <i class="fas fa-chalkboard-teacher"></i>My Dashboard
+                                <i class="fas fa-chalkboard-teacher" th:disabled=""></i>My Dashboard
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Student')">

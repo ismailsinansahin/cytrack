@@ -1136,7 +1136,6 @@ Progress bar
 -------------------------*/
 
 .progress-bar {
-
     background-color: #5969ff;
 }
 
@@ -1162,6 +1161,13 @@ Progress bar
 
 .progress-xl {
     height: 15px
+}
+
+.progress-vertical{
+    position: absolute;left:50.5%;top:40%;width: 2.5%;height:50%;opacity: 0.8; filter: alpha(opacity=80);
+}
+.progress-bar-vertical{
+    position:absolute;top:30%; width: 100%;height: 70%;
 }
 
 .f-icon,
