@@ -42,19 +42,21 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAllGroups(){
-        List<GroupDTO> groupDTOList = new ArrayList<>();
+//        List<GroupDTO> groupDTOList = new ArrayList<>();
         List<Group> groups = groupRepository.findAll();
-        for (Group group : groups){
-            BatchDTO batchDTO = mapperUtil.convert(group.getBatch(), new BatchDTO());
-            UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
-            UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
-            GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-            groupDTO.setBatchDTO(batchDTO);
-            groupDTO.setCydeoMentorDTO(cydeoMentorDTO);
-            groupDTO.setAlumniMentorDTO(alumniMentorDTO);
-            groupDTOList.add(groupDTO);
-        }
-        return groupDTOList;
+//        for (Group group : groups){
+//            BatchDTO batchDTO = mapperUtil.convert(group.getBatch(), new BatchDTO());
+//            UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
+//            UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
+//            GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
+//            groupDTO.setBatch(batchDTO);
+//            groupDTO.setCydeoMentor(cydeoMentorDTO);
+//            groupDTO.setAlumniMentor(alumniMentorDTO);
+//            groupDTOList.add(groupDTO);
+//        }
+        return groups.stream()
+                .map(group -> mapperUtil.convert(group,new GroupDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -138,7 +140,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void assignStudentToGroup(UserDTO studentDTO) {
         User student = userRepository.findById(studentDTO.getId()).get();
-        Group group = mapperUtil.convert(studentDTO.getGroupDTO(), new Group());
+        Group group = mapperUtil.convert(studentDTO.getGroup(), new Group());
         student.setGroup(group);
         userRepository.save(student);
     }

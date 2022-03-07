@@ -40,10 +40,10 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
         for(User student : studentList){
             GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
             UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-            groupDTO.setBatchDTO(batchDTO);
-            groupDTO.setCydeoMentorDTO(cydeoMentorDTO);
-            groupDTO.setAlumniMentorDTO(alumniMentorDTO);
-            studentDTO.setGroupDTO(groupDTO);
+            groupDTO.setBatch(batchDTO);
+            groupDTO.setCydeoMentor(cydeoMentorDTO);
+            groupDTO.setAlumniMentor(alumniMentorDTO);
+            studentDTO.setGroup(groupDTO);
             studentDTOList.add(studentDTO);
         }
         return studentDTOList;

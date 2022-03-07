@@ -42,7 +42,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batchDTO}" required>
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required>
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
@@ -65,7 +65,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="cydeoMentor">Cydeo Mentor</label>
-                                                                    <select id="cydeoMentor" class="form-control" th:field="*{cydeoMentorDTO}" required>
+                                                                    <select id="cydeoMentor" class="form-control" th:field="*{cydeoMentor}" required>
                                                                         <option th:each= "cydeoMentor:${cydeoMentors}"
                                                                                 th:value="${cydeoMentor.id}"
                                                                                 th:text="${cydeoMentor.firstName}"></option>
@@ -77,7 +77,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="alumniMentor">Alumni Mentor</label>
-                                                                    <select id="alumniMentor" class="form-control" th:field="*{alumniMentorDTO}" required>
+                                                                    <select id="alumniMentor" class="form-control" th:field="*{alumniMentor}" required>
                                                                         <option th:each= "alumniMentor:${alumniMentors}"
                                                                                 th:value="${alumniMentor.id}"
                                                                                 th:text="${alumniMentor.firstName}"></option>

@@ -31,8 +31,8 @@ public class UserDTO {
     private Country country;
     private Gender gender;
     private StudentStatus studentStatus;
-    private UserRoleDTO userRoleDTO;
-    private BatchDTO batchDTO;
-    private GroupDTO groupDTO;
+    private UserRoleDTO userRole;
+    private BatchDTO batch;
+    private GroupDTO group;
 
 }

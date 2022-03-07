@@ -54,10 +54,10 @@
                                                                         </thead>
                                                                         <tbody>
                                                                         <tr th:each="group: ${groups}" class="text-dark">
-                                                                            <td th:text="${group.batchDTO.name}"></td>
+                                                                            <td th:text="${group.batch.name}"></td>
                                                                             <td th:text="${group.name}"></td>
-                                                                            <td th:text="${group.cydeoMentorDTO.firstName}"></td>
-                                                                            <td th:text="${group.alumniMentorDTO.firstName}"></td>
+                                                                            <td th:text="${group.cydeoMentor.firstName}"></td>
+                                                                            <td th:text="${group.alumniMentor.firstName}"></td>
                                                                             <td class="actions">
                                                                                 <form action="#" data-th-action="@{/groups/groupEditDelete/{id}(id=${group.getId()})}"
                                                                                       method="post">

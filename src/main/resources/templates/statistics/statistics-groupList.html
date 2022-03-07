@@ -103,13 +103,13 @@
                                                                         </thead>
                                                                         <tbody>
                                                                         <tr th:each="group: ${groups}" class="text-dark">
-                                                                            <td th:text="${group.batchDTO.name}"></td>
+                                                                            <td th:text="${group.batch.name}"></td>
                                                                             <td th:text="${group.name}"></td>
                                                                             <td>11</td>
                                                                             <td>2</td>
                                                                             <td>% 89</td>
-                                                                            <td th:text="${group.cydeoMentorDTO.firstName + ' ' + group.cydeoMentorDTO.lastName}"></td>
-                                                                            <td th:text="${group.alumniMentorDTO.firstName + ' ' + group.alumniMentorDTO.lastName}"></td>
+                                                                            <td th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></td>
+                                                                            <td th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>
                                                                             <td class="actions">
                                                                                 <form action="#" data-th-action="@{/statistics/studentList/{groupId}(groupId=${group.getId()})}" method="post">
                                                                                     <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"

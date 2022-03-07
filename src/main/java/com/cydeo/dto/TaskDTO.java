@@ -23,7 +23,7 @@ public class TaskDTO {
     private LocalDate dueDate;
     private TaskStatus taskStatus;
     private TaskType taskType;
-    private BatchDTO batchDTO;
-    private LessonDTO lessonDTO;
+    private BatchDTO batch;
+    private LessonDTO lesson;
 
 }

@@ -14,7 +14,7 @@ public class StudentTaskDTO {
     private Long id;
     private String name;
     private boolean isCompleted;
-    private UserDTO studentDTO;
-    private TaskDTO taskDTO;
+    private UserDTO student;
+    private TaskDTO task;
 
 }

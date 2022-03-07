@@ -101,12 +101,12 @@
                                                                         </thead>
                                                                         <tbody>
                                                                         <tr th:each="student: ${students}" class="text-dark">
-                                                                            <td th:text="${student.groupDTO.batchDTO.name}"></td>
-                                                                            <td th:text="${student.groupDTO.name}"></td>
+                                                                            <td th:text="${student.group.batch.name}"></td>
+                                                                            <td th:text="${student.group.name}"></td>
                                                                             <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                             <td>% 36</td>
-                                                                            <td th:text="${student.groupDTO.cydeoMentorDTO.firstName + ' ' + student.groupDTO.cydeoMentorDTO.lastName}"></td>
-                                                                            <td th:text="${student.groupDTO.alumniMentorDTO.firstName + ' ' + student.groupDTO.alumniMentorDTO.lastName}"></td>
+                                                                            <td th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></td>
+                                                                            <td th:text="${student.group.alumniMentor.firstName + ' ' + student.group.alumniMentor.lastName}"></td>
                                                                             <td class="actions">
                                                                                 <form action="#" data-th-action="@{/statistics/student/{studentId}(studentId=${student.getId()})}" method="post">
                                                                                     <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"

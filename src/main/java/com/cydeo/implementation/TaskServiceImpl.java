@@ -40,16 +40,18 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> getAllTasks() {
         List<Task> taskList = taskRepository.findAll();
-        List<TaskDTO> taskDTOList = new ArrayList<>();
-        for(Task task : taskList){
-            TaskDTO taskDTO = mapperUtil.convert(task, new TaskDTO());
-            BatchDTO batchDTO = mapperUtil.convert(task.getBatch(), new BatchDTO());
-            LessonDTO lessonDTO = mapperUtil.convert(task.getLesson(), new LessonDTO());
-            taskDTO.setBatchDTO(batchDTO);
-            taskDTO.setLessonDTO(lessonDTO);
-            taskDTOList.add(taskDTO);
-        }
-        return taskDTOList;
+//        List<TaskDTO> taskDTOList = new ArrayList<>();
+//        for(Task task : taskList){
+//            TaskDTO taskDTO = mapperUtil.convert(task, new TaskDTO());
+//            BatchDTO batchDTO = mapperUtil.convert(task.getBatch(), new BatchDTO());
+//            LessonDTO lessonDTO = mapperUtil.convert(task.getLesson(), new LessonDTO());
+//            taskDTO.setBatch(batchDTO);
+//            taskDTO.setLesson(lessonDTO);
+//            taskDTOList.add(taskDTO);
+//        }
+        return taskList.stream()
+                .map(task -> mapperUtil.convert(task,new TaskDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

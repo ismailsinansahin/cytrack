@@ -22,7 +22,8 @@
                                 </div>
                             </form>
                         </div>
-                    </div><br>
+                    </div>
+                    <br>
                     <header class="panel-heading">
                         <h2 class="panel-title">Edit Task</h2>
                     </header>
@@ -42,11 +43,12 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batchDTO}" required>
-                                                                        <option th:value="''" th:text="Select"></option>
-                                                                        <option th:each= "batch:${batches}"
+                                                                    <select id="batch" class="form-control" required>
+                                                                        <!--                                                                        <option th:value="''" th:text="Select"></option>-->
+                                                                        <option th:each="batch:${batches}"
                                                                                 th:value="${batch.id}"
-                                                                                th:text="${batch.name}"></option>
+                                                                                th:text="${batch.name}"
+                                                                                th:selected="${batch.id==task.batch.id}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -55,11 +57,11 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="lesson">Lesson</label>
-                                                                    <select id="lesson" class="form-control" th:field="*{lessonDTO}" required>
-                                                                        <option th:value="''" th:text="Select"></option>
-                                                                        <option th:each= "lesson:${lessons}"
+                                                                    <select id="lesson" class="form-control" required>
+                                                                        <option th:each="lesson:${lessons}"
                                                                                 th:value="${lesson.id}"
-                                                                                th:text="${lesson.name}"></option>
+                                                                                th:text="${lesson.name}"
+                                                                                th:selected="${lesson.id==task.lesson.id}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -70,21 +72,23 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="taskType">Task Type</label>
-                                                                    <select id="taskType" class="form-control" th:field="*{taskType}" required>
-                                                                        <option th:value="''" th:text="Select"></option>
-                                                                        <option th:each= "taskType:${taskTypes}"
+                                                                    <select id="taskType" class="form-control"
+                                                                            th:field="*{taskType}" required>
+                                                                        <option th:each="taskType:${taskTypes}"
                                                                                 th:value="${taskType}"
                                                                                 th:text="${taskType.value}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                            <div class="col-12 col-md-4">
-                                                                <div class="form-group">
-                                                                    <div class="controls">
-                                                                        <label>Task Name</label>
-                                                                        <input type="text" th:field="*{name}" placeholder="Task Name"
-                                                                               class="form-control" required="required" aria-invalid="false">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label>Task Name</label>
+                                                                    <input type="text" th:field="*{name}"
+                                                                           placeholder="Task Name"
+                                                                           class="form-control" required="required"
+                                                                           aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -94,8 +98,11 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Publishing Date</label>
-                                                                    <input type="date" th:value="*{publishingDate}" th:field="*{publishingDate}" placeholder="Publishing Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <input type="date" th:value="*{publishingDate}"
+                                                                           th:field="*{publishingDate}"
+                                                                           placeholder="Publishing Date"
+                                                                           class="form-control" required="required"
+                                                                           aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -103,8 +110,10 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Due Date</label>
-                                                                    <input type="date" th:value="*{dueDate}" th:field="*{dueDate}" placeholder="Due Date"
-                                                                           class="form-control" required="required" aria-invalid="false">
+                                                                    <input type="date" th:value="*{dueDate}"
+                                                                           th:field="*{dueDate}" placeholder="Due Date"
+                                                                           class="form-control" required="required"
+                                                                           aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -118,7 +127,6 @@
                                                         </button>
                                                     </div>
                                                 </form>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -130,6 +138,7 @@
             </div>
         </div>
     </div>
+</div>
 <div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
