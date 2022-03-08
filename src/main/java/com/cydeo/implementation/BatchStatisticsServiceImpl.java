@@ -39,20 +39,10 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
 
     @Override
     public List<GroupDTO> getAllGroupsOfBatch(Long batchId) {
-        Batch batch = batchRepository.findById(batchId).get();
-        List<Group> groupList = groupRepository.findAllByBatch(batch);
-        List<GroupDTO> groupDTOList = new ArrayList<>();
-        for (Group group : groupList) {
-            BatchDTO batchDTO = mapperUtil.convert(group.getBatch(), new BatchDTO());
-            UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
-            UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
-            GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-            groupDTO.setBatch(batchDTO);
-            groupDTO.setCydeoMentor(cydeoMentorDTO);
-            groupDTO.setAlumniMentor(alumniMentorDTO);
-            groupDTOList.add(groupDTO);
-        }
-        return groupDTOList;
+        return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
+                .collect(Collectors.toList());
     }
 
 }

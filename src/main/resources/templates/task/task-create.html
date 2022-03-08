@@ -43,7 +43,7 @@
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
                                                                     <select id="batch" class="form-control" th:field="*{batch}" required>
-                                                                        <option value="">Select Batch</option>
+                                                                        <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
@@ -56,7 +56,7 @@
                                                                 <div class="controls">
                                                                     <label for="lesson">Lesson</label>
                                                                     <select id="lesson" class="form-control" th:field="*{lesson}" required>
-                                                                        <option value="">Select Lesson</option>
+                                                                        <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "lesson:${lessons}"
                                                                                 th:value="${lesson.id}"
                                                                                 th:text="${lesson.name}"></option>
@@ -71,7 +71,7 @@
                                                                 <div class="controls">
                                                                     <label for="taskType">Task Type</label>
                                                                     <select id="taskType" class="form-control" th:field="*{taskType}" required>
-                                                                        <option value="">Select Task Type</option>
+                                                                        <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "taskType:${taskTypes}"
                                                                                 th:value="${taskType}"
                                                                                 th:text="${taskType.value}"></option>

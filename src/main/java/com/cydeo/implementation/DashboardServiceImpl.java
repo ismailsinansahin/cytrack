@@ -41,20 +41,8 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public UserDTO getCurrentUser() {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        Group group = groupRepository.findById(student.getGroup().getId()).get();
-        User cydeoMentor = userRepository.findById(group.getCydeoMentor().getId()).get();
-        User alumniMentor = userRepository.findById(group.getAlumniMentor().getId()).get();
-        Batch batch = batchRepository.findById(group.getId()).get();
-        GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-        groupDTO.setCydeoMentor(mapperUtil.convert(cydeoMentor, new UserDTO()));
-        groupDTO.setAlumniMentor(mapperUtil.convert(alumniMentor, new UserDTO()));
-        BatchDTO batchDTO = mapperUtil.convert(batch, new BatchDTO());
-        groupDTO.setBatch(batchDTO);
-        UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-//        studentDTO.setGroupDTO(groupDTO);
-//        studentDTO.setBatchDTO(batchDTO);
-        return studentDTO;
+        return mapperUtil.convert(userRepository.findById(getCurrentUserId()).get(), new UserDTO());
+
     }
 
     public Long getCurrentUserId(){
@@ -65,19 +53,10 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<StudentTaskDTO> getAllTasksOfCurrentStudent() {
-        User student = userRepository.findById(getCurrentUserId()).get();
-        log.info(student.getFirstName(),"s");
-        List<StudentTaskDTO> studentTaskDTOList = new ArrayList<>();
-        List<StudentTask> studentTaskList = studentTaskRepository.findAllByStudent(student);
-        for(StudentTask studentTask : studentTaskList){
-            TaskDTO taskDTO = mapperUtil.convert(studentTask.getTask(), new TaskDTO());
-            LessonDTO lessonDTO = mapperUtil.convert(studentTask.getTask().getLesson(), new LessonDTO());
-            taskDTO.setLesson(lessonDTO);
-            StudentTaskDTO studentTaskDTO = mapperUtil.convert(studentTask, new StudentTaskDTO());
-            studentTaskDTO.setTask(taskDTO);
-            studentTaskDTOList.add(studentTaskDTO);
-        }
-        return studentTaskDTOList;
+        return studentTaskRepository.findAllByStudent(userRepository.findById(getCurrentUserId()).get())
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new StudentTaskDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

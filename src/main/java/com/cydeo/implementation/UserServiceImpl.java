@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,21 +20,16 @@ public class UserServiceImpl implements UserService {
 
     private final MapperUtil mapperUtil;
     private final UserRepository userRepository;
-    private final LessonRepository lessonRepository;
     private final BatchRepository batchRepository;
     private final UserRoleRepository userRoleRepository;
-    private final InstructorLessonRepository instructorLessonRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, LessonRepository lessonRepository,
-                           BatchRepository batchRepository, UserRoleRepository userRoleRepository,
-                           InstructorLessonRepository instructorLessonRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, BatchRepository batchRepository,
+                           UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
-        this.lessonRepository = lessonRepository;
         this.batchRepository = batchRepository;
         this.userRoleRepository = userRoleRepository;
-        this.instructorLessonRepository = instructorLessonRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -57,36 +51,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllStaffs() {
-        UserRole userRole = userRoleRepository.findByName("Student");
-        List<UserDTO> staffsDTOList = userRepository.findAllByUserRoleNot(userRole)
+        return userRepository.findAllByUserRoleNot(userRoleRepository.findByName("Student"))
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
-//        for(UserDTO staff : staffsDTOList){
-//            User user = userRepository.findById(staff.getId()).get();
-//            staff.setUserRole(mapperUtil.convert(user.getUserRole(), new UserRoleDTO()));
-//        }
-        return staffsDTOList;
     }
 
     @Override
     public List<UserDTO> getAllStudents() {
-        UserRole userRole = userRoleRepository.findByName("Student");
-        List<UserDTO> studentsDTOList =  userRepository.findAllByUserRole(userRole)
+        return userRepository.findAllByUserRole(userRoleRepository.findByName("Student"))
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
-//        for(UserDTO student : studentsDTOList){
-//            User user = userRepository.findById(student.getId()).get();
-//            student.setUserRole(mapperUtil.convert(userRole, new UserRoleDTO()));
-//            student.setBatch(mapperUtil.convert(user.getBatch(), new BatchDTO()));
-//            try{
-//                student.setGroup(mapperUtil.convert(user.getGroup(), new GroupDTO()));
-//            }catch (IllegalArgumentException e){
-//                continue;
-//            }
-//        }
-        return studentsDTOList;
     }
 
     @Override
@@ -99,8 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-       User byId = userRepository.findById(id).get();
-        return mapperUtil.convert(byId, new UserDTO());
+        return mapperUtil.convert(userRepository.findById(id).get(), new UserDTO());
     }
 
     @Override

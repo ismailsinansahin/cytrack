@@ -12,27 +12,27 @@
                     <ul class="navbar-nav flex-column">
                         <li class="nav-divider"></li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Admin')">
-                            <a class="nav-link" th:href="@{/dashboards/adminDashboard}">
+                            <a class="nav-link" th:href="@{/dashboards/admin}">
                                 <i class="fas fa-chalkboard-teacher"></i>My Dashboard
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Instructor')">
-                            <a class="nav-link" th:href="@{/dashboards/instructorDashboard}">
+                            <a class="nav-link" th:href="@{/dashboards/instructor}">
                                 <i class="fas fa-chalkboard-teacher"></i>My Dashboard
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Cydeo Mentor')">
-                            <a class="nav-link" th:href="@{/dashboards/cydeoMentorDashboard}">
+                            <a class="nav-link" th:href="@{/dashboards/cydeoMentor}">
                                 <i class="fas fa-chalkboard-teacher"></i>My Dashboard
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Alumni Mentor')">
-                            <a class="nav-link" th:href="@{/dashboards/alumniMentorDashboard}">
-                                <i class="fas fa-chalkboard-teacher" th:disabled=""></i>My Dashboard
+                            <a class="nav-link" th:href="@{/dashboards/alumniMentor}">
+                                <i class="fas fa-chalkboard-teacher"></i>My Dashboard
                             </a>
                         </li>
                         <li class="nav-item" sec:authorize="hasAnyAuthority('Student')">
-                            <a class="nav-link" th:href="@{/dashboards/studentDashboard}">
+                            <a class="nav-link" th:href="@{/dashboards/student}">
                                 <i class="fas fa-chalkboard-teacher"></i>My Dashboard
                             </a>
                         </li>
