@@ -25,7 +25,6 @@ public class TaskController {
     @GetMapping("/taskList")
     public String goTaskList(Model model){
         model.addAttribute("tasks", taskService.getAllTasks());
-        System.out.println("taskService.getAllTasks() = " + taskService.getAllTasks());
         return "task/task-list";
     }
 

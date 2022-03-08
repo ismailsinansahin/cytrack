@@ -19,7 +19,7 @@
                                 <div th:text="${'Firstname : ' + student.firstName}"><br></div>
                                 <div th:text="${'Lastname : ' + student.lastName}"><br></div>
                                 <div><br></div>
-                                <div th:text="${'Batch : ' + student.batch.name}"><br></div>
+                                <div th:text="${'Batch : ' + student.group.batch.name}"><br></div>
                                 <div th:text="${'Group : ' + student.group.name}"><br></div>
                                 <div th:text="${'Country : ' + student.country.value}"><br></div>
                                 <div><br></div>
@@ -32,7 +32,7 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Task Based Performance</div>
                             <div class="panel panel-primary bg-primary-light text-dark">
-                                <div class="progress-bar bg-secondary-light text-dark" role="progressbar" style="width: 90%;"
+                                <div class="progress-bar bg-secondary-light text-dark" role="progressbar" style="width: 90%"
                                      aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Total')}">
                                     <p style="text-align:left">TOTAL<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Total')}"></span></p>
                                 </div>
@@ -76,12 +76,12 @@
                             <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Week Based Performance</div>
                             <div class="panel panel-primary bg-primary-light text-dark">
                                 <div class="progress-vertical bg-secondary-light text-dark" role="progressbar" style="line-height: 90%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${80}">
-                                    <p style="vertical-align:baseline">W1<span style="float:bottom" th:text="'%' + ${80}"></span></p>
+                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${weekBasedNumbers.get('W1')}">
+                                    <p style="vertical-align:baseline"><span style="float:bottom" th:text="'%' + ${weekBasedNumbers.get('W1')}"></span></p>
                                 </div>
                                 <div class="progress-vertical bg-info text-dark" role="progressbar" style="line-height: 85%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${90}">
-                                    <p style="vertical-align:baseline">W2<span style="float:bottom" th:text="'%' + ${90}"></span></p>
+                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${weekBasedNumbers.get('W2')}">
+                                    <p style="vertical-align:baseline"><span style="float:bottom" th:text="'%' + ${weekBasedNumbers.get('W2')}"></span></p>
                                 </div>
                                 <div><br><br><br><br><br><br><br><br><br></div>
                             </div>

@@ -70,7 +70,7 @@ public class DashboardServiceImpl implements DashboardService {
             int completionRate = getCompletionOfTask(taskType);
             taskBasedNumbersMap.put(taskType, completionRate);
         }
-        taskBasedNumbersMap.put("Total", getTotalCompletionRate());
+        taskBasedNumbersMap.put("Total", getCompletionOfAllTasks(taskBasedNumbersMap));
         return taskBasedNumbersMap;
     }
 
@@ -94,20 +94,8 @@ public class DashboardServiceImpl implements DashboardService {
         return completionRate;
     }
 
-    private Integer getTotalCompletionRate() {
-        int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
-        int total = (int) studentTaskRepository.findAllByStudent(student).stream().count();
-        int completed = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
-                .stream()
-                .filter(StudentTask::isCompleted)
-                .count());
-        try{
-            completionRate = (completed * 100 / total);
-        }catch (ArithmeticException e){
-            completionRate = 0;
-        }
-        return completionRate;
+    private Integer getCompletionOfAllTasks(Map<String, Integer> taskBasedNumbersMap) {
+        return taskBasedNumbersMap.values().stream().reduce(Integer::sum).get();
     }
 
     @Override
