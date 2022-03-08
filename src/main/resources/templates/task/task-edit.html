@@ -42,7 +42,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batchDTO}" required>
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required>
                                                                         <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
@@ -55,7 +55,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="lesson">Lesson</label>
-                                                                    <select id="lesson" class="form-control" th:field="*{lessonDTO}" required>
+                                                                    <select id="lesson" class="form-control" th:field="*{lesson}" required>
                                                                         <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "lesson:${lessons}"
                                                                                 th:value="${lesson.id}"

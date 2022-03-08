@@ -31,22 +31,10 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
 
     @Override
     public List<UserDTO> getAllStudentsOfGroup(Long groupId) {
-        Group group = groupRepository.findById(groupId).get();
-        BatchDTO batchDTO = mapperUtil.convert(group.getBatch(), new BatchDTO());
-        UserDTO cydeoMentorDTO = mapperUtil.convert(group.getCydeoMentor(), new UserDTO());
-        UserDTO alumniMentorDTO = mapperUtil.convert(group.getAlumniMentor(), new UserDTO());
-        List<User> studentList = userRepository.findAllByGroup(group);
-        List<UserDTO> studentDTOList = new ArrayList<>();
-        for(User student : studentList){
-            GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
-            UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-            groupDTO.setBatchDTO(batchDTO);
-            groupDTO.setCydeoMentorDTO(cydeoMentorDTO);
-            groupDTO.setAlumniMentorDTO(alumniMentorDTO);
-            studentDTO.setGroupDTO(groupDTO);
-            studentDTOList.add(studentDTO);
-        }
-        return studentDTOList;
+        return userRepository.findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
     }
 
 }

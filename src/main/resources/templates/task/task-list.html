@@ -54,15 +54,15 @@
                                                                         <tr th:each="task: ${tasks}" class="text-dark"
                                                                             th:style="${task.taskStatus.value}=='Published' ? 'background-color:#d6feab' :
                                                                                      (${task.taskStatus.value}=='Out Of Time' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
-                                                                            <td th:text="${task.batchDTO.name}"></td>
-                                                                            <td th:text="${task.lessonDTO.name}"></td>
+                                                                            <td th:text="${task.batch.name}"></td>
+                                                                            <td th:text="${task.lesson.name}"></td>
                                                                             <td th:text="${task.taskType.value}"></td>
                                                                             <td th:text="${task.name}"></td>
                                                                             <td th:text="${task.publishingDate}"></td>
                                                                             <td th:text="${task.dueDate}"></td>
                                                                             <td th:text="${task.taskStatus.value}"></td>
                                                                             <td class="actions">
-                                                                                <form action="#" data-th-action="@{/tasks/publishCompleteEditDelete/{taskId}/{batchId}(taskId=${task.getId()}, batchId=${task.batchDTO.getId()})}"
+                                                                                <form action="#" data-th-action="@{/tasks/publishCompleteEditDelete/{taskId}/{batchId}(taskId=${task.getId()}, batchId=${task.batch.getId()})}"
                                                                                       method="post">
                                                                                     <button th:if="${task.taskStatus.value} == 'Planned'"
                                                                                             class="btn btn-success mb-2 mb-sm-0 mr-sm-2"

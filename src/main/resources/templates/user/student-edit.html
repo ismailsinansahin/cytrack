@@ -135,7 +135,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batchDTO}" required="required">
+                                                                    <select id="batch" class="form-control" th:field="*{batch}" required="required">
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>

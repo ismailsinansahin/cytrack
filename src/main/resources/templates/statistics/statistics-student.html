@@ -19,8 +19,8 @@
                                 <div th:text="${'Firstname : ' + student.firstName}"><br></div>
                                 <div th:text="${'Lastname : ' + student.lastName}"><br></div>
                                 <div><br></div>
-                                <div th:text="${'Batch : ' + student.batchDTO.name}"><br></div>
-                                <div th:text="${'Group : ' + student.groupDTO.name}"><br></div>
+                                <div th:text="${'Batch : ' + student.batch.name}"><br></div>
+                                <div th:text="${'Group : ' + student.group.name}"><br></div>
                                 <div th:text="${'Country : ' + student.country.value}"><br></div>
                                 <div><br></div>
                                 <div th:text="${'Gender : ' + student.gender.value}"><br></div>
@@ -109,11 +109,11 @@
                                                     <tbody>
                                                     <tr th:each="studentTask: ${studentTasks}" class="text-dark"
                                                         th:style="${studentTask.completed} ? 'background-color:#d6feab' : 'background-color:#ebbec3'">
-                                                        <td th:text="${studentTask.taskDTO.lessonDTO.name}"></td>
-                                                        <td th:text="${studentTask.taskDTO.taskType.value}"></td>
-                                                        <td th:text="${studentTask.taskDTO.name}"></td>
-                                                        <td th:text="${studentTask.taskDTO.publishingDate}"></td>
-                                                        <td th:text="${studentTask.taskDTO.dueDate}"></td>
+                                                        <td th:text="${studentTask.task.lesson.name}"></td>
+                                                        <td th:text="${studentTask.task.taskType.value}"></td>
+                                                        <td th:text="${studentTask.task.name}"></td>
+                                                        <td th:text="${studentTask.task.publishingDate}"></td>
+                                                        <td th:text="${studentTask.task.dueDate}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

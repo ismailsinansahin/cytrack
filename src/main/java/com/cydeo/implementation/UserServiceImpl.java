@@ -20,21 +20,16 @@ public class UserServiceImpl implements UserService {
 
     private final MapperUtil mapperUtil;
     private final UserRepository userRepository;
-    private final LessonRepository lessonRepository;
     private final BatchRepository batchRepository;
     private final UserRoleRepository userRoleRepository;
-    private final InstructorLessonRepository instructorLessonRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, LessonRepository lessonRepository,
-                           BatchRepository batchRepository, UserRoleRepository userRoleRepository,
-                           InstructorLessonRepository instructorLessonRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, BatchRepository batchRepository,
+                           UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
-        this.lessonRepository = lessonRepository;
         this.batchRepository = batchRepository;
         this.userRoleRepository = userRoleRepository;
-        this.instructorLessonRepository = instructorLessonRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -56,37 +51,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllStaffs() {
-        UserRole userRole = userRoleRepository.findByName("Student");
-        List<UserDTO> staffsDTOList = userRepository.findAllByUserRoleNot(userRole)
+        return userRepository.findAllByUserRoleNot(userRoleRepository.findByName("Student"))
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
-        for(UserDTO staff : staffsDTOList){
-            User user = userRepository.findById(staff.getId()).get();
-            staff.setUserRoleDTO(mapperUtil.convert(user.getUserRole(), new UserRoleDTO()));
-        }
-        return staffsDTOList;
     }
 
     @Override
     public List<UserDTO> getAllStudents() {
-        UserRole userRole = userRoleRepository.findByName("Student");
-        System.out.println("userRole.getName() = " + userRole.getName());
-        List<UserDTO> studentsDTOList =  userRepository.findAllByUserRole(userRole)
+        return userRepository.findAllByUserRole(userRoleRepository.findByName("Student"))
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
-        for(UserDTO student : studentsDTOList){
-            User user = userRepository.findById(student.getId()).get();
-            student.setUserRoleDTO(mapperUtil.convert(userRole, new UserRoleDTO()));
-            student.setBatchDTO(mapperUtil.convert(user.getBatch(), new BatchDTO()));
-            try{
-                student.setGroupDTO(mapperUtil.convert(user.getGroup(), new GroupDTO()));
-            }catch (IllegalArgumentException e){
-                continue;
-            }
-        }
-        return studentsDTOList;
     }
 
     @Override
@@ -104,11 +80,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
-        if(userDTO.getUserRoleDTO() == null) userDTO.setUserRoleDTO(new UserRoleDTO("Student"));
+        if(userDTO.getUserRole() == null) userDTO.setUserRole(new UserRoleDTO("Student"));
         userDTO.setUserName(userDTO.getEmail());
         userDTO.setEnabled(true);
         User user = mapperUtil.convert(userDTO, new User());
-        user.setUserRole(userRoleRepository.findByName(userDTO.getUserRoleDTO().getName()));
+        user.setUserRole(userRoleRepository.findByName(userDTO.getUserRole().getName()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         userDTO = mapperUtil.convert(user, new UserDTO());

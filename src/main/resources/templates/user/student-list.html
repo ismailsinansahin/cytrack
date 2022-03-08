@@ -63,7 +63,7 @@
                                                             <tbody id="myTable">
                                                                 <tr th:each="student : ${students}"
                                                                   class="text-dark">
-                                                                    <td th:text="${student.batchDTO.name}"></td>
+                                                                    <td th:text="${student.batch.name}"></td>
                                                                     <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                     <td th:text="${student.country.value}"></td>
                                                                     <td th:text="${student.studentStatus.value}"></td>

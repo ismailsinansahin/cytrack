@@ -9,6 +9,8 @@ import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
 import com.cydeo.service.StudentStatisticsService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.threeten.extra.Weeks;
 
@@ -32,29 +34,21 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
 
     @Override
     public UserDTO findStudentById(Long studentId) {
-        User student = userRepository.findById(studentId).get();
-        BatchDTO batchDTO = mapperUtil.convert(student.getBatch(), new BatchDTO());
-        GroupDTO groupDTO = mapperUtil.convert(student.getGroup(), new GroupDTO());
-        UserDTO studentDTO = mapperUtil.convert(student, new UserDTO());
-        studentDTO.setBatchDTO(batchDTO);
-        studentDTO.setGroupDTO(groupDTO);
-        return studentDTO;
+        return mapperUtil.convert(userRepository.findById(getCurrentUserId()).get(), new UserDTO());
+    }
+
+    public Long getCurrentUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
+        return userRepository.findByUserName(username).getId();
     }
 
     @Override
     public List<StudentTaskDTO> getAllTasksOfStudent(Long studentId) {
-        User student = userRepository.findById(studentId).get();
-        List<StudentTaskDTO> studentTaskDTOList = new ArrayList<>();
-        List<StudentTask> studentTaskList = studentTaskRepository.findAllByStudent(student);
-        for(StudentTask studentTask : studentTaskList){
-            TaskDTO taskDTO = mapperUtil.convert(studentTask.getTask(), new TaskDTO());
-            LessonDTO lessonDTO = mapperUtil.convert(studentTask.getTask().getLesson(), new LessonDTO());
-            taskDTO.setLessonDTO(lessonDTO);
-            StudentTaskDTO studentTaskDTO = mapperUtil.convert(studentTask, new StudentTaskDTO());
-            studentTaskDTO.setTaskDTO(taskDTO);
-            studentTaskDTOList.add(studentTaskDTO);
-        }
-        return studentTaskDTOList;
+        return studentTaskRepository.findAllByStudent(userRepository.findById(getCurrentUserId()).get())
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new StudentTaskDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override
