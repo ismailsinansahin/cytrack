@@ -6,6 +6,7 @@ import com.cydeo.dto.UserDTO;
 import com.cydeo.dto.UserRoleDTO;
 import com.cydeo.entity.User;
 import com.cydeo.entity.UserRole;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
 import com.cydeo.service.UserService;
@@ -80,15 +81,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
+        User user = (userDTO.getId() != null) ? userRepository.findById(userDTO.getId()).get() : new User();
         if(userDTO.getUserRole() == null) userDTO.setUserRole(new UserRoleDTO("Student"));
+        if(user.getGroup() != null) userDTO.setGroup(mapperUtil.convert(user.getGroup(), new GroupDTO()));
         userDTO.setUserName(userDTO.getEmail());
         userDTO.setEnabled(true);
-        User user = mapperUtil.convert(userDTO, new User());
+        user = mapperUtil.convert(userDTO, user);
         user.setUserRole(userRoleRepository.findByName(userDTO.getUserRole().getName()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        userDTO = mapperUtil.convert(user, new UserDTO());
-        return userDTO;
+        return mapperUtil.convert(user, new UserDTO());
     }
 
     @Override
@@ -96,6 +98,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).get();
         user.setIsDeleted(true);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO drop(Long id) {
+        User user = userRepository.findById(id).get();
+        user.setStudentStatus(StudentStatus.DROPPED);
+        userRepository.save(user);
+        return mapperUtil.convert(user, new UserDTO());
     }
 
 }

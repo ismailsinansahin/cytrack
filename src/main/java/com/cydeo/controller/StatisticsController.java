@@ -32,13 +32,16 @@ public class StatisticsController {
 
     @GetMapping("/batchList")
     public String showBatches(Model model){
-        model.addAttribute("batches", batchStatisticsService.getAllBatches());
+        model.addAttribute("batches", cydeoStatisticsService.getAllBatches());
         return "statistics/statistics-batchList";
     }
 
     @GetMapping("/groupList/{batchId}")
     public String showGroupsOfBatch(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batch", batchStatisticsService.getBatchById(batchId));
         model.addAttribute("groups", batchStatisticsService.getAllGroupsOfBatch(batchId));
+        model.addAttribute("taskBasedNumbers", batchStatisticsService.getTaskBasedNumbers(batchId));
+        model.addAttribute("weekBasedNumbers", batchStatisticsService.getWeekBasedNumbers(batchId));
         return "statistics/statistics-groupList";
     }
 
@@ -49,7 +52,10 @@ public class StatisticsController {
 
     @GetMapping("/studentList/{groupId}")
     public String showStudentsOfGroup(@PathVariable("groupId") Long groupId, Model model){
+        model.addAttribute("group", groupStatisticsService.getGroupById(groupId));
         model.addAttribute("students", groupStatisticsService.getAllStudentsOfGroup(groupId));
+        model.addAttribute("taskBasedNumbers", groupStatisticsService.getTaskBasedNumbers(groupId));
+        model.addAttribute("weekBasedNumbers", groupStatisticsService.getWeekBasedNumbers(groupId));
         return "statistics/statistics-studentList";
     }
 

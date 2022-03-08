@@ -110,12 +110,18 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users/staffList";
     }
-    @PostMapping(value = "/studentEditDelete/{id}", params = {"action=edit"})
+    @PostMapping(value = "/studentEditDropDelete/{id}", params = {"action=edit"})
     public String editStudent(@PathVariable("id") Long id){
         return "redirect:/users/studentEdit/" + id;
     }
 
-    @PostMapping(value = "/studentEditDelete/{id}", params = {"action=delete"})
+    @PostMapping(value = "/studentEditDropDelete/{id}", params = {"action=drop"})
+    public String dropStudent(@PathVariable("id") Long id){
+        userService.drop(id);
+        return "redirect:/users/studentList";
+    }
+
+    @PostMapping(value = "/studentEditDropDelete/{id}", params = {"action=delete"})
     public String deleteStudent(@PathVariable("id") Long id){
         userService.delete(id);
         return "redirect:/users/studentList";

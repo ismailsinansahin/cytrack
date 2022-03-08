@@ -47,9 +47,7 @@ public class DashboardController {
         model.addAttribute("student", dashboardService.getCurrentUser());
         model.addAttribute("studentTasks", dashboardService.getAllTasksOfCurrentStudent());
         model.addAttribute("taskBasedNumbers", dashboardService.getTaskBasedNumbers());
-        System.out.println("dashboardService.getTaskBasedNumbers() = " + dashboardService.getTaskBasedNumbers());
         model.addAttribute("weekBasedNumbers", dashboardService.getWeekBasedNumbers());
-        System.out.println("dashboardService.getWeekBasedNumbers() = " + dashboardService.getWeekBasedNumbers());
         return "dashboard/student-dashboard";
     }
 

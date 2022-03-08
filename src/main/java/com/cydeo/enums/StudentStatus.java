@@ -2,7 +2,7 @@ package com.cydeo.enums;
 
 public enum StudentStatus {
 
-    RETURNING("Returning"), NEW("New");
+    RETURNING("Returning"), NEW("New"), DROPPED("Dropped"), TRANSFERRED("Transferred");
 
     private String value;
 

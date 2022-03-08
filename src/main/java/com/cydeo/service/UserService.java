@@ -15,6 +15,7 @@ public interface UserService {
     UserDTO getUserById(Long id);
     UserDTO save(UserDTO userDTO);
     void delete(Long id);
+    UserDTO drop(Long id);
     List<BatchDTO> getAllBatches();
 
 }
