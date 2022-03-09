@@ -66,7 +66,7 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Map<UserDTO, String> getInstructorsAndLessonsMap() {
         Map<UserDTO,String> instructorsLessonsMap = new HashMap<>();
-        UserRole userRole = userRoleRepository.findByName("instructor");
+        UserRole userRole = userRoleRepository.findByName("Instructor");
         List<UserDTO> instructors = userRepository.findAllByUserRole(userRole)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
@@ -75,7 +75,7 @@ public class LessonServiceImpl implements LessonService {
             List<LessonDTO> lessonsList = listAllLessonsOfInstructor(instructor.getId());
             String lessons = lessonsList
                     .stream()
-                    .map(obj -> obj.getName())
+                    .map(LessonDTO::getName)
                     .reduce("",(x,y)-> x + y + " / ");
             lessons = (lessons.equals("")) ? "-" : lessons.substring(0,lessons.length()-2);
             instructorsLessonsMap.put(instructor,lessons);

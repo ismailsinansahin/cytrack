@@ -126,7 +126,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void assignStudentToGroup(UserDTO studentDTO) {
         User student = userRepository.findById(studentDTO.getId()).get();
-        Group group = mapperUtil.convert(studentDTO.getGroup(), new Group());
+        Group group = groupRepository.findById(studentDTO.getGroup().getId()).get();
         student.setGroup(group);
         userRepository.save(student);
     }
