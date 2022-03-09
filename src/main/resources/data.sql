@@ -1,10 +1,10 @@
 insert into batches (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
-                     batch_end_date, batch_start_date, batch_status, name, notes)
-values (now(), 1, false, now(), 1, '2021-12-30', '2021-06-30', 'COMPLETED', 'EU-1', 'EU only'),
-       (now(), 1, false, now(), 1, '2022-12-30', '2021-06-26', 'COMPLETED', 'EU-2', 'EU only'),
-       (now(), 1, false, now(), 1, '2023-01-15', '2022-03-07', 'INPROGRESS', 'EU-3', 'EU only'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-28', 'PLANNED', 'EU-4', 'EU only'),
-       (now(), 1, false, now(), 1, '2021-12-30', '2021-06-29', 'PLANNED', 'EU-5', 'EU only');
+                     batch_start_date, batch_end_date, batch_status, name, notes)
+values (now(), 1, false, now(), 1, '2020-01-01', '2020-06-30', 'COMPLETED', 'EU-1', 'EU only'),
+       (now(), 1, false, now(), 1, '2021-01-01', '2021-12-31', 'COMPLETED', 'EU-2', 'EU only'),
+       (now(), 1, false, now(), 1, '2022-01-01', '2022-06-30', 'INPROGRESS', 'EU-3', 'EU only'),
+       (now(), 1, false, now(), 1, '2022-01-01', '2022-12-31', 'INPROGRESS', 'EU-4', 'EU only'),
+       (now(), 1, false, now(), 1, '2022-06-30', '2022-12-12', 'PLANNED', 'EU-5', 'EU only');
 
 insert into user_roles (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name)
 values (now(), 1, false, now(), 1, 'Admin'),

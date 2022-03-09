@@ -27,6 +27,11 @@ public class BatchDTO {
     private String notes;
     private BatchStatus batchStatus;
 
+    private int completion;
+    private int activeStudents;
+    private int droppedTransferredStudents;
+    private int studentProgress;
+
     public BatchDTO(BatchStatus batchStatus) {
         this.batchStatus = batchStatus;
     }

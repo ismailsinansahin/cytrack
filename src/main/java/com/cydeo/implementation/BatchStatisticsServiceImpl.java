@@ -5,6 +5,7 @@ import com.cydeo.dto.GroupDTO;
 import com.cydeo.entity.Batch;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.User;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.BatchRepository;
@@ -47,7 +48,52 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
         return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
+                .peek(groupDTO -> groupDTO.setActiveStudents(getActiveStudents(groupDTO)))
+                .peek(groupDTO -> groupDTO.setDroppedTransferredStudents(getDroppedTransferredStudents(groupDTO)))
+                .peek(groupDTO -> groupDTO.setStudentProgress(getStudentProgress(groupDTO)))
                 .collect(Collectors.toList());
+    }
+
+    private int getActiveStudents(GroupDTO groupDTO) {
+        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+                .stream()
+                .filter(student -> student.getStudentStatus().equals(StudentStatus.NEW) ||
+                        student.getStudentStatus().equals(StudentStatus.RETURNING))
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(GroupDTO groupDTO) {
+        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+                .stream()
+                .filter(student -> student.getStudentStatus().equals(StudentStatus.DROPPED) ||
+                        student.getStudentStatus().equals(StudentStatus.TRANSFERRED))
+                .count();
+    }
+
+    private int getStudentProgress(GroupDTO groupDTO) {
+        int studentProgress;
+        int totalTask = 0;
+        int totalCompleted = 0;
+        List<User> studentsInGroup = userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get());
+        for (User student : studentsInGroup){
+            int totalTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
+                    .stream()
+                    .filter(studentTask -> studentTask.getStudent().equals(student))
+                    .count();
+            int totalCompletedTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
+                    .stream()
+                    .filter(studentTask -> studentTask.getStudent().equals(student))
+                    .filter(StudentTask::isCompleted)
+                    .count();
+            totalTask += totalTaskOfStudent;
+            totalCompleted += totalCompletedTaskOfStudent;
+        }
+        try{
+            studentProgress = totalCompleted * 100 / totalTask;
+        }catch (ArithmeticException e){
+            studentProgress = 0;
+        }
+        return studentProgress;
     }
 
     @Override

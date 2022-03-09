@@ -19,26 +19,22 @@ public class DashboardController {
     }
 
     @GetMapping("/admin")
-    public String showAdminDashboard(Model model){
-        model.addAttribute("batches", dashboardService.getAllBatches());
-        return "dashboard/admin-dashboard";
+    public String showAdminDashboard(){
+        return "redirect:/users/staffList";
     }
 
     @GetMapping("/instructor")
-    public String showInstructorDashboard(Model model){
-
-        return "dashboard/instructor-dashboard";
+    public String showInstructorDashboard(){
+        return "redirect:/statistics/batchList";
     }
 
     @GetMapping("/cydeoMentor")
-    public String showCydeoMentorDashboard(Model model){
-
-        return "dashboard/cydeoMentor-dashboard";
+    public String showCydeoMentorDashboard(){
+        return "redirect:/statistics/batchList";
     }
 
     @GetMapping("/alumniMentor")
-    public String showAlumniMentorDashboard(Model model){
-
+    public String showAlumniMentorDashboard(){
         return "dashboard/alumniMentor-dashboard";
     }
 

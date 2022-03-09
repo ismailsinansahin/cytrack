@@ -24,17 +24,14 @@ public class DashboardServiceImpl implements DashboardService {
     private final StudentTaskRepository studentTaskRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-    private final GroupRepository groupRepository;
     private final BatchRepository batchRepository;
     private final MapperUtil mapperUtil;
 
     public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository,
-                                TaskRepository taskRepository, GroupRepository groupRepository,
-                                BatchRepository batchRepository, MapperUtil mapperUtil) {
+                                TaskRepository taskRepository, BatchRepository batchRepository, MapperUtil mapperUtil) {
         this.studentTaskRepository = studentTaskRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
-        this.groupRepository = groupRepository;
         this.batchRepository = batchRepository;
         this.mapperUtil = mapperUtil;
     }
@@ -62,50 +59,62 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Map<String, Integer> getTaskBasedNumbers() {
         Map<String, Integer> taskBasedNumbersMap = new HashMap<>();
-        List<String> tasksTypesList= Arrays
-                .stream(TaskType.values())
-                .map(TaskType::getValue)
-                .collect(Collectors.toList());
+        int completionRate;
+        int totalcompletionRate;
+        int totalOfAllTasks = 0;
+        int completedOfAllTasks = 0;
+        Long studentId = getCurrentUserId();
+        List<String> tasksTypesList = getTaskTypes();
         for(String taskType : tasksTypesList){
-            int completionRate = getCompletionOfTask(taskType);
+            int total = getTotalOfGivenTasks(studentId, taskType);
+            int completed = getTotalOfCompletedTasks(studentId, taskType);
+            try{
+                completionRate = (completed * 100 / total);
+            }catch (ArithmeticException e){
+                completionRate = 0;
+            }
             taskBasedNumbersMap.put(taskType, completionRate);
+            totalOfAllTasks += total;
+            completedOfAllTasks += completed;
         }
-        taskBasedNumbersMap.put("Total", getCompletionOfAllTasks(taskBasedNumbersMap));
+        try{
+            totalcompletionRate = (completedOfAllTasks * 100 / totalOfAllTasks);
+        }catch (ArithmeticException e){
+            totalcompletionRate = 0;
+        }
+        taskBasedNumbersMap.put("Total", totalcompletionRate);
         return taskBasedNumbersMap;
     }
 
-    private Integer getCompletionOfTask(String taskType) {
-        int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
-        int total = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
+    private List<String> getTaskTypes() {
+        return Arrays
+                .stream(TaskType.values())
+                .map(TaskType::getValue)
+                .collect(Collectors.toList());
+    }
+
+    private int getTotalOfGivenTasks(Long studentId, String taskType) {
+        return Math.toIntExact(studentTaskRepository.findAllByStudent(userRepository.findById(studentId).get())
                 .stream()
                 .filter(studentTask -> studentTask.getTask().getTaskType().getValue().equals(taskType))
                 .count());
-        int completed = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
+    }
+
+    private int getTotalOfCompletedTasks(Long studentId, String taskType) {
+        return Math.toIntExact(studentTaskRepository.findAllByStudent(userRepository.findById(studentId).get())
                 .stream()
                 .filter(studentTask -> studentTask.getTask().getTaskType().getValue().equals(taskType))
                 .filter(StudentTask::isCompleted)
                 .count());
-        try{
-            completionRate = (completed * 100 / total);
-        }catch (ArithmeticException e){
-            completionRate = 0;
-        }
-        return completionRate;
-    }
-
-    private Integer getCompletionOfAllTasks(Map<String, Integer> taskBasedNumbersMap) {
-        return taskBasedNumbersMap.values().stream().reduce(Integer::sum).get();
     }
 
     @Override
     public Map<String, Integer> getWeekBasedNumbers() {
+        Long studentId = getCurrentUserId();
         Map<String, Integer> weekBasedNumbersMap = new HashMap<>();
-        User student = userRepository.findById(getCurrentUserId()).get();
-        Batch studentBatch = student.getBatch();
-        int numberOfWeeks = calculateNumberOfWeeks(studentBatch);
-        for (int i = 1 ; i < numberOfWeeks ; i++) {
-            weekBasedNumbersMap.put(("W" + i), getNumbersForWeekI(studentBatch, i));
+        int numberOfWeeks = calculateNumberOfWeeks(userRepository.findById(studentId).get().getBatch());
+        for (int numberOfWeek = 1 ; numberOfWeek < numberOfWeeks ; numberOfWeek++) {
+            weekBasedNumbersMap.put(("W" + numberOfWeek), getNumbersForWeek(studentId, numberOfWeek));
         }
         return weekBasedNumbersMap;
     }
@@ -114,28 +123,38 @@ public class DashboardServiceImpl implements DashboardService {
         return Weeks.between(studentBatch.getBatchStartDate(), studentBatch.getBatchEndDate()).getAmount();
     }
 
-    private Integer getNumbersForWeekI(Batch studentBatch, int i) {
+    private Integer getNumbersForWeek(Long studentId, int numberOfWeek) {
         int completionRate;
-        User student = userRepository.findById(getCurrentUserId()).get();
-        LocalDate weekStartDate = studentBatch.getBatchStartDate().plusDays(7 * (i-1));
-        LocalDate weekEndDate = weekStartDate.plusDays(7);
-        int total = (int) studentTaskRepository.findAllByStudent(student)
-                .stream()
-                .map(StudentTask::getTask)
-                .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
-                .count();
-        int completed = Math.toIntExact(studentTaskRepository.findAllByStudent(student)
-                .stream()
-                .filter(StudentTask::isCompleted)
-                .map(StudentTask::getTask)
-                .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
-                .count());
+        User student = userRepository.findById(studentId).get();
+        int total = getTotalOfGivenTasksInGivenWeek(student, numberOfWeek);
+        int completed = getTotalOfCompletedTasksInGivenWeek(student, numberOfWeek);
         try{
             completionRate = (completed * 100 / total);
         }catch (ArithmeticException e){
             completionRate = 0;
         }
         return completionRate;
+    }
+
+    private int getTotalOfGivenTasksInGivenWeek(User student, int numberOfWeek) {
+        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        LocalDate weekEndDate = weekStartDate.plusDays(7);
+        return (int) studentTaskRepository.findAllByStudent(student)
+                .stream()
+                .map(StudentTask::getTask)
+                .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
+                .count();
+    }
+
+    private int getTotalOfCompletedTasksInGivenWeek(User student, int numberOfWeek) {
+        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        LocalDate weekEndDate = weekStartDate.plusDays(7);
+        return Math.toIntExact(studentTaskRepository.findAllByStudent(student)
+                .stream()
+                .filter(StudentTask::isCompleted)
+                .map(StudentTask::getTask)
+                .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
+                .count());
     }
 
     @Override

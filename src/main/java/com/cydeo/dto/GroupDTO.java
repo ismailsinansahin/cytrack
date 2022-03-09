@@ -18,4 +18,8 @@ public class GroupDTO {
     private UserDTO cydeoMentor;
     private UserDTO alumniMentor;
 
+    private int activeStudents;
+    private int droppedTransferredStudents;
+    private int studentProgress;
+
 }

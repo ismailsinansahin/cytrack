@@ -16,15 +16,17 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Student Profile</div>
                             <div class="panel panel-primary bg-primary-light text-dark">
-                                <div th:text="${'Firstname : ' + student.firstName}"><br></div>
-                                <div th:text="${'Lastname : ' + student.lastName}"><br></div>
+                                <div><strong th:text="${'Firstname : '}"></strong><a th:text="${student.firstName}"></a><br></div>
+                                <div><strong th:text="${'Lastname : '}"></strong><a th:text="${student.lastName}"></a><br></div>
+                                <div><strong th:text="${'Batch : '}"></strong><a th:text="${student.group.batch.name}"></a><br></div>
+                                <div><strong th:text="${'Group : '}"></strong><a th:text="${student.group.name}"></a><br></div>
+                                <div><strong th:text="${'Country : '}"></strong><a th:text="${student.country.value}"></a><br></div>
+                                <div><strong th:text="${'Gender : '}"></strong><a th:text="${student.gender.value}"></a><br></div>
+                                <div><strong th:text="${'Status : '}"></strong><a th:text="${student.studentStatus.value}"></a><br></div>
                                 <div><br></div>
-                                <div th:text="${'Batch : ' + student.batch.name}"><br></div>
-                                <div th:text="${'Group : ' + student.group.name}"><br></div>
-                                <div th:text="${'Country : ' + student.country.value}"><br></div>
                                 <div><br></div>
-                                <div th:text="${'Gender : ' + student.gender.value}"><br></div>
-                                <div th:text="${'Status : ' + student.studentStatus.value}">Status<br></div>
+<!--                                <div><strong th:text="${'Cydeo Mentor : '}"></strong><a th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></a></div>&ndash;&gt;-->
+<!--                                <div><strong th:text="${'Alumni Mentor : '}"></strong><a th:text="${student.group.alumniMentor.firstName + ' ' + student.group.alumniMentor.lastName}"></a></div>&ndash;&gt;-->
                             </div>
                         </div>
                     </div>

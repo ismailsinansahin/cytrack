@@ -35,4 +35,6 @@ public class UserDTO {
     private BatchDTO batch;
     private GroupDTO group;
 
+    private int studentProgress;
+
 }

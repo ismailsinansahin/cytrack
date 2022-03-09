@@ -50,7 +50,32 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
         return userRepository.findAllByGroup(groupRepository.findById(groupId).get())
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .peek(studentDTO -> studentDTO.setStudentProgress(getStudentProgress(studentDTO)))
                 .collect(Collectors.toList());
+    }
+
+    private int getStudentProgress(UserDTO studentDTO) {
+        int studentProgress;
+        int totalTask = 0;
+        int totalCompleted = 0;
+        User student = userRepository.findById(studentDTO.getId()).get();
+        int totalTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
+                .stream()
+                .filter(studentTask -> studentTask.getStudent().equals(student))
+                .count();
+        int totalCompletedTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
+                .stream()
+                .filter(studentTask -> studentTask.getStudent().equals(student))
+                .filter(StudentTask::isCompleted)
+                .count();
+        totalTask += totalTaskOfStudent;
+        totalCompleted += totalCompletedTaskOfStudent;
+        try{
+            studentProgress = totalCompleted * 100 / totalTask;
+        }catch (ArithmeticException e){
+            studentProgress = 0;
+        }
+        return studentProgress;
     }
 
     @Override
