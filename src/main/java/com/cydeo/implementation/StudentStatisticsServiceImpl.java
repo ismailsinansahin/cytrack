@@ -79,14 +79,14 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
                 .collect(Collectors.toList());
     }
 
-    private int getTotalOfCompletedTasks(Long studentId, String taskType) {
+    private int getTotalOfGivenTasks(Long studentId, String taskType) {
         return Math.toIntExact(studentTaskRepository.findAllByStudent(userRepository.findById(studentId).get())
                 .stream()
                 .filter(studentTask -> studentTask.getTask().getTaskType().getValue().equals(taskType))
                 .count());
     }
 
-    private int getTotalOfGivenTasks(Long studentId, String taskType) {
+    private int getTotalOfCompletedTasks(Long studentId, String taskType) {
         return Math.toIntExact(studentTaskRepository.findAllByStudent(userRepository.findById(studentId).get())
                 .stream()
                 .filter(studentTask -> studentTask.getTask().getTaskType().getValue().equals(taskType))

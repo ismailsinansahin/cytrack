@@ -15,14 +15,14 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Group Profile</div>
                                 <div class="panel panel-primary bg-primary-light text-dark">
-                                    <div th:text="${'Batch Name : ' + group.batch.name}"></div>
-                                    <div th:text="${'Group Name : ' + group.name }"></div>
-                                    <div th:text="${'Cydeo Mentor : ' }"></div>
+                                    <div><strong th:text="${'Batch Name : '}"></strong><a th:text="${group.batch.name}"></a></div>
+                                    <div><strong th:text="${'Group Name : '}"></strong><a th:text="${group.batch.name}"></a></div>
+                                    <div><strong th:text="${'Cydeo Mentor : '}"></strong></div>
                                     <div th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></div>
-                                    <div th:text="${'Alumni Mentor : '  }"></div>
+                                    <div><strong th:text="${'Alumni Mentor : '}"></strong></div>
                                     <div th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></div>
-                                    <div th:text="${'Active Students : '}"></div>
-                                    <div th:text="${'Dropped/Transferred : ' }"></div>
+                                    <div><strong th:text="${'Active Students : '}"></strong><a>12</a></div>
+                                    <div><strong th:text="${'Dropped/Transferred : '}"></strong><a>3</a></div>
                                     <div><br></div>
                                 </div>
                             </div>
@@ -38,14 +38,14 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Total')}">
                                         <p style="text-align:left">TOTAL<span style="float:right"
-                                                                              th:text="'%' + ${taskBasedNumbers.get('Total')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Total')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-info text-dark" role="progressbar" style="width: 85%;"
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Recording')}">
                                         <p style="text-align:left">Recordings<span style="float:right"
-                                                                                   th:text="'%' + ${taskBasedNumbers.get('Recording')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Recording')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-info-light text-dark" role="progressbar"
@@ -53,7 +53,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Quiz')}">
                                         <p style="text-align:left">Quizzes<span style="float:right"
-                                                                                th:text="'%' + ${taskBasedNumbers.get('Quiz')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Quiz')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-secondary text-dark" role="progressbar"
@@ -61,7 +61,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Assignment')}">
                                         <p style="text-align:left">Assignments<span style="float:right"
-                                                                                    th:text="'%' + ${taskBasedNumbers.get('Assignment')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Assignment')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-secondary-light text-dark" role="progressbar"
@@ -69,7 +69,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Replit')}">
                                         <p style="text-align:left">Replit Questions<span style="float:right"
-                                                                                         th:text="'%' + ${taskBasedNumbers.get('Replit')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Replit')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-warning text-dark" role="progressbar"
@@ -77,7 +77,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Flipgrid')}">
                                         <p style="text-align:left">Flipgrids<span style="float:right"
-                                                                                  th:text="'%' + ${taskBasedNumbers.get('Flipgrid')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Flipgrid')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-success text-dark" role="progressbar"
@@ -85,7 +85,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Weekly Mentor Meeting')}">
                                         <p style="text-align:left">Weekly Mentor Meetings<span style="float:right"
-                                                                                               th:text="'%' + ${taskBasedNumbers.get('Weekly Mentor Meeting')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Weekly Mentor Meeting')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-success-light text-dark" role="progressbar"
@@ -93,7 +93,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Alumni Mentor Meeting')}">
                                         <p style="text-align:left">Alumni Mentor Meeting<span style="float:right"
-                                                                                              th:text="'%' + ${taskBasedNumbers.get('Alumni Mentor Meeting')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Alumni Mentor Meeting')}"></span>
                                         </p>
                                     </div>
                                     <div class="progress-bar bg-danger-light text-dark" role="progressbar"
@@ -101,7 +101,7 @@
                                          aria-valuemin="0" aria-valuemax="100"
                                          th:attr="aria-valuenow=${taskBasedNumbers.get('Assessment')}">
                                         <p style="text-align:left">Assessment<span style="float:right"
-                                                                                   th:text="'%' + ${taskBasedNumbers.get('Assessment')}"></span>
+                                           th:text="'%' + ${taskBasedNumbers.get('Assessment')}"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -127,9 +127,6 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="col-md-12">
                                     <section class="panel">
-                                        <header class="panel-heading">
-                                            <h2 class="panel-title">Students</h2>
-                                        </header>
                                         <div class="panel-body">
                                             <div class="users-list-table">
                                                 <div class="row">
@@ -160,7 +157,7 @@
                                                                                 <td th:text="${student.group.batch.name}"></td>
                                                                                 <td th:text="${student.group.name}"></td>
                                                                                 <td th:text="${student.firstName + ' ' + student.lastName}"></td>
-                                                                                <td th:text="${student.group.name}"></td>
+                                                                                <td th:text="${student.studentProgress}"></td>
                                                                                 <td th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></td>
                                                                                 <td th:text="${student.group.alumniMentor.firstName + ' ' + student.group.alumniMentor.lastName}"></td>
                                                                                 <td th:text="${student.studentStatus.value}"></td>
