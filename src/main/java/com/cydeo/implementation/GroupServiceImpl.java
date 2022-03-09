@@ -41,7 +41,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupDTO> getAllGroups(){
+    public List<GroupDTO> getAllGroups() {
         return groupRepository.findAll()
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
@@ -60,6 +60,7 @@ public class GroupServiceImpl implements GroupService {
     public List<UserDTO> getAllStudentsOfBatch(Long batchId) {
         return userRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
+                .sorted(Comparator.comparing(User::getId))
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
     }
