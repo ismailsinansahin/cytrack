@@ -65,7 +65,6 @@ public class GroupController {
         model.addAttribute("students", groupService.getAllStudentsOfBatch(batchId));
         model.addAttribute("batch", new BatchDTO());
         model.addAttribute("newStudent", new UserDTO());
-        model.addAttribute("newGroup", new GroupDTO());
         return "group/group-addRemoveStudent";
     }
 
