@@ -19,8 +19,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRoleDTO getUserRoleByName(String userRoleName) {
-        UserRole userRole = userRoleRepository.findByName(userRoleName);
+    public UserRoleDTO getUserRoleById(Long userRoleId) {
+        UserRole userRole = userRoleRepository.findById(userRoleId).get();
         return mapperUtil.convert(userRole, new UserRoleDTO());
     }
 

@@ -51,26 +51,35 @@
                                                             <div class="form-group">
                                                                 <div class="form-group">
                                                                     <label for="country">Role</label><br>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option1" name="option1" class="custom-control-input"
-                                                                               th:value="${userRoles.get(0).name}" th:field="*{userRole}" th:checked required>
-                                                                        <label class="custom-control-label" for="option1">Admin</label>
+                                                                    <div th:each="each:${userRoles}" class="custom-control custom-radio custom-control-inline"
+                                                                         th:if="${each.name!='Student'}">
+                                                                        <input type="radio" name="option2" class="custom-control-input"
+                                                                               th:value="${each.name}" th:field="*{userRole.name}">
+                                                                        <label class="custom-control-label" th:text="${each.name}"></label>
                                                                     </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option2" name="option2" class="custom-control-input"
-                                                                               th:value="${userRoles.get(1).name}" th:field="*{userRole}" th:checked>
-                                                                        <label class="custom-control-label" for="option2">Instructor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option3" name="option3" class="custom-control-input"
-                                                                               th:value="${userRoles.get(2).name}" th:field="*{userRole}" th:checked>
-                                                                        <label class="custom-control-label" for="option3">Cydeo Mentor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option4" name="option4" class="custom-control-input"
-                                                                               th:value="${userRoles.get(3).name}" th:field="*{userRole}" th:checked>
-                                                                        <label class="custom-control-label" for="option4">Alumni Mentor</label>
-                                                                    </div>
+<!--                                                                   -->
+<!--                                                                    th:selected="${each.id==user.userRole.id}"-->
+
+<!--                                                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                                                        <input type="radio" id="option1" name="option1" class="custom-control-input"-->
+<!--                                                                               th:value="1" th:field="*{userRole}" th:checked required>-->
+<!--                                                                        <label class="custom-control-label" for="option1">Admin</label>-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                                                        <input type="radio" id="option2" name="option2" class="custom-control-input"-->
+<!--                                                                               th:value="2" th:field="*{userRole}" th:checked>-->
+<!--                                                                        <label class="custom-control-label" for="option2">Instructor</label>-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                                                        <input type="radio" id="option3" name="option3" class="custom-control-input"-->
+<!--                                                                               th:value="3" th:field="*{userRole}" th:checked>-->
+<!--                                                                        <label class="custom-control-label" for="option3">Cydeo Mentor</label>-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                                                                        <input type="radio" id="option4" name="option4" class="custom-control-input"-->
+<!--                                                                               th:value="4" th:field="*{userRole}" th:checked>-->
+<!--                                                                        <label class="custom-control-label" for="option4">Alumni Mentor</label>-->
+<!--                                                                    </div>-->
                                                                 </div>
                                                             </div>
                                                         </div>

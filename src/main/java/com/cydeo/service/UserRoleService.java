@@ -4,6 +4,6 @@ import com.cydeo.dto.UserRoleDTO;
 
 public interface UserRoleService {
 
-    UserRoleDTO getUserRoleByName(String userRoleName);
+    UserRoleDTO getUserRoleById(Long userRoleId);
 
 }

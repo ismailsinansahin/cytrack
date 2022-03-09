@@ -60,12 +60,12 @@ public class GroupController {
 
     @GetMapping("/groupAddRemoveStudent/{batchId}")
     public String goAddRemoveStudentPage(@PathVariable("batchId") Long batchId, Model model){
-        model.addAttribute("batches", groupService.getAllBatches());
+        model.addAttribute("batches", groupService.getAllNonCompletedBatches());
         model.addAttribute("groups", groupService.getAllGroupsOfBatch(batchId));
         model.addAttribute("students", groupService.getAllStudentsOfBatch(batchId));
         model.addAttribute("batch", new BatchDTO());
         model.addAttribute("newStudent", new UserDTO());
-        model.addAttribute("group", new GroupDTO());
+        model.addAttribute("newGroup", new GroupDTO());
         return "group/group-addRemoveStudent";
     }
 

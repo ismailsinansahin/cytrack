@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-//@Component
-//@ConfigurationPropertiesBinding
+@Component
+@ConfigurationPropertiesBinding
 public class UserRoleDTOConverter implements Converter<String, UserRoleDTO> {
 
     private final UserRoleService userRoleService;
@@ -19,7 +19,7 @@ public class UserRoleDTOConverter implements Converter<String, UserRoleDTO> {
 
     @Override
     public UserRoleDTO convert(String s) {
-        return userRoleService.getUserRoleByName(s);
+        return userRoleService.getUserRoleById(Long.parseLong(s));
     }
 
 }
