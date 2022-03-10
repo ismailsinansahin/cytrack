@@ -64,9 +64,9 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <form class="needs-validation" novalidate
-                                                      th:action="@{/groups/assignToGroup}"
-                                                      th:method="post" th:object="${newStudent}">
+<!--                                                <form class="needs-validation" novalidate-->
+<!--                                                      th:action="@{/groups/assignToGroup}"-->
+<!--                                                      th:method="post" th:object="${newStudent}">-->
                                                     <div class="panel-body">
                                                         <div class="users-list-table">
                                                             <div class="row">
@@ -93,6 +93,9 @@
                                                                                         <tbody id="myTable">
                                                                                         <tr th:each="student : ${students}"
                                                                                             class="text-dark">
+                                                                                            <form class="needs-validation" novalidate
+                                                                                                  th:action="@{/groups/assignToGroup}"
+                                                                                                  th:method="post" th:object="${newStudent}">
                                                                                             <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                                             <td th:text="${student.country.value}"></td>
                                                                                             <td th:text="${student.email}"></td>
@@ -116,6 +119,7 @@
                                                                                                     Assign to Group
                                                                                                 </button>
                                                                                             </td>
+                                                                                            </form>
                                                                                         </tr>
                                                                                         </tbody>
                                                                                     </table>
@@ -127,7 +131,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
+<!--                                                </form>-->
                                             </div>
                                         </div>
                                     </div>
