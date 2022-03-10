@@ -38,22 +38,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDTO> getAllTasks() {
-        return taskRepository.findAll()
+    public List<TaskDTO> getAllTasksOfBatch(Long batchId) {
+        return taskRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new TaskDTO()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TaskDTO getTaskByTaskId(Long taskId) {
+    public TaskDTO getTaskById(Long taskId) {
         return mapperUtil.convert(taskRepository.findById(taskId).get(), new TaskDTO());
     }
 
     @Override
-    public TaskDTO save(TaskDTO taskDTO) {
+    public TaskDTO create(TaskDTO taskDTO, Long batchId) {
         taskDTO.setTaskStatus(TaskStatus.PLANNED);
         Task task = mapperUtil.convert(taskDTO, new Task());
+        Batch batch = batchRepository.findById(batchId).get();
+        task.setBatch(batch);
+        taskRepository.save(task);
+        return mapperUtil.convert(task, taskDTO);
+    }
+
+    @Override
+    public TaskDTO save(TaskDTO taskDTO, Long taskId, Long batchId) {
+        Task task = taskRepository.findById(taskId).get();
+        taskDTO.setId(taskId);
+        taskDTO.setTaskStatus(task.getTaskStatus());
+        taskDTO.setLesson(mapperUtil.convert(task.getLesson(), new LessonDTO()));
+        task = mapperUtil.convert(taskDTO, new Task());
+        task.setBatch(batchRepository.findById(batchId).get());
         taskRepository.save(task);
         return mapperUtil.convert(task, taskDTO);
     }
@@ -73,17 +87,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void publish(Long taskId, Long batchId) {
+    public void publish(Long taskId) {
         Task task = taskRepository.findById(taskId).get();
         task.setTaskStatus(TaskStatus.PUBLISHED);
         taskRepository.save(task);
-        Batch batch = batchRepository.findById(batchId).get();
         UserRole userRole = userRoleRepository.findByName("Student");
-        List<User> allStudents = userRepository.findAllByUserRoleAndBatch(userRole, batch);
+        List<User> allStudents = userRepository.findAllByUserRoleAndBatch(userRole, task.getBatch());
         for (User student : allStudents) {
             StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
             studentTaskRepository.save(studentTask);
         }
+    }
+
+    @Override
+    public BatchDTO getBatchById(Long batchId) {
+        return mapperUtil.convert(batchRepository.findById(batchId).get(), new BatchDTO());
     }
 
     @Override

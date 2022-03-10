@@ -58,17 +58,11 @@
                                     <li class="nav-item" sec:authorize="hasAnyAuthority('Admin')">
                                         <a class="nav-link" th:href="@{/users/staffList}">User</a>
                                     </li>
-                                    <li class="nav-item" sec:authorize="hasAnyAuthority('Admin')">
+                                    <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Instructor', 'Cydeo Mentor')">
                                         <a class="nav-link" th:href="@{/batches/batchList}">Batch</a>
                                     </li>
                                     <li class="nav-item" sec:authorize="hasAnyAuthority('Admin')">
-                                        <a class="nav-link" th:href="@{/groups/groupList}">Group</a>
-                                    </li>
-                                    <li class="nav-item" sec:authorize="hasAnyAuthority('Admin')">
                                         <a class="nav-link" th:href="@{/lessons/lessonList}">Lesson</a>
-                                    </li>
-                                    <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Instructor', 'Cydeo Mentor')">
-                                        <a class="nav-link" th:href="@{/tasks/taskList}">Task</a>
                                     </li>
                                 </ul>
                             </div>

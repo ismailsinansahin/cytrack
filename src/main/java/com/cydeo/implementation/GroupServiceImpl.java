@@ -58,7 +58,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<UserDTO> getAllStudentsOfBatch(Long batchId) {
-        return userRepository.findAllByBatch(batchRepository.findById(batchId).get())
+        Batch batch = batchRepository.findById(batchId).get();
+        return userRepository.findAllByBatch(batch)
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllStudentsOfGroup(Long groupId) {
+        return userRepository.findAllByGroup(groupRepository.findById(groupId).get())
                 .stream()
                 .sorted(Comparator.comparing(User::getId))
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
@@ -71,16 +80,19 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO create(GroupDTO groupDTO) {
+    public GroupDTO create(GroupDTO groupDTO, Long batchId) {
         Group group = mapperUtil.convert(groupDTO, new Group());
+        Batch batch = batchRepository.findById(batchId).get();
+        group.setBatch(batch);
         groupRepository.save(group);
         return mapperUtil.convert(group, groupDTO);
     }
 
     @Override
-    public GroupDTO save(GroupDTO groupDTO, Long groupId) {
+    public GroupDTO save(GroupDTO groupDTO, Long groupId, Long bathcId) {
         groupDTO.setId(groupId);
         Group group = mapperUtil.convert(groupDTO, new Group());
+        group.setBatch(batchRepository.findById(bathcId).get());
         groupRepository.save(group);
         return mapperUtil.convert(group, groupDTO);
     }
@@ -93,10 +105,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<BatchDTO> getAllGroupsOfBatch(Long batchId) {
+    public List<GroupDTO> getAllGroupsOfBatch(Long batchId) {
         return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
-                .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
+                .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
                 .collect(Collectors.toList());
     }
 
@@ -106,6 +118,11 @@ public class GroupServiceImpl implements GroupService {
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BatchDTO getBatchById(Long batchId) {
+        return mapperUtil.convert(batchRepository.findById(batchId).get(), new BatchDTO());
     }
 
     @Override
@@ -135,6 +152,20 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public UserDTO getUserById(Long userId) {
         return mapperUtil.convert(userRepository.findById(userId), new UserDTO());
+    }
+
+    @Override
+    public void addStudent(Long studentId, Long groupId) {
+        User student = userRepository.findById(studentId).get();
+        Group group = groupRepository.findById(groupId).get();
+        student.setGroup(group);
+        userRepository.save(student); }
+
+    @Override
+    public void removeStudent(Long studentId) {
+        User student = userRepository.findById(studentId).get();
+        student.setGroup(null);
+        userRepository.save(student);
     }
 
 }
