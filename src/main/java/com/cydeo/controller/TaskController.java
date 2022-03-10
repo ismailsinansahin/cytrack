@@ -22,63 +22,64 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/taskList")
-    public String goTaskList(Model model){
-        model.addAttribute("tasks", taskService.getAllTasks());
+    @GetMapping("/taskList/{batchId}")
+    public String goTaskList(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batch", taskService.getBatchById(batchId));
+        model.addAttribute("tasks", taskService.getAllTasksOfBatch(batchId));
         return "task/task-list";
     }
 
-    @GetMapping("/taskCreate")
-    public String goTaskCreate(Model model){
-        model.addAttribute("newTask", new TaskDTO());
+    @GetMapping("/taskCreate/{batchId}")
+    public String goTaskCreate(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batch", taskService.getBatchById(batchId));
         model.addAttribute("batches", taskService.getAllBatches());
         model.addAttribute("lessons", taskService.getAllLessons());
         model.addAttribute("taskTypes", Arrays.asList(TaskType.values()));
+        model.addAttribute("newTask", new TaskDTO());
         return "task/task-create";
+    }
+
+    @PostMapping("/taskCreate/{batchId}")
+    public String createTask(@PathVariable("batchId") Long batchId, TaskDTO taskDTO){
+        taskService.create(taskDTO, batchId);
+        return "redirect:/tasks/taskList/" + taskService.getBatchById(batchId).getId();
     }
 
     @GetMapping("/taskEdit/{taskId}")
     public String goTaskEdit(@PathVariable("taskId") Long taskId, Model model){
-        model.addAttribute("task", taskService.getTaskByTaskId(taskId));
+        model.addAttribute("task", taskService.getTaskById(taskId));
         model.addAttribute("batches", taskService.getAllBatches());
         model.addAttribute("lessons", taskService.getAllLessons());
         model.addAttribute("taskTypes", Arrays.asList(TaskType.values()));
         return "task/task-edit";
     }
 
-    @PostMapping("/taskEdit/{taskId}")
-    public String updateTask(@PathVariable("taskId") Long taskId, TaskDTO taskDTO){
-        taskDTO.setId(taskId);
-        taskService.save(taskDTO);
-        return "redirect:/tasks/taskList";
+    @PostMapping("/taskUpdate/{taskId}/{batchId}")
+    public String updateTask(@PathVariable("taskId") Long taskId, @PathVariable("batchId") Long batchId, TaskDTO taskDTO){
+        taskService.save(taskDTO, taskId, batchId);
+        return "redirect:/tasks/taskList/" + batchId;
     }
 
-    @PostMapping("/taskCreate")
-    public String createTask(TaskDTO taskDTO){
-        taskService.save(taskDTO);
-        return "redirect:/tasks/taskList";
-    }
-
-    @PostMapping(value = "/publishCompleteEditDelete/{taskId}/{batchId}", params = {"action=delete"})
-    public String deleteTask(@PathVariable("taskId") Long taskId, @PathVariable("batchId") Long batchId){
+    @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=delete"})
+    public String deleteTask(@PathVariable("taskId") Long taskId){
         taskService.delete(taskId);
-        return "redirect:/tasks/taskList";
+        return "redirect:/tasks/taskList/" + taskService.getTaskById(taskId).getBatch().getId();
     }
 
-    @PostMapping(value = "/publishCompleteEditDelete/{taskId}/{batchId}", params = {"action=publish"})
-    public String publishTask(@PathVariable("taskId") Long taskId, @PathVariable("batchId") Long batchId){
-        taskService.publish(taskId,batchId);
-        return "redirect:/tasks/taskList";
+    @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=publish"})
+    public String publishTask(@PathVariable("taskId") Long taskId){
+        taskService.publish(taskId);
+        return "redirect:/tasks/taskList/" + taskService.getTaskById(taskId).getBatch().getId();
     }
 
-    @PostMapping(value = "/publishCompleteEditDelete/{taskId}/{batchId}", params = {"action=complete"})
-    public String completeTask(@PathVariable("taskId") Long taskId, @PathVariable("batchId") Long batchId){
+    @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=complete"})
+    public String completeTask(@PathVariable("taskId") Long taskId){
         taskService.complete(taskId);
-        return "redirect:/tasks/taskList";
+        return "redirect:/tasks/taskList/" + taskService.getTaskById(taskId).getBatch().getId();
     }
 
-    @PostMapping(value = "/publishCompleteEditDelete/{taskId}/{batchId}", params = {"action=edit"})
-    public String goEditPage(@PathVariable("taskId") Long taskId, @PathVariable("batchId") Long batchId){
+    @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=edit"})
+    public String goEditPage(@PathVariable("taskId") Long taskId){
         return "redirect:/tasks/taskEdit/" + taskId;
     }
 

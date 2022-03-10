@@ -54,14 +54,14 @@ public class BatchController {
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=goGroups"})
-    public String goGorupsPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/batches/batchEdit/" + batchId;
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=showGroups"})
+    public String goGroupsPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/groups/groupList/" + batchId;
     }
 
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=goTasks"})
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=showTasks"})
     public String goTasksPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/batches/batchEdit/" + batchId;
+        return "redirect:/tasks/taskList/" + batchId;
     }
 
     @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <head th:replace="/fragments/head :: header"><title>Task Edit</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
-    <div th:replace="/fragments/header :: header"></div>
-    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+<div th:replace="/fragments/header :: header"></div>
+<div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
@@ -17,8 +16,8 @@
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
                                     <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/tasks/taskList}"><i class="fa fa-list mr-1"></i>
-                                        Task List</a>
+                                       th:href="@{/tasks/taskList/{batchid}(batchid=${task.batch.getId()})}">
+                                        <i class="fa fa-list mr-1"></i>Task List</a>
                                 </div>
                             </form>
                         </div>
@@ -36,20 +35,15 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/tasks/taskEdit/{id}(id=${task.getId()})}"
+                                                      th:action="@{/tasks/taskUpdate/{taskId}/{batchId}(taskId=${task.getId()}, batchId=${task.batch.getId()})}"
                                                       th:method="post" th:object="${task}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" required>
-                                                                        <!--                                                                        <option th:value="''" th:text="Select"></option>-->
-                                                                        <option th:each="batch:${batches}"
-                                                                                th:value="${batch.id}"
-                                                                                th:text="${batch.name}"
-                                                                                th:selected="${batch.id==task.batch.id}"></option>
-                                                                    </select>
+                                                                    <label>Batch</label>
+                                                                    <input type="text" th:field="*{batch.name}"
+                                                                           class="form-control" required="required" aria-invalid="false" disabled>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -142,5 +136,4 @@
 <div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
-
 </html>
