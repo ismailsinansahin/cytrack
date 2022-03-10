@@ -18,10 +18,6 @@
                                     <div class="col-auto">
                                         <form>
                                             <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                                <a id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
-                                                    th:href="@{/groups/groupAddRemoveStudent/{lastOngoingBatchId}(lastOngoingBatchId=${lastOngoingBatch.getId()})}">
-                                                    <i class="fa fa-plus mr-1"></i>
-                                                    Add/Remove Student</a>&nbsp&nbsp
                                                 <a id="groupCreateLink" class="btn bg-dark text-light mb-1x"
                                                     th:href="@{/groups/groupCreate}">
                                                     <i class="fa fa-plus mr-1"></i>
@@ -59,8 +55,11 @@
                                                                             <td th:text="${group.cydeoMentor.firstName}"></td>
                                                                             <td th:text="${group.alumniMentor.firstName}"></td>
                                                                             <td class="actions">
-                                                                                <form action="#" data-th-action="@{/groups/groupEditDelete/{id}(id=${group.getId()})}"
+                                                                                <form action="#" data-th-action="@{/groups/groupEditDeleteAddRemoveStudent/{id}(id=${group.getId()})}"
                                                                                       method="post">
+                                                                                    <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
+                                                                                            type="submit" name="action" value="addRemoveStudent">Add/Remove Student
+                                                                                    </button>
                                                                                     <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
                                                                                             type="submit" name="action" value="edit">Edit
                                                                                     </button>

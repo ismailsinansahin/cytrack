@@ -46,7 +46,8 @@
                                                                         <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
-                                                                                th:text="${batch.name}"></option>
+                                                                                th:text="${batch.name}">
+                                                                        </option>
                                                                     </select>
                                                                 </div>
                                                             </div>

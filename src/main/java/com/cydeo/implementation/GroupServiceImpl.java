@@ -57,8 +57,19 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<UserDTO> getAllStudentsOfBatch(Long batchId) {
-        return userRepository.findAllByBatch(batchRepository.findById(batchId).get())
+    public List<UserDTO> getAllStudentsOfBatch(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        Batch batch = batchRepository.findById(group.getBatch().getId()).get();
+        List<User> studentsOfBatch = userRepository.findAllByBatch(batch);
+        return studentsOfBatch
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllStudentsOfGroup(Long groupId) {
+        return userRepository.findAllByGroup(groupRepository.findById(groupId).get())
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .collect(Collectors.toList());
@@ -134,6 +145,20 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public UserDTO getUserById(Long userId) {
         return mapperUtil.convert(userRepository.findById(userId), new UserDTO());
+    }
+
+    @Override
+    public void addStudent(Long studentId, Long groupId) {
+        User student = userRepository.findById(studentId).get();
+        Group group = groupRepository.findById(groupId).get();
+        student.setGroup(group);
+        userRepository.save(student); }
+
+    @Override
+    public void removeStudent(Long studentId) {
+        User student = userRepository.findById(studentId).get();
+        student.setGroup(null);
+        userRepository.save(student);
     }
 
 }

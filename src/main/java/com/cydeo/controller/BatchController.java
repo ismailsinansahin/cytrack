@@ -54,24 +54,34 @@ public class BatchController {
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/startCompleteEditDelete/{batchId}", params = {"action=edit"})
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=goGroups"})
+    public String goGorupsPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchEdit/" + batchId;
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=goTasks"})
+    public String goTasksPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchEdit/" + batchId;
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})
     public String goEditPage(@PathVariable("batchId") Long batchId){
         return "redirect:/batches/batchEdit/" + batchId;
     }
 
-    @PostMapping(value = "/startCompleteEditDelete/{batchId}", params = {"action=delete"})
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
     public String deleteBatch(@PathVariable("batchId") Long batchId){
         batchService.delete(batchId);
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/startCompleteEditDelete/{batchId}", params = {"action=start"})
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=start"})
     public String startBatch(@PathVariable("batchId") Long batchId){
         batchService.start(batchId);
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/startCompleteEditDelete/{batchId}", params = {"action=complete"})
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=complete"})
     public String completeBatch(@PathVariable("batchId") Long batchId){
         batchService.complete(batchId);
         return "redirect:/batches/batchList";

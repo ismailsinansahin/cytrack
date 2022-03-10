@@ -63,8 +63,16 @@
                                                                             <td th:text="${batch.notes}"></td>
                                                                             <td class="actions">
                                                                                 <form action="#"
-                                                                                      data-th-action="@{/batches/startCompleteEditDelete/{id}(id=${batch.getId()})}"
+                                                                                      data-th-action="@{/batches/allActions/{id}(id=${batch.getId()})}"
                                                                                       method="post">
+                                                                                    <button class="btn btn-brand mb-2 mb-sm-0 mr-sm-2"
+                                                                                            type="submit" name="action"
+                                                                                            value="goGroups">Go Groups
+                                                                                    </button>
+                                                                                    <button class="btn btn-account mb-2 mb-sm-0 mr-sm-2"
+                                                                                            type="submit" name="action"
+                                                                                            value="goTasks">Go Tasks
+                                                                                    </button>
                                                                                     <button th:if="${batch.batchStatus.value} == 'Planned'"
                                                                                             class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
                                                                                             type="submit" name="action"
