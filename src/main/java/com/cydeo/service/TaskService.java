@@ -8,13 +8,15 @@ import java.util.List;
 
 public interface TaskService {
 
-    List<TaskDTO> getAllTasks();
-    TaskDTO getTaskByTaskId(Long taskId);
-    TaskDTO save(TaskDTO taskDTO);
+    List<TaskDTO> getAllTasksOfBatch(Long batchId);
+    TaskDTO getTaskById(Long taskId);
+    BatchDTO getBatchById(Long batchId);
     List<BatchDTO> getAllBatches();
     List<LessonDTO> getAllLessons();
+    TaskDTO create(TaskDTO taskDTO, Long batchId);
+    TaskDTO save(TaskDTO taskDTO, Long taskId, Long batchId);
     void delete(Long taskId);
-    void publish(Long taskId, Long batchId);
+    void publish(Long taskId);
     void complete(Long taskId);
 
 }
