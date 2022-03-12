@@ -28,17 +28,10 @@ public class User extends BaseEntity{
     private boolean enabled;
     @Column(nullable = false, unique = true)
     private String email;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
-
-    @Enumerated(EnumType.STRING)
     private Country country;
-
-    @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    @Enumerated(EnumType.STRING)
     private StudentStatus studentStatus;
 
     @ManyToOne

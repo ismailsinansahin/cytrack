@@ -22,17 +22,11 @@ import java.util.Set;
 public class Task extends BaseEntity{
 
     private String name;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishingDate;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
-
-    @Enumerated(EnumType.STRING)
     private TaskType taskType;
-
-    @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
     @ManyToOne

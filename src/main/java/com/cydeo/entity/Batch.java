@@ -27,7 +27,6 @@ public class Batch extends BaseEntity{
     @Column(columnDefinition = "text")
     private String notes;
 
-    @Enumerated(EnumType.STRING)
     private BatchStatus batchStatus;
 
 }

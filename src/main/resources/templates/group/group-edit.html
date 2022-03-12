@@ -59,11 +59,12 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="cydeoMentor">Cydeo Mentor</label>
-                                                                    <select id="cydeoMentor" class="form-control" th:field="*{cydeoMentor}" required>
+                                                                    <label>Cydeo Mentor</label>
+                                                                    <select class="form-control" name="cydeoMentor">
                                                                         <option th:each= "cydeoMentor:${cydeoMentors}"
                                                                                 th:value="${cydeoMentor.id}"
-                                                                                th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></option>
+                                                                                th:text="${cydeoMentor.firstName + ' ' + cydeoMentor.lastName}"
+                                                                                th:selected="${cydeoMentor.id==group.cydeoMentor.id}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -71,11 +72,12 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="alumniMentor">Alumni Mentor</label>
-                                                                    <select id="alumniMentor" class="form-control" th:field="*{alumniMentor}" required>
+                                                                    <label>Alumni Mentor</label>
+                                                                    <select class="form-control" name="alumniMentor">
                                                                         <option th:each= "alumniMentor:${alumniMentors}"
                                                                                 th:value="${alumniMentor.id}"
-                                                                                th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></option>
+                                                                                th:text="${alumniMentor.firstName + ' ' + alumniMentor.lastName}"
+                                                                                th:selected="${alumniMentor.id==group.alumniMentor.id}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
