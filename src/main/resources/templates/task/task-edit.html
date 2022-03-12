@@ -50,8 +50,8 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label for="lesson">Lesson</label>
-                                                                    <select id="lesson" class="form-control" required>
+                                                                    <label>Lesson</label>
+                                                                    <select class="form-control" name="lesson">
                                                                         <option th:each="lesson:${lessons}"
                                                                                 th:value="${lesson.id}"
                                                                                 th:text="${lesson.name}"
