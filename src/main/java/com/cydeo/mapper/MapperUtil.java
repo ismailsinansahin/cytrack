@@ -11,7 +11,6 @@ public class MapperUtil {
 
     private final ModelMapper modelMapper;
 
-
     public MapperUtil(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }

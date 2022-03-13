@@ -65,7 +65,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(taskId).get();
         taskDTO.setId(taskId);
         taskDTO.setTaskStatus(task.getTaskStatus());
-        taskDTO.setLesson(mapperUtil.convert(task.getLesson(), new LessonDTO()));
         task = mapperUtil.convert(taskDTO, new Task());
         task.setBatch(batchRepository.findById(batchId).get());
         taskRepository.save(task);
