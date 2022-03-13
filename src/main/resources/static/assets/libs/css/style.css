@@ -1135,32 +1135,41 @@ Social bg Color
 Progress bar
 -------------------------*/
 
-.progress-bar {
-    background-color: #5969ff;
+.progress-title{
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 4px;
 }
-
-.primary-progress-bar {
-    background-color: #5969ff;
+.progress-outer{
+    background: #fff;
+    padding: 5px 60px 5px 5px;
+    /*border: 5px solid #bebfbf;*/
+    border: 5px solid #3d405c;
+    border-radius: 45px;
+    margin-bottom: 10px;
+    position: relative;
 }
-
-.progress-sm {
-    height: 5px;
+.progress{
+    background: #bebfbf;
+    border-radius: 20px;
+    margin: 0;
 }
-
-.progress-sm {
-    height: 5px
+.progress .progress-bar{
+    border-radius: 20px;
+    box-shadow: none;
+    animation: animate-positive 2s;
 }
-
-.progress-md {
-    height: 8px
+.progress .progress-value{
+    font-size: 20px;
+    font-weight: 700;
+    color: #6b7880;
+    position: absolute;
+    top: -4px;
+    right: 10px;
 }
-
-.progress-lg {
-    height: 12px
-}
-
-.progress-xl {
-    height: 15px
+@keyframes animate-positive{
+    0%{ width: 0; }
 }
 
 .progress-vertical{
