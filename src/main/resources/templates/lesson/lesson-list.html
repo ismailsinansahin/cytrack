@@ -29,6 +29,15 @@
                                     <header class="panel-heading">
                                         <h2 class="panel-title">Lesson List</h2>
                                     </header>
+                                    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+                                    <div class="alert alert-danger" role="alert" th:text="${failure}" th:if="${failure}"></div>
+                                    <a th:if="${failure}" id="keeptasks" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                                       th:href="@{/lessons/keepTasks/{id}(id=${lessonId})}">Keep Tasks</a>&nbsp&nbsp
+                                    <a th:if="${failure}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                                       th:href="@{/lessons/lessonList}">Cancel</a>&nbsp&nbsp
+                                    <a th:if="${failure}" id="deleteall" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                                       th:href="@{/lessons/deleteAll/{id}(id=${lessonId})}">Delete All</a>
+                                    <div><br></div>
                                     <div class="panel-body">
                                         <div class="users-list-table">
                                             <div class="row">

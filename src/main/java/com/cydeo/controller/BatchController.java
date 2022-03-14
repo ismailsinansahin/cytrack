@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 
@@ -25,6 +26,13 @@ public class BatchController {
     @GetMapping("/batchList")
     public String goBatchList(Model model){
         model.addAttribute("batches", batchService.listAllBatches());
+        return "batch/batch-list";
+    }
+
+    @GetMapping("/batchList/{batchId}")
+    public String goBatchList(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batches", batchService.listAllBatches());
+        model.addAttribute("batchId", batchId);
         return "batch/batch-list";
     }
 
@@ -70,9 +78,24 @@ public class BatchController {
     }
 
     @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
-    public String deleteBatch(@PathVariable("batchId") Long batchId){
-        batchService.delete(batchId);
-        return "redirect:/batches/batchList";
+    public String deleteBatch(@PathVariable("batchId") Long batchId, RedirectAttributes redirectAttributes){
+        String result = batchService.delete(batchId);
+        if(result.equals("success")) redirectAttributes.addFlashAttribute(result, "The batch was successfully deleted.");
+        if(result.equals("failure")) redirectAttributes.addFlashAttribute(result, "The batch has students and tasks. Do you want to delete anyway?");
+        redirectAttributes.addFlashAttribute("batchId", batchId);
+        return "redirect:/batches/batchList/"+ batchId;
+    }
+
+    @GetMapping("/deleteAll/{batchId}")
+    public String deleteAll(@PathVariable("batchId") Long batchId){
+        batchService.deleteBatchWithAllStudentsAndTasks(batchId);
+        return "redirect:/batches/batchList/" + batchId;
+    }
+
+    @GetMapping("/keepStudentsAndTasks/{batchId}")
+    public String keepStudentsAndTasks(@PathVariable("batchId") Long batchId){
+        batchService.deleteBatchWithoutStudentsAndTasks(batchId);
+        return "redirect:/batches/batchList/" + batchId;
     }
 
     @PostMapping(value = "/allActions/{batchId}", params = {"action=start"})

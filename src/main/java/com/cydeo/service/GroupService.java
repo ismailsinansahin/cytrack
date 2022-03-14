@@ -16,7 +16,7 @@ public interface GroupService {
     List<UserDTO> getAllStudentsOfBatch(Long batchId);
     GroupDTO create(GroupDTO groupDTO, Long batchId);
     GroupDTO save(GroupDTO groupDTO, Long groupId, Long batchId);
-    void delete(Long id);
+    String delete(Long id);
     void addStudent(Long studentId, Long groupId);
     void removeStudent(Long studentId);
     List<BatchDTO> getAllNonCompletedBatches();
@@ -26,5 +26,6 @@ public interface GroupService {
     void assignStudentToGroup(UserDTO studentDTO);
     UserDTO getUserById(Long userId);
     List<GroupDTO> getAllGroupsOfBatch(Long batchId);
+    void deleteGroupWithoutStudentsAndMentors(Long groupId);
 
 }

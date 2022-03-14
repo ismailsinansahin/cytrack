@@ -3,11 +3,10 @@ package com.cydeo.implementation;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.Group;
-import com.cydeo.entity.User;
-import com.cydeo.entity.UserRole;
+import com.cydeo.entity.*;
 import com.cydeo.enums.BatchStatus;
+import com.cydeo.enums.StudentStatus;
+import com.cydeo.enums.TaskStatus;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.BatchRepository;
 import com.cydeo.repository.GroupRepository;
@@ -98,18 +97,58 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         Group group = groupRepository.findById(id).get();
+        if(isDeletingSafe(group)){
+            group.setIsDeleted(true);
+            groupRepository.save(group);
+            return "success";
+        }
+        return "failure";
+    }
+
+    public Boolean isDeletingSafe(Group group) {
+        return (userRepository.findAllByGroup(group).size() < 1);
+    }
+
+    @Override
+    public void deleteGroupWithoutStudentsAndMentors(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        List<User> studentList = userRepository.findAllByGroup(group);
+        for (User user : studentList) {
+            user.setGroup(null);
+            userRepository.save(user);
+        }
+        group.setCydeoMentor(null);
+        group.setAlumniMentor(null);
         group.setIsDeleted(true);
         groupRepository.save(group);
     }
 
     @Override
     public List<GroupDTO> getAllGroupsOfBatch(Long batchId) {
-        return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
+       return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
+                .peek(groupDTO -> groupDTO.setActiveStudents(getActiveStudents(groupDTO)))
+                .peek(groupDTO -> groupDTO.setDroppedTransferredStudents(getDroppedTransferredStudents(groupDTO)))
                 .collect(Collectors.toList());
+    }
+
+    private int getActiveStudents(GroupDTO groupDTO) {
+        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+                .stream()
+                .filter(student -> student.getStudentStatus().equals(StudentStatus.NEW) ||
+                        student.getStudentStatus().equals(StudentStatus.RETURNING))
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(GroupDTO groupDTO) {
+        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+                .stream()
+                .filter(student -> student.getStudentStatus().equals(StudentStatus.DROPPED) ||
+                        student.getStudentStatus().equals(StudentStatus.TRANSFERRED))
+                .count();
     }
 
     @Override

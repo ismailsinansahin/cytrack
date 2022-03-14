@@ -38,6 +38,8 @@
                                     <header class="panel-heading">
                                         <h2 class="panel-title">Staff List</h2>
                                     </header>
+                                    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+                                    <div class="alert alert-danger" role="alert" th:text="${failure}" th:if="${failure}"></div>
                                     <div class="panel-body">
                                     <div class="users-list-table">
                                         <div class="row">
@@ -63,9 +65,9 @@
                                                                 <tr th:each="staff : ${staffs}"
                                                                     class="text-dark"
                                                                     th:style="${staff.userRole.name}=='Admin' ? 'background-color:#e6dec5':
-                                                                           (${staff.userRole.name}=='Instructor' ? 'background-color:#abd6fe':
-                                                                           (${staff.userRole.name}=='Cydeo Mentor' ? 'background-color:#d6feab':
-                                                                           (${staff.userRole.name}=='Alumni Mentor' ? 'background-color:#feabd6':'background-color:#d3abfe')))">
+                                                                             (${staff.userRole.name}=='Instructor' ? 'background-color:#abd6fe':
+                                                                             (${staff.userRole.name}=='Cydeo Mentor' ? 'background-color:#d6feab':
+                                                                             (${staff.userRole.name}=='Alumni Mentor' ? 'background-color:#feabd6':'background-color:#d3abfe')))">
                                                                     <td th:text="${staff.userRole.name}"></td>
                                                                     <td th:text="${staff.firstName + ' ' + staff.lastName}"></td>
                                                                     <td th:text="${staff.country.value}"></td>

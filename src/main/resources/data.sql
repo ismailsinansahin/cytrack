@@ -3,7 +3,7 @@ insert into batches (insert_date_time, insert_user_id, is_deleted, last_update_d
 values (now(), 1, false, now(), 1, '2020-01-01', '2020-06-30', 3, 'EU-1', 'EU only'),
        (now(), 1, false, now(), 1, '2021-01-01', '2021-12-31', 3, 'EU-2', 'EU only'),
        (now(), 1, false, now(), 1, '2022-01-01', '2022-06-30', 2, 'EU-3', 'EU only'),
-       (now(), 1, false, now(), 1, '2022-01-01', '2022-12-31', 2, 'EU-4', 'EU only'),
+       (now(), 1, false, now(), 1, '2022-01-01', '2022-12-31', 1, 'EU-4', 'EU only'),
        (now(), 1, false, now(), 1, '2022-06-30', '2022-12-12', 1, 'EU-5', 'EU only');
 
 insert into user_roles (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name)
@@ -35,7 +35,7 @@ values (now(), 1, false, now(), 1, 'Group-1', 3, 6, 8),
        (now(), 1, false, now(), 1, 'Group-7', 3, 7, 8),
        (now(), 1, false, now(), 1, 'Group-8', 3, 7, 8),
        (now(), 1, false, now(), 1, 'Group-9', 3, 7, 8),
-       (now(), 1, false, now(), 1, 'Group-10', 3, 7, 8);
+       (now(), 1, false, now(), 1, 'Group-10', 4, 7, 8);
 
 insert into users (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, birthday,
                    country, email, enabled, first_name, gender, last_name, password, phone, student_status, group_id, user_role_id, batch_id, user_name)
@@ -54,7 +54,7 @@ values (now(), 1, false, now(), 1, '1983-09-16', 6, 'messi@ct.com', true, 'Messi
        (now(), 1, false, now(), 1, '2000-03-13', 2, 'nelson@ct.com', true, 'Nelson', 1, 'Black', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423124655', 2, 2, 5, 3, 'nelson@ct.com'),
        (now(), 1, false, now(), 1, '2000-03-13', 2, 'kerem@ct.com', true, 'Kerem', 1, 'Red', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423124655', 1, 2, 5, 3, 'kerem@ct.com'),
        (now(), 1, false, now(), 1, '2000-03-13', 2, 'alex@ct.com', true, 'Alex', 1, 'Blue', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5423124655', 1, 2, 5, 3, 'alex@ct.com'),
-       (now(), 1, false, now(), 1, '1980-05-10', 3, 'tugay@ct.com', true, 'Tugay', 1, 'Black', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5325123655', 2, 2, 5, 3, 'tugay@ct.com');
+       (now(), 1, false, now(), 1, '1980-05-10', 3, 'tugay@ct.com', true, 'Tugay', 1, 'Black', '$2a$10$nAB5j9G1c3JHgg7qzhiIXO7cqqr5oJ3LXRNQJKssDUwHXzDGUztNK', '5325123655', 2, 1, 5, 4, 'tugay@ct.com');
 
 insert into lessons (insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id, name)
 values (now(), 1, false, now(), 1,'Java'),
@@ -88,7 +88,7 @@ values (now(), 1, false, now(), 1, '2022-03-07', '2022-03-07', 'Day-01 Intro to 
        (now(), 1, false, now(), 1, '2022-03-15', '2022-03-15', 'Day-03 Intro to Testing', 1, 3, 3, 1),
        (now(), 1, false, now(), 1, '2022-03-16', '2022-03-16', 'Week02', 6, 7, 3, 1),
        (now(), 1, false, now(), 1, '2022-03-17', '2022-03-17', 'Day-04 Methods', 1, 1, 3, 1),
-       (now(), 1, false, now(), 1, '2022-03-17', '2022-03-21', 'Day-05 Class&Objects', 1, 1, 3, 1);
+       (now(), 1, false, now(), 1, '2022-03-17', '2022-03-21', 'Day-05 Class&Objects', 1, 1, 4, 1);
 
 -- insert into student_task (task_id, student_id)
 -- values (1, 1),(2, 1),(3, 1),(4, 1),(5, 1),(6, 1),(7, 1),(8, 1),(9, 1),(10, 1),(11, 1);

@@ -30,6 +30,13 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Group List</h2>
                         </header>
+                        <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+                        <div class="alert alert-danger" role="alert" th:text="${failure}" th:if="${failure}"></div>
+                        <a th:if="${failure}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                           th:href="@{/groups/groupList/{batchId}(batchId=${batchId})}">Cancel</a>&nbsp&nbsp
+                        <a th:if="${failure}" id="confirmDelete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/groups/confirmDelete/{batchId}/{groupId}(batchId=${batch.getId()}, groupId=${groupId})}">Delete All</a>
+                        <div><br></div>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">
@@ -59,7 +66,7 @@
                                                                 <td th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></td>
                                                                 <td th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>
                                                                 <td class="actions">
-                                                                    <form action="#" data-th-action="@{/groups/groupEditDelete/{id}(id=${group.getId()})}"
+                                                                    <form action="#" data-th-action="@{/groups/groupEditDelete/{batchId}/{groupId}(batchId=${batch.getId()}, groupId=${group.getId()})}"
                                                                           method="post">
                                                                         <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action" value="edit">Edit

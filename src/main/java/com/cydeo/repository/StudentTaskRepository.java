@@ -12,6 +12,7 @@ import java.util.List;
 public interface StudentTaskRepository extends JpaRepository<StudentTask, Long> {
 
     List<StudentTask> findAllByStudent(User Student);
+    List<StudentTask> findAllByTask(Task task);
     StudentTask findByStudentAndTask(User student, Task task);
 
 }

@@ -14,8 +14,9 @@ public interface UserService {
     List<UserDTO> getAllStudents();
     UserDTO getUserById(Long id);
     UserDTO save(UserDTO userDTO);
-    void delete(Long id);
+    String delete(Long id);
     UserDTO drop(Long id);
     List<BatchDTO> getAllBatches();
+    String getDeleteErrorMessage(Long id);
 
 }

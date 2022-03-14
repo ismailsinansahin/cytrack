@@ -23,14 +23,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BatchRepository batchRepository;
     private final UserRoleRepository userRoleRepository;
+    private final InstructorLessonRepository instructorLessonRepository;
+    private final GroupRepository groupRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(MapperUtil mapperUtil, UserRepository userRepository, BatchRepository batchRepository,
-                           UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+                           UserRoleRepository userRoleRepository, InstructorLessonRepository instructorLessonRepository,
+                           GroupRepository groupRepository, PasswordEncoder passwordEncoder) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
         this.batchRepository = batchRepository;
         this.userRoleRepository = userRoleRepository;
+        this.instructorLessonRepository = instructorLessonRepository;
+        this.groupRepository = groupRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -94,10 +99,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         User user = userRepository.findById(id).get();
-        user.setIsDeleted(true);
-        userRepository.save(user);
+        if(isDeletingSafe(user)){
+            user.setIsDeleted(true);
+            userRepository.save(user);
+            return "success";
+        }
+        return "failure";
     }
 
     @Override
@@ -106,6 +115,38 @@ public class UserServiceImpl implements UserService {
         user.setStudentStatus(StudentStatus.DROPPED);
         userRepository.save(user);
         return mapperUtil.convert(user, new UserDTO());
+    }
+
+    public Boolean isDeletingSafe(User user) {
+        UserRole userRole = user.getUserRole();
+        if(user.getUserRole().getName().equals("Admin")){
+            return userRepository.findAllByUserRole(userRole).size() > 1;
+        }
+        else if(user.getUserRole().getName().equals("Instructor")){
+            return instructorLessonRepository.findAllByInstructor(user).size() == 0;
+        }
+        else if(user.getUserRole().getName().equals("Cydeo Mentor")){
+            return groupRepository.findAllByCydeoMentor(user).size() == 0;
+        }
+        else if(user.getUserRole().getName().equals("Alumni Mentor")){
+            return groupRepository.findAllByAlumniMentor(user).size() == 0;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public String getDeleteErrorMessage(Long id) {
+        User user = userRepository.findById(id).get();
+        if(user.getUserRole().getName().equals("Admin")){
+            return "The last admin cannot be deleted!";
+        }
+        else if(user.getUserRole().getName().equals("Instructor")){
+            return "The instructor cannot be deleted, (s)he has lesson(s)!";
+        }
+        else{
+            return "The mentor cannot be deleted, (s)he has group(s)!";
+        }
     }
 
 }

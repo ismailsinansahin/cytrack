@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -106,10 +107,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/staffEditDelete/{id}", params = {"action=delete"})
-    public String deleteStaff(@PathVariable("id") Long id){
-        userService.delete(id);
+    public String deleteStaff(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+        String result = userService.delete(id);
+        if(result.equals("success")) redirectAttributes.addFlashAttribute("success", "The user was successfully deleted.");
+        else redirectAttributes.addFlashAttribute("failure", userService.getDeleteErrorMessage(id));
         return "redirect:/users/staffList";
     }
+
     @PostMapping(value = "/studentEditDropDelete/{id}", params = {"action=edit"})
     public String editStudent(@PathVariable("id") Long id){
         return "redirect:/users/studentEdit/" + id;

@@ -12,5 +12,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     List<Group> findAll();
     List<Group> findAllByBatch(Batch batch);
     List<Group> findAllByCydeoMentor(User cydeoMentor);
+    List<Group> findAllByAlumniMentor(User alumniMentor);
 
 }
