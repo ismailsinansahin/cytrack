@@ -1148,7 +1148,7 @@ Progress bar
     /*border: 5px solid #bebfbf;*/
     border: 2px solid #3d405c;
     border-radius: 45px;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
     position: relative;
 }
 .progress{
@@ -1160,6 +1160,7 @@ Progress bar
     border-radius: 20px;
     box-shadow: none;
     animation: animate-positive 2s;
+    margin-left: 25px;
 }
 .progress .progress-value{
     font-size: 16px;
@@ -1168,6 +1169,20 @@ Progress bar
     position: absolute;
     top: 0px;
     right: 10px;
+}
+
+.progress-type {
+    position: absolute;
+    left: 5px;
+    bottom: 3px;
+    font-weight: 800;
+    padding: -1px 30px 2px 10px;
+    color: rgb(255, 255, 255);
+    width: 100px;
+    text-align: center;
+    border-radius: 1rem;
+    line-height: 1rem;
+    /*background-color: rgba(25, 25, 25, 0.2);*/
 }
 @keyframes animate-positive{
     0%{ width: 0; }
