@@ -1135,32 +1135,57 @@ Social bg Color
 Progress bar
 -------------------------*/
 
-.progress-bar {
-    background-color: #5969ff;
+.progress-title{
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 0px;
+    line-height: 1;
+}
+.progress-outer{
+    background: #fff;
+    padding: 3px 60px 3px 5px;
+    /*border: 5px solid #bebfbf;*/
+    border: 2px solid #3d405c;
+    border-radius: 45px;
+    margin-bottom: 1px;
+    position: relative;
+}
+.progress{
+    background: #bebfbf;
+    border-radius: 20px;
+    margin: 0;
+}
+.progress .progress-bar{
+    border-radius: 20px;
+    box-shadow: none;
+    animation: animate-positive 2s;
+    /*margin-left: 25px;*/
+}
+.progress .progress-value{
+    font-size: 16px;
+    font-weight: 700;
+    color: #6b7880;
+    position: absolute;
+    top: 0px;
+    right: 10px;
 }
 
-.primary-progress-bar {
-    background-color: #5969ff;
+.progress-type {
+    position: absolute;
+    left: 5px;
+    bottom: 3px;
+    font-weight: 800;
+    padding: 0px 0px 0px 1px;
+    color: rgb(255, 255, 255);
+    width: 70px;
+    text-align: center;
+    border-radius: 1rem;
+    line-height: 1rem;
+    /*background-color: rgba(25, 25, 25, 0.2);*/
 }
-
-.progress-sm {
-    height: 5px;
-}
-
-.progress-sm {
-    height: 5px
-}
-
-.progress-md {
-    height: 8px
-}
-
-.progress-lg {
-    height: 12px
-}
-
-.progress-xl {
-    height: 15px
+@keyframes animate-positive{
+    0%{ width: 0; }
 }
 
 .progress-vertical{
