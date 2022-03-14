@@ -1144,9 +1144,9 @@ Progress bar
 }
 .progress-outer{
     background: #fff;
-    padding: 5px 60px 5px 5px;
+    padding: 3px 60px 3px 5px;
     /*border: 5px solid #bebfbf;*/
-    border: 3px solid #3d405c;
+    border: 2px solid #3d405c;
     border-radius: 45px;
     margin-bottom: 5px;
     position: relative;
