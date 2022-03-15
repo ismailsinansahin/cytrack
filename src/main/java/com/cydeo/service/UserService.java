@@ -12,8 +12,11 @@ public interface UserService {
     List<UserRoleDTO> getAllUserRoles();
     List<UserDTO> getAllStaffs();
     List<UserDTO> getAllStudents();
+    List<UserDTO> getAllStudentsByBatch(Long batchId);
     UserDTO getUserById(Long id);
+    BatchDTO getBatchById(Long id);
     UserDTO save(UserDTO userDTO);
+    UserDTO save(UserDTO userDTO, Long batchId);
     String delete(Long id);
     UserDTO drop(Long id);
     List<BatchDTO> getAllBatches();

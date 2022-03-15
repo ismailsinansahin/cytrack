@@ -37,6 +37,12 @@ public class UserController {
         return "user/student-list";
     }
 
+    @GetMapping("/batchStudentList/{batchId}")
+    public String goBatchStudentList(@PathVariable("batchId") Long batchId, Model model) {
+        model.addAttribute("students", userService.getAllStudentsByBatch(batchId));
+        return "user/batch-student-list";
+    }
+
     @GetMapping("/staffCreate")
     public String goStaffCreate(Model model) {
         model.addAttribute("newUser", new UserDTO());
@@ -56,6 +62,16 @@ public class UserController {
         return "user/student-create";
     }
 
+    @GetMapping("/batchStudentCreate/{batchId}")
+    public String goBatchStudentCreate(@PathVariable("batchId") Long batchId, Model model) {
+        model.addAttribute("newUser", new UserDTO());
+        model.addAttribute("countries", Arrays.asList(Country.values()));
+        model.addAttribute("genders", Arrays.asList(Gender.values()));
+        model.addAttribute("studentStatuses", Arrays.asList(StudentStatus.values()));
+        model.addAttribute("batch", userService.getBatchById(batchId));
+        return "user/batch-student-create";
+    }
+
     @PostMapping("/staffCreate")
     public String createStaff(UserDTO userDTO){
         userService.save(userDTO);
@@ -66,6 +82,12 @@ public class UserController {
     public String createStudent(UserDTO userDTO){
         userService.save(userDTO);
         return "redirect:/users/studentList";
+    }
+
+    @PostMapping("/batchStudentCreate/{batchId}")
+    public String createBatchStudent(@PathVariable("batchId") Long batchId, UserDTO userDTO){
+        userService.save(userDTO, batchId);
+        return "redirect:/users/batchStudentList/" + batchId;
     }
 
     @GetMapping("/staffEdit/{id}")

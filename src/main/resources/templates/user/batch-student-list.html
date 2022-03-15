@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/head :: header"><title>Student List</title></head>
+<head th:replace="/fragments/head :: header"><title>Batch Student List</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -14,17 +14,8 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="staffListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
-                                        Staff List</a>&nbsp&nbsp
-                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>&nbsp&nbsp
-                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Staff</a>&nbsp&nbsp
                                     <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${batchId})}"><i class="fa fa-plus mr-1"></i>
                                         Create Student</a>
                                 </div>
                             </form>
@@ -115,5 +106,4 @@
 <div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
-
 </html>

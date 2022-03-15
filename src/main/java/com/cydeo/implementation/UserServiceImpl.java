@@ -4,6 +4,7 @@ import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.dto.UserRoleDTO;
+import com.cydeo.entity.Batch;
 import com.cydeo.entity.User;
 import com.cydeo.entity.UserRole;
 import com.cydeo.enums.StudentStatus;
@@ -72,6 +73,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> getAllStudentsByBatch(Long batchId) {
+        return userRepository.findAllByBatch(batchRepository.findById(batchId).get())
+                .stream()
+                .map(obj -> mapperUtil.convert(obj, new UserDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<BatchDTO> getAllBatches() {
         return batchRepository.findAll()
                 .stream()
@@ -85,6 +94,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public BatchDTO getBatchById(Long batchId) {
+        return mapperUtil.convert(batchRepository.findById(batchId).get(), new BatchDTO());
+    }
+
+    @Override
     public UserDTO save(UserDTO userDTO) {
         User user = (userDTO.getId() != null) ? userRepository.findById(userDTO.getId()).get() : new User();
         if(userDTO.getUserRole() == null) userDTO.setUserRole(new UserRoleDTO("Student"));
@@ -92,6 +106,22 @@ public class UserServiceImpl implements UserService {
         userDTO.setUserName(userDTO.getEmail());
         userDTO.setEnabled(true);
         user = mapperUtil.convert(userDTO, user);
+        user.setUserRole(userRoleRepository.findByName(userDTO.getUserRole().getName()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return mapperUtil.convert(user, new UserDTO());
+    }
+
+    @Override
+    public UserDTO save(UserDTO userDTO, Long batchId) {
+        Batch batch = batchRepository.findById(batchId).get();
+        User user = (userDTO.getId() != null) ? userRepository.findById(userDTO.getId()).get() : new User();
+        if(userDTO.getUserRole() == null) userDTO.setUserRole(new UserRoleDTO("Student"));
+        if(user.getGroup() != null) userDTO.setGroup(mapperUtil.convert(user.getGroup(), new GroupDTO()));
+        userDTO.setUserName(userDTO.getEmail());
+        userDTO.setEnabled(true);
+        user = mapperUtil.convert(userDTO, user);
+        user.setBatch(batch);
         user.setUserRole(userRoleRepository.findByName(userDTO.getUserRole().getName()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

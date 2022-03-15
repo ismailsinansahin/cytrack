@@ -34,41 +34,61 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Task Based Performance</div>
                             <div class="panel panel-primary bg-primary-light text-dark">
-                                <div class="progress-bar bg-secondary-light text-dark" role="progressbar" style="width: 90%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Total')}">
-                                    <p style="text-align:left">TOTAL<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Total')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> TOTAL</span>
+                                        <div class="progress-bar progress-bar-striped bg-danger" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Total')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Total')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-info text-dark" role="progressbar" style="width: 85%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Recording')}">
-                                    <p style="text-align:left">Recordings<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Recording')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> VIDEOS</span>
+                                        <div class="progress-bar progress-bar-striped bg-info" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Recording')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Recording')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-info-light text-dark" role="progressbar" style="width: 60%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Quiz')}">
-                                    <p style="text-align:left">Quizzes<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Quiz')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> QUIZ</span>
+                                        <div class="progress-bar progress-bar-striped bg-success" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Quiz')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Quiz')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-secondary text-dark" role="progressbar" style="width: 100%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Assignment')}">
-                                    <p style="text-align:left">Assignments<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Assignment')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> ASSGN</span>
+                                        <div class="progress-bar progress-bar-striped bg-danger" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Assignment')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Assignment')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-secondary-light text-dark" role="progressbar" style="width: 69%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Replit')}">
-                                    <p style="text-align:left">Replit Questions<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Replit')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> REPL</span>
+                                        <div class="progress-bar progress-bar-striped bg-warning" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Replit')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Replit')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 75%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Flipgrid')}">
-                                    <p style="text-align:left">Flipgrids<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Flipgrid')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> FGRID</span>
+                                        <div class="progress-bar progress-bar-striped bg-primary" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Flipgrid')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Flipgrid')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-success text-dark" role="progressbar" style="width: 90%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Weekly Mentor Meeting')}">
-                                    <p style="text-align:left">Weekly Mentor Meetings<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Weekly Mentor Meeting')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type "> MEN MEET</span>
+                                        <div class="progress-bar progress-bar-striped bg-secondary"  th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Weekly Mentor Meeting')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Weekly Mentor Meeting')}"></span></div>
+                                    </div>
                                 </div>
-                                <div class="progress-bar bg-success-light text-dark" role="progressbar" style="width: 60%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Alumni Mentor Meeting')}">
-                                    <p style="text-align:left">Alumni Mentor Meeting<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Alumni Mentor Meeting')}"></span></p>
-                                </div>
-                                <div class="progress-bar bg-danger-light text-dark" role="progressbar" style="width: 90%;"
-                                     aria-valuemin="0" aria-valuemax="100" th:attr="aria-valuenow=${taskBasedNumbers.get('Assessment')}">
-                                    <p style="text-align:left">Assessment<span style="float:right" th:text="'%' + ${taskBasedNumbers.get('Assessment')}"></span></p>
+                                <div class="progress-outer">
+                                    <div class="progress ">
+                                        <span class="progress-type " > AL MEET</span>
+                                        <div class="progress-bar progress-bar-striped bg-dark" th:style="'min-width: 70px; width:' + ${taskBasedNumbers.get('Alumni Mentor Meeting')} +'%;'"></div>
+                                        <div class="progress-value"><span th:text="'%' + ${taskBasedNumbers.get('Alumni Mentor Meeting')}"></span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

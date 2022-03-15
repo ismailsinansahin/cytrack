@@ -62,6 +62,11 @@ public class BatchController {
         return "redirect:/batches/batchList";
     }
 
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=showStudents"})
+    public String goBatchStudentsPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/users/batchStudentList/" + batchId;
+    }
+
     @PostMapping(value = "/allActions/{batchId}", params = {"action=showGroups"})
     public String goGroupsPage(@PathVariable("batchId") Long batchId){
         return "redirect:/groups/groupList/" + batchId;

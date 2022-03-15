@@ -72,6 +72,12 @@ public class TaskController {
         return "redirect:/tasks/taskList/" + taskService.getTaskById(taskId).getBatch().getId();
     }
 
+    @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=unpublish"})
+    public String unpublishTask(@PathVariable("taskId") Long taskId){
+        taskService.unpublish(taskId);
+        return "redirect:/tasks/taskList/" + taskService.getTaskById(taskId).getBatch().getId();
+    }
+
     @PostMapping(value = "/publishCompleteEditDelete/{taskId}", params = {"action=complete"})
     public String completeTask(@PathVariable("taskId") Long taskId){
         taskService.complete(taskId);

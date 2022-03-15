@@ -14,18 +14,9 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="staffListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
-                                        Staff List</a>&nbsp&nbsp
                                     <a id="studentListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
                                         Student List</a>&nbsp&nbsp
-                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Staff</a>&nbsp&nbsp
-                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Student</a>
                                 </div>
                             </form>
                         </div>
@@ -42,7 +33,7 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/users/studentCreate/}"
+                                                      th:action="@{/users/batchStudentCreate/{batchId}(batchId=${batchId})}"
                                                       th:method="post" th:object="${newUser}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
@@ -134,12 +125,8 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batch}" required="required">
-                                                                        <option th:value="''" th:text="Select"></option>
-                                                                        <option th:each= "batch:${batches}"
-                                                                                th:value="${batch.id}"
-                                                                                th:text="${batch.name}"></option>
-                                                                    </select>
+                                                                    <input id="batch" type="text" th:field="${batch.name}"
+                                                                           class="form-control" required="required" aria-invalid="false" disabled>
                                                                 </div>
                                                             </div>
                                                         </div>

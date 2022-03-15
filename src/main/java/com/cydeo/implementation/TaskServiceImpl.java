@@ -88,14 +88,25 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void publish(Long taskId) {
         Task task = taskRepository.findById(taskId).get();
-        task.setTaskStatus(TaskStatus.PUBLISHED);
-        taskRepository.save(task);
         UserRole userRole = userRoleRepository.findByName("Student");
         List<User> allStudents = userRepository.findAllByUserRoleAndBatch(userRole, task.getBatch());
         for (User student : allStudents) {
             StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
             studentTaskRepository.save(studentTask);
         }
+        task.setTaskStatus(TaskStatus.PUBLISHED);
+        taskRepository.save(task);
+    }
+
+    @Override
+    public void unpublish(Long taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        List<StudentTask> studentTaskList = studentTaskRepository.findAllByTask(task);
+        for (StudentTask studentTask : studentTaskList) {
+            studentTaskRepository.delete(studentTask);
+        }
+        task.setTaskStatus(TaskStatus.PLANNED);
+        taskRepository.save(task);
     }
 
     @Override

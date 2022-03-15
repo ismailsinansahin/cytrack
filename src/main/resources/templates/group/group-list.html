@@ -25,7 +25,8 @@
                                 </div>
                             </form>
                         </div>
-                    </div><br>
+                    </div>
+                    <br>
                     <section class="panel">
                         <header class="panel-heading">
                             <h2 class="panel-title">Group List</h2>
@@ -36,7 +37,6 @@
                            th:href="@{/groups/groupList/{batchId}(batchId=${batchId})}">Cancel</a>&nbsp&nbsp
                         <a th:if="${failure}" id="confirmDelete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
                            th:href="@{/groups/confirmDelete/{batchId}/{groupId}(batchId=${batch.getId()}, groupId=${groupId})}">Delete All</a>
-                        <div><br></div>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">

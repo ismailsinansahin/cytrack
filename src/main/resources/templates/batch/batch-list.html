@@ -34,7 +34,6 @@
                            th:href="@{/batches/batchList}">Cancel</a>&nbsp&nbsp
                         <a th:if="${failure}" id="deleteall" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
                            th:href="@{/batches/deleteAll/{id}(id=${batchId})}">Delete All</a>
-                        <div><br></div>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">
@@ -70,11 +69,15 @@
                                                                     <form action="#"
                                                                           data-th-action="@{/batches/allActions/{id}(id=${batch.getId()})}"
                                                                           method="post">
+                                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action"
+                                                                                value="showStudents">Show Students
+                                                                        </button>
                                                                         <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="showGroups">Show Groups
                                                                         </button>
-                                                                        <button class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2"
+                                                                        <button class="btn btn-light mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="showTasks">Show Tasks
                                                                         </button>
@@ -94,7 +97,7 @@
                                                                                 value="delete">Delete
                                                                         </button>
                                                                         <button th:if="${batch.batchStatus.value} == 'In Progress'"
-                                                                                class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                                                                class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="complete">Complete
                                                                         </button>
