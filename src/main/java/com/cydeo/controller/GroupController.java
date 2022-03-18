@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/groups")
+@ExecutionTime
 public class GroupController {
 
     private final GroupService groupService;

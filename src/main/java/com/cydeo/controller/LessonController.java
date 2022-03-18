@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.InstructorLessonDTO;
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.service.LessonService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/lessons")
+@ExecutionTime
 public class LessonController {
 
     private final LessonService lessonService;

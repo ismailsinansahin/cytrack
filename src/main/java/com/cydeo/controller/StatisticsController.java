@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.service.BatchStatisticsService;
 import com.cydeo.service.CydeoStatisticsService;
 import com.cydeo.service.GroupStatisticsService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/statistics")
+@ExecutionTime
 public class StatisticsController {
 
     private final StudentStatisticsService studentStatisticsService;

@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.enums.BatchStatus;
 import com.cydeo.service.BatchService;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 
 @Controller
 @RequestMapping("/batches")
+@ExecutionTime
 public class BatchController {
 
     private final BatchService batchService;

@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.enums.TaskType;
 import com.cydeo.service.TaskService;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 
 @Controller
 @RequestMapping("/tasks")
+@ExecutionTime
 public class TaskController {
 
     private final TaskService taskService;

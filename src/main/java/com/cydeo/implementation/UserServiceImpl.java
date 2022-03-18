@@ -5,7 +5,6 @@ import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.dto.UserRoleDTO;
 import com.cydeo.entity.User;
-import com.cydeo.entity.UserRole;
 import com.cydeo.enums.StudentStatus;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
