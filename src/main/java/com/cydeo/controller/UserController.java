@@ -1,5 +1,6 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Country;
 import com.cydeo.enums.Gender;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/users")
+@ExecutionTime
 public class UserController {
 
     private final UserService userService;
