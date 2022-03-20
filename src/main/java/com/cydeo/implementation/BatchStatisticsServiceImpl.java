@@ -2,16 +2,10 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.User;
-import com.cydeo.enums.StudentStatus;
+import com.cydeo.entity.*;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
-import com.cydeo.repository.BatchRepository;
-import com.cydeo.repository.GroupRepository;
-import com.cydeo.repository.StudentTaskRepository;
-import com.cydeo.repository.UserRepository;
+import com.cydeo.repository.*;
 import com.cydeo.service.BatchStatisticsService;
 import org.springframework.stereotype.Service;
 import org.threeten.extra.Weeks;
@@ -28,14 +22,18 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final StudentTaskRepository studentTaskRepository;
+    private final BatchGroupStudentRepository  batchGroupStudentRepository;
 
     public BatchStatisticsServiceImpl(MapperUtil mapperUtil, BatchRepository batchRepository,
-                                      GroupRepository groupRepository, UserRepository userRepository, StudentTaskRepository studentTaskRepository) {
+                                      GroupRepository groupRepository, UserRepository userRepository,
+                                      StudentTaskRepository studentTaskRepository,
+                                      BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.batchRepository = batchRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
         this.studentTaskRepository = studentTaskRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -45,28 +43,20 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
 
     @Override
     public List<GroupDTO> getAllGroupsOfBatch(Long batchId) {
-        return groupRepository.findAllByBatch(batchRepository.findById(batchId).get())
+        return batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
+                .map(BatchGroupStudent::getGroup)
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
-                .peek(groupDTO -> groupDTO.setActiveStudents(getActiveStudents(groupDTO)))
-                .peek(groupDTO -> groupDTO.setDroppedTransferredStudents(getDroppedTransferredStudents(groupDTO)))
+                .peek(groupDTO -> groupDTO.setNumberOfStudents(getNumberOfStudents(groupDTO.getId())))
                 .peek(groupDTO -> groupDTO.setStudentProgress(getStudentProgress(groupDTO)))
                 .collect(Collectors.toList());
     }
 
-    private int getActiveStudents(GroupDTO groupDTO) {
-        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+    private int getNumberOfStudents(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        return (int)batchGroupStudentRepository.findAllByGroup(group)
                 .stream()
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.NEW) ||
-                        student.getStudentStatus().equals(StudentStatus.RETURNING))
-                .count();
-    }
-
-    private int getDroppedTransferredStudents(GroupDTO groupDTO) {
-        return (int) userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
-                .stream()
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.DROPPED) ||
-                        student.getStudentStatus().equals(StudentStatus.TRANSFERRED))
+                .filter(obj -> obj.getStudent() != null)
                 .count();
     }
 
@@ -74,7 +64,10 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
         int studentProgress;
         int totalTask = 0;
         int totalCompleted = 0;
-        List<User> studentsInGroup = userRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get());
+        List<User> studentsInGroup = batchGroupStudentRepository.findAllByGroup(groupRepository.findById(groupDTO.getId()).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for (User student : studentsInGroup){
             int totalTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
                     .stream()
@@ -127,7 +120,10 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
 
     private int getTotalOfGivenTasks(Long batchId, String taskType) {
         int total = 0;
-        List<User> studentsOfGroup = userRepository.findAllByBatch(batchRepository.findById(batchId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             total += Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                     .stream()
@@ -139,7 +135,10 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
 
     private int getTotalOfCompletedTasks(Long batchId, String taskType) {
         int completed = 0;
-        List<User> studentsOfGroup = userRepository.findAllByBatch(batchRepository.findById(batchId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             completed += Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                     .stream()
@@ -175,7 +174,10 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
         int completionRate;
         int total = 0;
         int completed = 0;
-        List<User> studentsOfGroup = userRepository.findAllByBatch(batchRepository.findById(batchId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             total += getTotalOfGivenTasksInGivenWeek(student, batchId, numberOfWeek);
             completed += getTotalOfCompletedTasksInGivenWeek(student, batchId, numberOfWeek);

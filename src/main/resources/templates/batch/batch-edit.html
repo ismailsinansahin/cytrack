@@ -50,11 +50,8 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batchStatus">Status</label>
-                                                                    <select id="batchStatus" class="form-control" th:field="*{batchStatus}" required>
-                                                                        <option th:each= "batchStatus:${batchStatuses}"
-                                                                                th:value="${batchStatus}"
-                                                                                th:text="${batchStatus.value}"></option>
-                                                                    </select>
+                                                                    <input type="text" id="batchStatus" th:field="*{batchStatus}" disabled
+                                                                           class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -10,7 +10,6 @@ import com.cydeo.repository.*;
 import com.cydeo.service.TaskService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +23,12 @@ public class TaskServiceImpl implements TaskService {
     private final LessonRepository lessonRepository;
     private final StudentTaskRepository studentTaskRepository;
     private final UserRoleRepository userRoleRepository;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public TaskServiceImpl(MapperUtil mapperUtil, TaskRepository taskRepository, UserRepository userRepository,
                            BatchRepository batchRepository, LessonRepository lessonRepository,
-                           StudentTaskRepository studentTaskRepository, UserRoleRepository userRoleRepository) {
+                           StudentTaskRepository studentTaskRepository, UserRoleRepository userRoleRepository,
+                           BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
@@ -35,6 +36,7 @@ public class TaskServiceImpl implements TaskService {
         this.lessonRepository = lessonRepository;
         this.studentTaskRepository = studentTaskRepository;
         this.userRoleRepository = userRoleRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -89,8 +91,11 @@ public class TaskServiceImpl implements TaskService {
     public void publish(Long taskId) {
         Task task = taskRepository.findById(taskId).get();
         UserRole userRole = userRoleRepository.findByName("Student");
-        List<User> allStudents = userRepository.findAllByUserRoleAndBatch(userRole, task.getBatch());
-        for (User student : allStudents) {
+        List<User> studentList = batchGroupStudentRepository.findAllByBatch(task.getBatch())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
+        for (User student : studentList) {
             StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
             studentTaskRepository.save(studentTask);
         }

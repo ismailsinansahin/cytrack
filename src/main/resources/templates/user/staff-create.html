@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/head :: header"><title>Cydeo Mentor Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Staff Create</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -17,15 +17,12 @@
                                     <a id="staffListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
                                         Staff List</a>&nbsp&nbsp
-                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>&nbsp&nbsp
                                     <a id="createStaff" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
                                         Create Staff</a>&nbsp&nbsp
-                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Student</a>
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>
                                 </div>
                             </form>
                         </div>
@@ -49,25 +46,17 @@
                                                             <div class="form-group">
                                                                 <div class="form-group">
                                                                     <label for="country">Role</label><br>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option1" name="option1" class="custom-control-input"
-                                                                               th:value="${userRoles.get(0).name}" th:field="*{userRole}" required>
-                                                                        <label class="custom-control-label" for="option1">Admin</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option2" name="option2" class="custom-control-input"
-                                                                               th:value="${userRoles.get(1).name}" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option2">Instructor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option3" name="option3" class="custom-control-input"
-                                                                               th:value="${userRoles.get(2).name}" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option3">Cydeo Mentor</label>
-                                                                    </div>
-                                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                                        <input type="radio" id="option4" name="option4" class="custom-control-input"
-                                                                               th:value="${userRoles.get(3).name}" th:field="*{userRole}">
-                                                                        <label class="custom-control-label" for="option4">Alumni Mentor</label>
+                                                                    <div th:each="each, stat:${userRoles}"
+                                                                         class="custom-control custom-radio custom-control-inline"
+                                                                         th:if="${each.name!='Student'}">
+                                                                        <input type="radio" class="custom-control-input"
+                                                                               th:id="'option'+${stat}"
+                                                                               th:name="'option'+${stat}"
+                                                                               th:value="${each.name}"
+                                                                               th:field="*{userRole.name}">
+                                                                        <label class="custom-control-label"
+                                                                               th:for="'option'+${stat}"
+                                                                               th:text="${each.name}"></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -143,7 +132,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Password</label>
-                                                                    <input type="text" th:field="*{password}" placeholder="Password"
+                                                                    <input type="password" th:field="*{password}" placeholder="Password"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -152,7 +141,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Confirm Password</label>
-                                                                    <input type="text" th:field="*{confirmPassword}" placeholder="Confirm Password"
+                                                                    <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>

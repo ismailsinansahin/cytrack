@@ -14,9 +14,11 @@ public interface UserRepository extends JpaRepository <User,Long>{
 
     List<User> findAllByUserRole(UserRole userRole);
     List<User> findAllByUserRoleNot(UserRole userRole);
-    List<User> findAllByUserRoleAndBatch(UserRole userRole, Batch batch);
-    List<User> findAllByGroup(Group group);
-    List<User> findAllByBatch(Batch batch);
+
+    List<User> findAllByCurrentBatch(Batch batch);
+
+//    List<User> findAllByGroup(Group group);
+//    List<User> findAllByBatch(Batch batch);
     User findByUserName(String userName);
 
 }

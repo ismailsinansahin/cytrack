@@ -17,15 +17,12 @@
                                     <a id="staffListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
                                         Staff List</a>&nbsp&nbsp
-                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>&nbsp&nbsp
                                     <a id="createStaff" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
                                         Create Staff</a>&nbsp&nbsp
-                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Student</a>
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>
                                 </div>
                             </form>
                         </div>
@@ -35,8 +32,12 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Staff List</h2>
                         </header>
-                        <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
-                        <div class="alert alert-danger" role="alert" th:text="${failure}" th:if="${failure}"></div>
+                        <div th:if="${confirmDeletion}" class="alert alert-danger" role="alert" th:text="${confirmDeletion}"></div>
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+                        <a th:if="${confirmDeletion}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                           th:href="@{/users/staffList}">Cancel</a>&nbsp&nbsp
+                        <a th:if="${confirmDeletion}" id="delete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/users/deleteStaff/{userId}(userId=${userId})}">Delete</a>
                         <div class="panel-body">
                         <div class="users-list-table">
                             <div class="row">

@@ -82,6 +82,22 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
+                                                                    <label>Number Of Groups</label>
+                                                                    <select id="country" class="form-control"
+                                                                            th:field="*{numberOfGroups}" th:placeholder="Select" required="required">
+                                                                        <option th:each= "i:${#numbers.sequence(0,50)}"
+                                                                                th:value="${i}"
+                                                                                th:text="${i}"
+                                                                                th:selected="${i==20}">
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
                                                                     <label>Notes</label>
                                                                     <input type="text" th:field="*{notes}" placeholder="Notes..."
                                                                            class="form-control" required="required" aria-invalid="false">

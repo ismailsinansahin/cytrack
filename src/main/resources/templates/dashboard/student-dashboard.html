@@ -18,8 +18,8 @@
                             <div class="panel panel-primary bg-primary-light text-dark">
                                 <div><strong th:text="${'Firstname : '}"></strong><a th:text="${student.firstName}"></a><br></div>
                                 <div><strong th:text="${'Lastname : '}"></strong><a th:text="${student.lastName}"></a><br></div>
-                                <div><strong th:text="${'Batch : '}"></strong><a th:text="${student.group.batch.name}"></a><br></div>
-                                <div><strong th:text="${'Group : '}"></strong><a th:text="${student.group.name}"></a><br></div>
+                                <div><strong th:text="${'Batch : '}"></strong><a th:text="${student.currentBatch.name}"></a><br></div>
+                                <div><strong th:text="${'Group : '}"></strong><a th:text="${student.currentGroup.name}"></a><br></div>
                                 <div><strong th:text="${'Country : '}"></strong><a th:text="${student.country.value}"></a><br></div>
                                 <div><strong th:text="${'Gender : '}"></strong><a th:text="${student.gender.value}"></a><br></div>
                                 <div><strong th:text="${'Status : '}"></strong><a th:text="${student.studentStatus.value}"></a><br></div>

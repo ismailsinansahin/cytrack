@@ -1,5 +1,6 @@
 package com.cydeo.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,14 +15,12 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Where(clause="is_deleted=false")
 public class Group extends BaseEntity{
 
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name="batch_id")
-    private Batch batch;
+    private String notes;
 
     @ManyToOne
     @JoinColumn(name = "cydeoMentor_id")

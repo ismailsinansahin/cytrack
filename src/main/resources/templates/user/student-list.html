@@ -17,15 +17,12 @@
                                     <a id="staffListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
                                         Staff List</a>&nbsp&nbsp
+                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
+                                    th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
+                                        Create Staff</a>&nbsp&nbsp
                                     <a id="studentListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>&nbsp&nbsp
-                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Staff</a>&nbsp&nbsp
-                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Student</a>
+                                        Student List</a>
                                 </div>
                             </form>
                         </div>
@@ -35,6 +32,11 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Student List</h2>
                         </header>
+                        <div th:if="${confirmDeletion}" class="alert alert-danger" role="alert" th:text="${confirmDeletion}"></div>
+                        <a th:if="${confirmDeletion}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                           th:href="@{/users/studentList}">Cancel</a>&nbsp&nbsp
+                        <a th:if="${confirmDeletion}" id="delete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/users/deleteStudent/{studentId}(studentId=${studentId})}">Delete</a>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">
@@ -48,46 +50,33 @@
                                                                style="width:100%">
                                                             <thead>
                                                             <tr>
-                                                                <th scope="col">Batch</th>
-                                                                <th scope="col">Group</th>
                                                                 <th scope="col">Name</th>
                                                                 <th scope="col">Country</th>
                                                                 <th scope="col">Email</th>
                                                                 <th scope="col">Phone</th>
                                                                 <th scope="col">Birthday</th>
                                                                 <th scope="col">Gender</th>
-                                                                <th scope="col">Status</th>
+                                                                <th scope="col">Pre.Batches</th>
                                                                 <th scope="col">Action</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody id="myTable">
                                                             <tr th:each="student : ${students}" class="text-dark"
-                                                                th:style="${student.studentStatus.value}=='Dropped' ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
-                                                                <td th:text="${student.batch.name}"></td>
-                                                                <td th:if="${student.group==null}">-</td>
-                                                                <td th:unless="${student.group==null}" th:text="${student.group.name}"></td>
+                                                                th:style="${student.currentBatch} == null ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
                                                                 <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                 <td th:text="${student.country.value}"></td>
                                                                 <td th:text="${student.email}"></td>
                                                                 <td th:text="${student.phone}"></td>
                                                                 <td th:text="${student.birthday}"></td>
                                                                 <td th:text="${student.gender.value}"></td>
-                                                                <td th:text="${student.studentStatus.value}"></td>
+                                                                <td>TO DO</td>
                                                                 <td class="actions">
                                                                     <form action="#"
-                                                                          data-th-action="@{/users/studentEditDropDelete/{id}(id=${student.getId()})}"
+                                                                          data-th-action="@{/users/studentEditDelete/{id}(id=${student.getId()})}"
                                                                           method="post">
                                                                         <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="edit">Edit
-                                                                        </button>
-                                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action"
-                                                                                value="transfer">Transfer
-                                                                        </button>
-                                                                        <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action"
-                                                                                value="drop">Drop
                                                                         </button>
                                                                         <button class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"

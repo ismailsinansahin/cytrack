@@ -26,14 +26,11 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Batch List</h2>
                         </header>
-                        <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
-                        <div class="alert alert-danger" role="alert" th:text="${failure}" th:if="${failure}"></div>
-                        <a th:if="${failure}" id="keepstudentsandtasks" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
-                           th:href="@{/batches/keepStudentsAndTasks/{id}(id=${batchId})}">Keep Students and Tasks</a>&nbsp&nbsp
-                        <a th:if="${failure}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                        <div class="alert alert-danger" role="alert" th:text="${deleteConfirmation}" th:if="${deleteConfirmation}"></div>
+                        <a th:if="${deleteConfirmation}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
                            th:href="@{/batches/batchList}">Cancel</a>&nbsp&nbsp
-                        <a th:if="${failure}" id="deleteall" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
-                           th:href="@{/batches/deleteAll/{id}(id=${batchId})}">Delete All</a>
+                        <a th:if="${deleteConfirmation}" id="delete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/batches/deleteBatch/{batchId}(batchId=${batchId})}">Delete</a>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">
@@ -71,15 +68,7 @@
                                                                           method="post">
                                                                         <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
-                                                                                value="showStudents">Show Students
-                                                                        </button>
-                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action"
-                                                                                value="showGroups">Show Groups
-                                                                        </button>
-                                                                        <button class="btn btn-light mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action"
-                                                                                value="showTasks">Show Tasks
+                                                                                value="go">Go
                                                                         </button>
                                                                         <button th:if="${batch.batchStatus.value} == 'Planned'"
                                                                                 class="btn btn-success mb-2 mb-sm-0 mr-sm-2"

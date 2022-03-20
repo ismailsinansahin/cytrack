@@ -10,10 +10,8 @@ public interface BatchService {
     BatchDTO getByBatchId(Long batchId);
     BatchDTO create(BatchDTO batchDTO);
     BatchDTO save(BatchDTO batchDTO, Long batchId);
-    String delete(Long batchId);
+    void delete(Long batchId);
     void start(Long batchId);
     void complete(Long batchId);
-    void deleteBatchWithAllStudentsAndTasks(Long batchId);
-    void deleteBatchWithoutStudentsAndTasks(Long batchId);
 
 }

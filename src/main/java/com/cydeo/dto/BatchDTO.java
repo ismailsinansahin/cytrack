@@ -27,6 +27,8 @@ public class BatchDTO {
     private String notes;
     private BatchStatus batchStatus;
 
+    private int numberOfGroups;
+
     private int completion;
     private int activeStudents;
     private int droppedTransferredStudents;

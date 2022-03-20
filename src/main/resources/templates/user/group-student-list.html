@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/head :: header"><title>Batch Student List</title></head>
+<head th:replace="/fragments/head :: header"><title>Group Student List</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -70,8 +70,7 @@
                                                             <tr th:each="student : ${students}" class="text-dark"
                                                                 th:style="${student.studentStatus.value}=='Dropped' ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
                                                                 <td th:text="${batch.name}"></td>
-                                                                <td th:if="${groupsMap.get(student.id)} == null" th:text="'-'"></td>
-                                                                <td th:unless="${groupsMap.get(student.id)} == null" th:text="${groupsMap.get(student.id).name}"></td>
+                                                                <td th:text="${group.name}"></td>
                                                                 <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                 <td th:text="${student.country.value}"></td>
                                                                 <td th:text="${student.email}"></td>

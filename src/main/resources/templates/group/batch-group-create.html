@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/head :: header"><title>Group Edit</title></head>
+<head th:replace="/fragments/head :: header"><title>Group Create</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -14,15 +14,30 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/groups/groupList/{batchid}(batchid=${group.batch.getId()})}">
-                                        <i class="fa fa-list mr-1"></i>Group List</a>
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/batchGroupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Group</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="studentCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupAddRemoveStudent/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Add/Remove Student</a>
                                 </div>
                             </form>
                         </div>
                     </div><br>
                     <header class="panel-heading">
-                        <h2 class="panel-title">Edit Group</h2>
+                        <h2 class="panel-title">Create New Group</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -33,14 +48,14 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/groups/groupUpdate/{groupId}/{batchId}(groupId=${group.getId()}, batchId=${group.batch.getId()})}"
-                                                      th:method="post" th:object="${group}">
+                                                      th:action="@{/groups/groupCreate/{batchId}(batchId=${batch.id})}"
+                                                      th:method="post" th:object="${newGroup}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Batch</label>
-                                                                    <input type="text" th:field="${group.batch.name}"
+                                                                    <label>Batch Name</label>
+                                                                    <input type="text" th:field="${batch.name}"
                                                                            class="form-control" required="required" aria-invalid="false" disabled>
                                                                 </div>
                                                             </div>
@@ -59,12 +74,12 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Cydeo Mentor</label>
-                                                                    <select class="form-control" name="cydeoMentor">
+                                                                    <label for="cydeoMentor">Cydeo Mentor</label>
+                                                                    <select id="cydeoMentor" class="form-control" th:field="*{cydeoMentor}" required>
+                                                                        <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "cydeoMentor:${cydeoMentors}"
                                                                                 th:value="${cydeoMentor.id}"
-                                                                                th:text="${cydeoMentor.firstName + ' ' + cydeoMentor.lastName}"
-                                                                                th:selected="${cydeoMentor.id==group.cydeoMentor.id}"></option>
+                                                                                th:text="${cydeoMentor.firstName}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -72,12 +87,12 @@
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
                                                                 <div class="controls">
-                                                                    <label>Alumni Mentor</label>
-                                                                    <select class="form-control" name="alumniMentor">
+                                                                    <label for="alumniMentor">Alumni Mentor</label>
+                                                                    <select id="alumniMentor" class="form-control" th:field="*{alumniMentor}" required>
+                                                                        <option th:value="''" th:text="Select"></option>
                                                                         <option th:each= "alumniMentor:${alumniMentors}"
                                                                                 th:value="${alumniMentor.id}"
-                                                                                th:text="${alumniMentor.firstName + ' ' + alumniMentor.lastName}"
-                                                                                th:selected="${alumniMentor.id==group.alumniMentor.id}"></option>
+                                                                                th:text="${alumniMentor.firstName}"></option>
                                                                     </select>
                                                                 </div>
                                                             </div>

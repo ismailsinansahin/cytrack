@@ -1,18 +1,16 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.BatchDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.Task;
-import com.cydeo.entity.User;
+import com.cydeo.entity.*;
 import com.cydeo.enums.BatchStatus;
-import com.cydeo.enums.TaskStatus;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
 import com.cydeo.service.BatchService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,16 +22,19 @@ public class BatchServiceImpl implements BatchService {
     private final TaskRepository taskRepository;
     private final StudentTaskRepository studentTaskRepository;
     private final UserRepository userRepository;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public BatchServiceImpl(BatchRepository batchRepository, MapperUtil mapperUtil,
                             GroupRepository groupRepository, TaskRepository taskRepository,
-                            StudentTaskRepository studentTaskRepository, UserRepository userRepository) {
+                            StudentTaskRepository studentTaskRepository, UserRepository userRepository,
+                            BatchGroupStudentRepository batchGroupStudentRepository) {
         this.batchRepository = batchRepository;
         this.mapperUtil = mapperUtil;
         this.groupRepository = groupRepository;
         this.taskRepository = taskRepository;
         this.studentTaskRepository = studentTaskRepository;
         this.userRepository = userRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -49,6 +50,15 @@ public class BatchServiceImpl implements BatchService {
         Batch batch = mapperUtil.convert(batchDTO, new Batch());
         batch.setBatchStatus(BatchStatus.PLANNED);
         batchRepository.save(batch);
+        int numberOfGroups = batchDTO.getNumberOfGroups();
+        groupRepository.save(new Group("-", "", null, null));
+        for (int i=1 ; i<=numberOfGroups ; i++) {
+            User cydeoMentor = userRepository.findById(6L).get();
+            User alumniMentor = userRepository.findById(8L).get();
+            Group group = new Group("Group-" + i, "", cydeoMentor, alumniMentor);
+            groupRepository.save(group);
+            batchGroupStudentRepository.save(new BatchGroupStudent(batch, group, null));
+        }
         return mapperUtil.convert(batch, new BatchDTO());
     }
 
@@ -62,62 +72,36 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
-    public String delete(Long batchId) {
+    public void delete(Long batchId) {
         Batch batch = batchRepository.findById(batchId).get();
-        if(isDeletingSafe(batch)){
-            batch.setIsDeleted(true);
-            batchRepository.save(batch);
-            return "success";
+        List<BatchGroupStudent> batchGroupStudentsToBeDeleted = new ArrayList<>(batchGroupStudentRepository.findAllByBatch(batch));
+        List<User> studentList = batchGroupStudentsToBeDeleted
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        for (User student : studentList) {
+            student.setCurrentBatch(null);
+            student.setCurrentGroup(null);
+            userRepository.save(student);
         }
-        return "failure";
-    }
-
-    public Boolean isDeletingSafe(Batch batch) {
-        return (groupRepository.findAllByBatch(batch).size() < 1) || (taskRepository.findAllByBatch(batch).size() < 1);
-    }
-
-    @Override
-    public void deleteBatchWithAllStudentsAndTasks(Long batchId) {
-        Batch batch = batchRepository.findById(batchId).get();
+        List<Group> groupList = batchGroupStudentRepository.findAllByBatch(batch)
+                .stream()
+                .map(BatchGroupStudent::getGroup)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        for (Group group : groupList) {
+            group.setIsDeleted(true);
+            groupRepository.save(group);
+        }
         List<Task> taskList = taskRepository.findAllByBatch(batch);
-        List<User> studentList = userRepository.findAllByBatch(batch);
-        for (Task task : taskList) {
-            List<StudentTask> studentTaskList = studentTaskRepository.findAllByTask(task);
-            for (StudentTask studentTask : studentTaskList) {
-                studentTaskRepository.delete(studentTask);
-            }
-        }
         for (Task task : taskList) {
             task.setIsDeleted(true);
             taskRepository.save(task);
         }
-        for (User student : studentList) {
-            student.setIsDeleted(true);
-            userRepository.save(student);
-        }
-        batch.setIsDeleted(true);
-        batchRepository.save(batch);
-    }
-
-    @Override
-    public void deleteBatchWithoutStudentsAndTasks(Long batchId) {
-        Batch batch = batchRepository.findById(batchId).get();
-        List<Task> taskList = taskRepository.findAllByBatch(batch);
-        List<User> studentList = userRepository.findAllByBatch(batch);
-        for (Task task : taskList) {
-            List<StudentTask> studentTaskList = studentTaskRepository.findAllByTask(task);
-            for (StudentTask studentTask : studentTaskList) {
-                studentTaskRepository.delete(studentTask);
-            }
-        }
-        for (Task task : taskList) {
-            task.setTaskStatus(TaskStatus.PLANNED);
-            task.setBatch(null);
-            taskRepository.save(task);
-        }
-        for (User student : studentList) {
-            student.setBatch(null);
-            userRepository.save(student);
+        for (BatchGroupStudent batchGroupStudent : batchGroupStudentsToBeDeleted){
+            batchGroupStudent.setIsDeleted(true);
+            batchGroupStudentRepository.save(batchGroupStudent);
         }
         batch.setIsDeleted(true);
         batchRepository.save(batch);
@@ -133,6 +117,13 @@ public class BatchServiceImpl implements BatchService {
     @Override
     public void complete(Long batchId) {
         Batch batch = batchRepository.findById(batchId).get();
+        List<User> studentList = batchGroupStudentRepository.findAllByBatch(batch)
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
+        for (User student : studentList) {
+            batchGroupStudentRepository.save(new BatchGroupStudent(batch, getCurrentGroup(student), student));
+        }
         batch.setBatchStatus(BatchStatus.COMPLETED);
         batchRepository.save(batch);
     }
@@ -141,6 +132,14 @@ public class BatchServiceImpl implements BatchService {
     public BatchDTO getByBatchId(Long batchId) {
         Batch batch = batchRepository.findById(batchId).get();
         return mapperUtil.convert(batch, new BatchDTO());
+    }
+
+    Group getCurrentGroup(User student){
+        return batchGroupStudentRepository.findAllByStudent(student)
+                .stream()
+                .filter(obj -> obj.getBatch().getBatchStatus().equals(BatchStatus.INPROGRESS))
+                .map(BatchGroupStudent::getGroup)
+                .findFirst().get();
     }
 
 }

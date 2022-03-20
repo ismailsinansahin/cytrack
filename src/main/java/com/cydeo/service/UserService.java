@@ -1,25 +1,35 @@
 package com.cydeo.service;
 
 import com.cydeo.dto.BatchDTO;
+import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.dto.UserRoleDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
-    List<UserDTO> listAllUsers();
     List<UserRoleDTO> getAllUserRoles();
     List<UserDTO> getAllStaffs();
     List<UserDTO> getAllStudents();
     List<UserDTO> getAllStudentsByBatch(Long batchId);
-    UserDTO getUserById(Long id);
-    BatchDTO getBatchById(Long id);
-    UserDTO save(UserDTO userDTO);
-    UserDTO save(UserDTO userDTO, Long batchId);
-    String delete(Long id);
-    UserDTO drop(Long id);
-    List<BatchDTO> getAllBatches();
-    String getDeleteErrorMessage(Long id);
+    List<UserDTO> getAllStudentsByGroup(Long groupId);
+    UserDTO getUserById(Long userId);
+    UserDTO saveStaff(UserDTO userDTO);
+    UserDTO updateStudent(UserDTO userDTO);
+    UserDTO createBatchStudent(UserDTO userDTO, Long batchId);
+    UserDTO updateBatchStudent(UserDTO userDTO, Long batchId, Long groupId);
+    UserDTO drop(Long studentId);
+    Boolean isDeletionSafe(Long userId);
+    void deleteStaff(Long userId);
+    void deleteStudent(Long userId);
+    String getDeleteErrorMessage(Long userId);
+    List<BatchDTO> getStudentPossibleBatches(Long studentId);
+    BatchDTO getBatchById(Long batchId);
+    Map<Long, GroupDTO> getStudentsGroupNumbersMap(Long batchId);
+    List<GroupDTO> getAllGroupsOfBatch(Long batchId);
+    GroupDTO getGroupById(Long groupId);
+    GroupDTO getStudentGroup(Long batchId, Long studentId);
 
 }

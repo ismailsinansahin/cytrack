@@ -2,6 +2,7 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.*;
 import com.cydeo.entity.*;
+import com.cydeo.enums.BatchStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
@@ -26,14 +27,17 @@ public class DashboardServiceImpl implements DashboardService {
     private final TaskRepository taskRepository;
     private final BatchRepository batchRepository;
     private final MapperUtil mapperUtil;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public DashboardServiceImpl(StudentTaskRepository studentTaskRepository, UserRepository userRepository,
-                                TaskRepository taskRepository, BatchRepository batchRepository, MapperUtil mapperUtil) {
+                                TaskRepository taskRepository, BatchRepository batchRepository, MapperUtil mapperUtil,
+                                BatchGroupStudentRepository batchGroupStudentRepository) {
         this.studentTaskRepository = studentTaskRepository;
         this.userRepository = userRepository;
         this.taskRepository = taskRepository;
         this.batchRepository = batchRepository;
         this.mapperUtil = mapperUtil;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class DashboardServiceImpl implements DashboardService {
     public Map<String, Integer> getWeekBasedNumbers() {
         Long studentId = getCurrentUserId();
         Map<String, Integer> weekBasedNumbersMap = new HashMap<>();
-        int numberOfWeeks = calculateNumberOfWeeks(userRepository.findById(studentId).get().getBatch());
+        int numberOfWeeks = calculateNumberOfWeeks(getCurrentBatch(userRepository.findById(studentId).get()));
         for (int numberOfWeek = 1 ; numberOfWeek < numberOfWeeks ; numberOfWeek++) {
             weekBasedNumbersMap.put(("W" + numberOfWeek), getNumbersForWeek(studentId, numberOfWeek));
         }
@@ -137,7 +141,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     private int getTotalOfGivenTasksInGivenWeek(User student, int numberOfWeek) {
-        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        LocalDate weekStartDate = getCurrentBatch(student).getBatchStartDate().plusDays(7L * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return (int) studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -147,7 +151,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     private int getTotalOfCompletedTasksInGivenWeek(User student, int numberOfWeek) {
-        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        LocalDate weekStartDate = getCurrentBatch(student).getBatchStartDate().plusDays(7L * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -181,6 +185,14 @@ public class DashboardServiceImpl implements DashboardService {
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
                 .collect(Collectors.toList());
+    }
+
+    Batch getCurrentBatch(User student){
+        return batchGroupStudentRepository.findAllByStudent(student)
+                .stream()
+                .map(BatchGroupStudent::getBatch)
+                .filter(batch -> batch.getBatchStatus().equals(BatchStatus.INPROGRESS))
+                .findFirst().get();
     }
 
 }

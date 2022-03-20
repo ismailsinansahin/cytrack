@@ -29,13 +29,6 @@ public class BatchController {
         return "batch/batch-list";
     }
 
-    @GetMapping("/batchList/{batchId}")
-    public String goBatchList(@PathVariable("batchId") Long batchId, Model model){
-        model.addAttribute("batches", batchService.listAllBatches());
-        model.addAttribute("batchId", batchId);
-        return "batch/batch-list";
-    }
-
     @GetMapping("/batchCreate")
     public String goBatchCreate(Model model){
         model.addAttribute("newBatch", new BatchDTO());
@@ -62,45 +55,9 @@ public class BatchController {
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=showStudents"})
-    public String goBatchStudentsPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/users/batchStudentList/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=showGroups"})
-    public String goGroupsPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/groups/groupList/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=showTasks"})
-    public String goTasksPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/tasks/taskList/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})
-    public String goEditPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/batches/batchEdit/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
-    public String deleteBatch(@PathVariable("batchId") Long batchId, RedirectAttributes redirectAttributes){
-        String result = batchService.delete(batchId);
-        if(result.equals("success")) redirectAttributes.addFlashAttribute(result, "The batch was successfully deleted.");
-        if(result.equals("failure")) redirectAttributes.addFlashAttribute(result, "The batch has students and tasks. Do you want to delete anyway?");
-        redirectAttributes.addFlashAttribute("batchId", batchId);
-        return "redirect:/batches/batchList/"+ batchId;
-    }
-
-    @GetMapping("/deleteAll/{batchId}")
-    public String deleteAll(@PathVariable("batchId") Long batchId){
-        batchService.deleteBatchWithAllStudentsAndTasks(batchId);
-        return "redirect:/batches/batchList/" + batchId;
-    }
-
-    @GetMapping("/keepStudentsAndTasks/{batchId}")
-    public String keepStudentsAndTasks(@PathVariable("batchId") Long batchId){
-        batchService.deleteBatchWithoutStudentsAndTasks(batchId);
-        return "redirect:/batches/batchList/" + batchId;
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=go"})
+    public String goBatchGroupsPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/groups/batchGroupList/" + batchId;
     }
 
     @PostMapping(value = "/allActions/{batchId}", params = {"action=start"})
@@ -112,6 +69,29 @@ public class BatchController {
     @PostMapping(value = "/allActions/{batchId}", params = {"action=complete"})
     public String completeBatch(@PathVariable("batchId") Long batchId){
         batchService.complete(batchId);
+        return "redirect:/batches/batchList";
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})
+    public String goEditPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchEdit/" + batchId;
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
+    public String goBatchDeleteConfirmation(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchList/" + batchId;
+    }
+
+    @GetMapping("/batchList/{batchId}")
+    public String goBatchList(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batches", batchService.listAllBatches());
+        model.addAttribute("deleteConfirmation", "Delete Batch?");
+        return "batch/batch-list";
+    }
+
+    @GetMapping("/deleteBatch/{batchId}")
+    public String deleteBatch(@PathVariable("batchId") Long batchId){
+        batchService.delete(batchId);
         return "redirect:/batches/batchList";
     }
 

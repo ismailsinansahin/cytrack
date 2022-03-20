@@ -2,7 +2,7 @@ package com.cydeo.enums;
 
 public enum StudentStatus {
 
-    RETURNING(1,"Returning"), NEW(2,"New"), DROPPED(3,"Dropped"), TRANSFERRED(4,"Transferred");
+    ALUMNI(1,"Alumni"), NEW(2,"New"), DROPPED(3,"Dropped"), TRANSFERRED(4,"Transferred");
 
     private int id;
     private String value;
@@ -22,7 +22,7 @@ public enum StudentStatus {
 
     public static StudentStatus getWithId(int id){
         switch (id){
-            case 1: return StudentStatus.RETURNING;
+            case 1: return StudentStatus.ALUMNI;
             case 2: return StudentStatus.NEW;
             case 3: return StudentStatus.DROPPED;
             case 4: return StudentStatus.TRANSFERRED;

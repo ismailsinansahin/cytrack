@@ -2,9 +2,10 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.*;
 import com.cydeo.entity.Batch;
+import com.cydeo.entity.BatchGroupStudent;
 import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.Task;
 import com.cydeo.entity.User;
+import com.cydeo.enums.BatchStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
@@ -22,12 +23,15 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
     private final MapperUtil mapperUtil;
     private final UserRepository userRepository;
     private final StudentTaskRepository studentTaskRepository;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public StudentStatisticsServiceImpl(MapperUtil mapperUtil, UserRepository userRepository,
-                                        StudentTaskRepository studentTaskRepository) {
+                                        StudentTaskRepository studentTaskRepository,
+                                        BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
         this.studentTaskRepository = studentTaskRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -97,7 +101,8 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
     @Override
     public Map<String, Integer> getWeekBasedNumbers(Long studentId) {
         Map<String, Integer> weekBasedNumbersMap = new HashMap<>();
-        int numberOfWeeks = calculateNumberOfWeeks(userRepository.findById(studentId).get().getBatch());
+        Batch currentBatch = getCurrentBatch(userRepository.findById(studentId).get());
+        int numberOfWeeks = calculateNumberOfWeeks(currentBatch);
         for (int numberOfWeek = 1 ; numberOfWeek < numberOfWeeks ; numberOfWeek++) {
             weekBasedNumbersMap.put(("W" + numberOfWeek), getNumbersForWeek(studentId, numberOfWeek));
         }
@@ -122,7 +127,8 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
     }
 
     private int getTotalOfGivenTasksInGivenWeek(User student, int numberOfWeek) {
-        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        Batch currentBatch = getCurrentBatch(student);
+        LocalDate weekStartDate = currentBatch.getBatchStartDate().plusDays(7L * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return (int) studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -132,7 +138,8 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
     }
 
     private int getTotalOfCompletedTasksInGivenWeek(User student, int numberOfWeek) {
-        LocalDate weekStartDate = student.getBatch().getBatchStartDate().plusDays(7L * (numberOfWeek-1));
+        Batch currentBatch = getCurrentBatch(student);
+        LocalDate weekStartDate = currentBatch.getBatchStartDate().plusDays(7L * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -140,6 +147,14 @@ public class StudentStatisticsServiceImpl implements StudentStatisticsService {
                 .map(StudentTask::getTask)
                 .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
                 .count());
+    }
+
+    Batch getCurrentBatch(User student){
+        return batchGroupStudentRepository.findAllByStudent(student)
+                .stream()
+                .map(BatchGroupStudent::getBatch)
+                .filter(batch -> batch.getBatchStatus().equals(BatchStatus.INPROGRESS))
+                .findFirst().get();
     }
 
 }

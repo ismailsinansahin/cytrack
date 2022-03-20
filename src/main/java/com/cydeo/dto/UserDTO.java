@@ -30,9 +30,9 @@ public class UserDTO {
     private Gender gender;
     private StudentStatus studentStatus;
     private UserRoleDTO userRole;
-    private BatchDTO batch;
-    private GroupDTO group;
 
     private int studentProgress;
+    private BatchDTO currentBatch;
+    private GroupDTO currentGroup;
 
 }
