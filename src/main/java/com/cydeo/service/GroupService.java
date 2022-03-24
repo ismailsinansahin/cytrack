@@ -13,6 +13,7 @@ import java.util.Map;
 public interface GroupService {
 
     GroupDTO getGroupById(Long id);
+    Map<GroupDTO, List<Integer>> getGroupsWithNumberOfStudentsMap(Long batchId);
     GroupDTO getCurrentGroup(Long studentId);
     List<GroupDTO> getAllGroupsOfBatch(Long batchId);
     GroupDTO create(GroupDTO groupDTO, Long batchId);
@@ -27,8 +28,6 @@ public interface GroupService {
     List<UserDTO> getAllUsersByRole(String userRoleName);
     List<UserDTO> getAllStudentsOfBatch(Long batchId);
 
-    void addStudent(Long studentId, Long groupId);
-    void removeStudent(Long studentId);
     void assignStudentToGroup(UserDTO studentDTO, Long batchId);
     List<BatchGroupStudentDTO> getBatchGroupStudentsOfBatch(Long batchId);
     Map<Long, GroupDTO> getBatchGroupStudentMap(Long batchId);

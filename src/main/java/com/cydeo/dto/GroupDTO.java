@@ -16,8 +16,8 @@ public class GroupDTO {
     private UserDTO alumniMentor;
 
     private BatchDTO batch;
-    private int numberOfStudents;
-//    private int droppedTransferredStudents;
+    private int activeStudents;
+    private int droppedTransferredStudents;
     private int studentProgress;
 
 }

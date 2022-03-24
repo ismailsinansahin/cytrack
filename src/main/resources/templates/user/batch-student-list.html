@@ -67,27 +67,30 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody id="myTable">
-                                                            <tr th:each="student : ${students}" class="text-dark"
-                                                                th:style="${student.studentStatus.value}=='Dropped' ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
+                                                            <tr th:each="student : ${studentsMap.keySet()}" class="text-dark"
+                                                                th:style="${studentsMap.get(student).get(1).value} == 'Dropped' ? 'background-color:#ebbec3' :
+                                                                         (${studentsMap.get(student).get(1).value} == 'Transferred' ? 'background-color:#ebbec3' : 'background-color:#d6feab')">
                                                                 <td th:text="${batch.name}"></td>
-                                                                <td th:if="${groupsMap.get(student.id)} == null" th:text="'-'"></td>
-                                                                <td th:unless="${groupsMap.get(student.id)} == null" th:text="${groupsMap.get(student.id).name}"></td>
+                                                                <td th:if="${studentsMap.get(student).get(0)} == null" th:text="'-'"></td>
+                                                                <td th:unless="${studentsMap.get(student).get(0)} == null" th:text="${studentsMap.get(student).get(0).name}"></td>
                                                                 <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                 <td th:text="${student.country.value}"></td>
                                                                 <td th:text="${student.email}"></td>
                                                                 <td th:text="${student.phone}"></td>
                                                                 <td th:text="${student.birthday}"></td>
                                                                 <td th:text="${student.gender.value}"></td>
-                                                                <td th:text="${student.studentStatus.value}"></td>
+                                                                <td th:text="${studentsMap.get(student).get(1).value}"></td>
                                                                 <td th:if="${batch.batchStatus.value} != 'Completed'" class="actions">
                                                                     <form action="#"
                                                                           data-th-action="@{/users/batchStudentEditDrop/{batchId}/{studentId}(batchId=${batch.getId()}, studentId=${student.getId()})}"
                                                                           method="post">
-                                                                        <button class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
+                                                                        <button th:if="${studentsMap.get(student).get(1).value} == 'Active'"
+                                                                                class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="edit">Edit
                                                                         </button>
-                                                                        <button class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                        <button th:if="${studentsMap.get(student).get(1).value} == 'Active'"
+                                                                                class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="drop">Drop
                                                                         </button>

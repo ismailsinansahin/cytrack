@@ -1,5 +1,6 @@
 package com.cydeo.entity;
 
+import com.cydeo.enums.StudentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,7 @@ public class BatchGroupStudent extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "student_id")
     private User student;
+
+    private StudentStatus studentStatus;
 
 }

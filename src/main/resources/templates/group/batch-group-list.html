@@ -60,19 +60,19 @@
                                                             <tr>
                                                                 <th scope="col">Batch</th>
                                                                 <th scope="col">Group Name</th>
-                                                                <th scope="col">Number Of Students</th>
-<!--                                                                <th scope="col">Dropped/Transferred</th>-->
+                                                                <th scope="col">Active Students</th>
+                                                                <th scope="col">Dropped Students</th>
                                                                 <th scope="col">Cydeo Mentor</th>
                                                                 <th scope="col">Alumni Mentor</th>
                                                                 <th scope="col">Actions</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="group: ${groups}" class="text-dark">
+                                                            <tr th:each="group: ${groupsMap.keySet()}" class="text-dark">
                                                                 <td th:text="${batch.name}"></td>
                                                                 <td th:text="${group.name}"></td>
-                                                                <td th:text="${group.numberOfStudents}"></td>
-<!--                                                                <td th:text="${group.droppedTransferredStudents}"></td>-->
+                                                                <td th:text="${groupsMap.get(group).get(0)}"></td>
+                                                                <td th:text="${groupsMap.get(group).get(1)}"></td>
                                                                 <td th:if="${group.cydeoMentor!=null}" th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></td>
                                                                 <td th:if="${group.cydeoMentor==null}" th:text="${'-'}"></td>
                                                                 <td  th:if="${group.alumniMentor!=null}" th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>

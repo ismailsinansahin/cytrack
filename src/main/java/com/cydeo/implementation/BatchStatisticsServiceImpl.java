@@ -47,7 +47,7 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
                 .stream()
                 .map(BatchGroupStudent::getGroup)
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
-                .peek(groupDTO -> groupDTO.setNumberOfStudents(getNumberOfStudents(groupDTO.getId())))
+//                .peek(groupDTO -> groupDTO.setNumberOfStudents(getNumberOfStudents(groupDTO.getId())))
                 .peek(groupDTO -> groupDTO.setStudentProgress(getStudentProgress(groupDTO)))
                 .collect(Collectors.toList());
     }

@@ -28,6 +28,7 @@ public class GroupController {
     public String goGroupList(@PathVariable("batchId") Long batchId, Model model){
         model.addAttribute("batch", groupService.getBatchById(batchId));
         model.addAttribute("groups", groupService.getAllGroupsOfBatch(batchId));
+        model.addAttribute("groupsMap", groupService.getGroupsWithNumberOfStudentsMap(batchId));
         return "group/batch-group-list";
     }
 
@@ -82,7 +83,7 @@ public class GroupController {
     @GetMapping("/batchGroupList/{batchId}/{groupId}")
     public String goGroupList(@PathVariable("batchId") Long batchId, @PathVariable("groupId") Long groupId, Model model){
         model.addAttribute("batch", groupService.getBatchById(batchId));
-        model.addAttribute("groups", groupService.getAllGroupsOfBatch(batchId));
+        model.addAttribute("groupsMap", groupService.getGroupsWithNumberOfStudentsMap(batchId));
         model.addAttribute("groupId", groupId);
         return "group/batch-group-list";
     }

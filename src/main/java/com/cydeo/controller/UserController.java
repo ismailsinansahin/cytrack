@@ -97,6 +97,7 @@ public class UserController {
     @GetMapping("/studentList")
     public String goStudentListPage(Model model) {
         model.addAttribute("students", userService.getAllStudents());
+        model.addAttribute("studentMap", userService.getStudentsWithStudentStatusMap());
         return "user/student-list";
     }
 
@@ -110,6 +111,7 @@ public class UserController {
         model.addAttribute("student", userService.getUserById(studentId));
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
+        model.addAttribute("studentStatus", userService.getStudentStatus(studentId));
         model.addAttribute("studentStatuses", Arrays.asList(StudentStatus.values()));
         model.addAttribute("batches", userService.getStudentPossibleBatches(studentId));
         return "user/student-edit";
@@ -126,7 +128,7 @@ public class UserController {
     public String goStudentDeleteConfirmation(@PathVariable("studentId") Long studentId, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("confirmDeletion", "Delete Student?");
         redirectAttributes.addFlashAttribute("studentId", studentId);
-        return "redirect:/users/studentList/" + studentId;
+        return "redirect:/users/studentList";
     }
 
     @GetMapping("/studentList/{studentId}")
@@ -146,15 +148,14 @@ public class UserController {
 
     @GetMapping("/batchStudentList/{batchId}")
     public String goBatchStudentList(@PathVariable("batchId") Long batchId, Model model) {
-        model.addAttribute("students", userService.getAllStudentsByBatch(batchId));
-        model.addAttribute("groupsMap", userService.getStudentsGroupNumbersMap(batchId));
+        model.addAttribute("studentsMap", userService.getStudentsWithGroupNumbersAndStudentStatusMap(batchId));
         model.addAttribute("batch", userService.getBatchById(batchId));
         return "user/batch-student-list";
     }
 
     @GetMapping("/groupStudentList/{batchId}/{groupId}")
     public String goGroupStudentList(@PathVariable("batchId") Long batchId, @PathVariable("groupId") Long groupId, Model model) {
-        model.addAttribute("students", userService.getAllStudentsByGroup(groupId));
+        model.addAttribute("studentsMap", userService.getStudentsWithStudentStatusMap(batchId, groupId));
         model.addAttribute("batch", userService.getBatchById(batchId));
         model.addAttribute("group", userService.getGroupById(groupId));
         return "user/group-student-list";
@@ -167,7 +168,6 @@ public class UserController {
         model.addAttribute("genders", Arrays.asList(Gender.values()));
         model.addAttribute("groups", userService.getAllGroupsOfBatch(batchId));
         model.addAttribute("batch", userService.getBatchById(batchId));
-        model.addAttribute("studentStatus", StudentStatus.NEW);
         return "user/batch-student-create";
     }
 
@@ -187,6 +187,7 @@ public class UserController {
         model.addAttribute("student", userService.getUserById(studentId));
         model.addAttribute("countries", Arrays.asList(Country.values()));
         model.addAttribute("genders", Arrays.asList(Gender.values()));
+        model.addAttribute("studentStatus", userService.getStudentStatus(studentId));
         model.addAttribute("studentStatuses", Arrays.asList(StudentStatus.values()));
         model.addAttribute("batch", userService.getBatchById(batchId));
         model.addAttribute("group", userService.getStudentGroup(batchId, studentId));
@@ -201,7 +202,7 @@ public class UserController {
 
     @PostMapping(value = "/batchStudentEditDrop/{batchId}/{studentId}", params = {"action=drop"})
     public String dropBatchStudent(@PathVariable("batchId") Long batchId, @PathVariable("studentId") Long studentId){
-        userService.drop(studentId);
+        userService.drop(batchId, studentId);
         return "redirect:/users/batchStudentList/" + batchId;
     }
 

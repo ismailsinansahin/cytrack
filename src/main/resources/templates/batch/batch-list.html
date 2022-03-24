@@ -47,19 +47,23 @@
                                                                 <th scope="col">Name</th>
                                                                 <th scope="col">Start Date</th>
                                                                 <th scope="col">End Date</th>
+                                                                <th scope="col">Active Students</th>
+                                                                <th scope="col">Dropped Students</th>
                                                                 <th scope="col">Status</th>
                                                                 <th scope="col">Notes</th>
                                                                 <th scope="col">Action</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="batch: ${batches}"
+                                                            <tr th:each="batch: ${batchesMap.keySet()}"
                                                                 class="text-dark"
                                                                 th:style="${batch.batchStatus.value}=='In Progress' ? 'background-color:#d6feab' :
                                                                          (${batch.batchStatus.value}=='Completed' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
                                                                 <td th:text="${batch.name}"></td>
                                                                 <td th:text="${batch.batchStartDate}"></td>
                                                                 <td th:text="${batch.getBatchEndDate()}"></td>
+                                                                <td th:text="${batchesMap.get(batch).get(0)}"></td>
+                                                                <td th:text="${batchesMap.get(batch).get(1)}"></td>
                                                                 <td th:text="${batch.batchStatus.value}"></td>
                                                                 <td th:text="${batch.notes}"></td>
                                                                 <td class="actions">

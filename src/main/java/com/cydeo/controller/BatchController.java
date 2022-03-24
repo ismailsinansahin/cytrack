@@ -27,7 +27,7 @@ public class BatchController {
 
     @GetMapping("/batchList")
     public String goBatchList(Model model){
-        model.addAttribute("batches", batchService.listAllBatches());
+        model.addAttribute("batchesMap", batchService.getBatchesWithNumberOfStudentsMap());
         return "batch/batch-list";
     }
 
@@ -86,7 +86,7 @@ public class BatchController {
 
     @GetMapping("/batchList/{batchId}")
     public String goBatchList(@PathVariable("batchId") Long batchId, Model model){
-        model.addAttribute("batches", batchService.listAllBatches());
+        model.addAttribute("batchesMap", batchService.getBatchesWithNumberOfStudentsMap());
         model.addAttribute("deleteConfirmation", "Delete Batch?");
         return "batch/batch-list";
     }

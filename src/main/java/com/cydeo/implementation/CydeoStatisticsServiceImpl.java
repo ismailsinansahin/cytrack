@@ -1,6 +1,7 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.BatchDTO;
+import com.cydeo.entity.Batch;
 import com.cydeo.entity.BatchGroupStudent;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.User;
@@ -57,20 +58,16 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
     }
 
     private int getActiveStudents(BatchDTO batchDTO) {
-        return (int) batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get())
+        Batch batch = batchRepository.findById(batchDTO.getId()).get();
+        return (int) batchGroupStudentRepository.findAllByBatchAndStudentStatus(batch, StudentStatus.ACTIVE)
                 .stream()
-                .map(BatchGroupStudent::getStudent)
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.NEW) ||
-                                   student.getStudentStatus().equals(StudentStatus.ALUMNI))
                 .count();
     }
 
     private int getDroppedTransferredStudents(BatchDTO batchDTO) {
-        return (int) batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get())
+        Batch batch = batchRepository.findById(batchDTO.getId()).get();
+        return (int) batchGroupStudentRepository.findAllByBatchAndStudentStatusNot(batch, StudentStatus.ACTIVE)
                 .stream()
-                .map(BatchGroupStudent::getStudent)
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.DROPPED) ||
-                        student.getStudentStatus().equals(StudentStatus.TRANSFERRED))
                 .count();
     }
 

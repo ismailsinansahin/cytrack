@@ -32,7 +32,6 @@ public class User extends BaseEntity{
     private LocalDate birthday;
     private Country country;
     private Gender gender;
-    private StudentStatus studentStatus;
 
     @ManyToOne
     private UserRole userRole;

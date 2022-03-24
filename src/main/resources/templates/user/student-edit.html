@@ -130,13 +130,13 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <input th:if="${student.currentBatch} != null" type="text" th:field="*{currentBatch.name}"
-                                                                           class="form-control" required="required" aria-invalid="false" disabled >
-                                                                    <select th:if="${student.currentBatch} == null"id="batch" class="form-control" th:field="*{currentBatch}" required="required">
+                                                                    <select th:if="${student.currentBatch.id} == '1'"id="batch" class="form-control" th:field="*{currentBatch}">
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
                                                                     </select>
+                                                                    <input th:if="${student.currentBatch.id} != '1'" type="text" th:field="*{currentBatch.name}"
+                                                                           class="form-control" aria-invalid="false" disabled >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -144,7 +144,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="studentStatus">Student Status</label>
-                                                                    <input id="studentStatus" type="text" th:field="*{studentStatus.value}" disabled
+                                                                    <input id="studentStatus" type="text" th:field="${studentStatus.value}" disabled
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
