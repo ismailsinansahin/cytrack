@@ -26,6 +26,11 @@
                         <header class="panel-heading">
                             <h2 class="panel-title">Batch List</h2>
                         </header>
+                        <div class="alert alert-danger" role="alert" th:text="${deleteConfirmation}" th:if="${deleteConfirmation}"></div>
+                        <a th:if="${deleteConfirmation}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                           th:href="@{/batches/batchList}">Cancel</a>&nbsp&nbsp
+                        <a th:if="${deleteConfirmation}" id="delete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/batches/deleteBatch/{batchId}(batchId=${batchId})}">Delete</a>
                         <div class="panel-body">
                             <div class="users-list-table">
                                 <div class="row">
@@ -42,32 +47,32 @@
                                                                 <th scope="col">Name</th>
                                                                 <th scope="col">Start Date</th>
                                                                 <th scope="col">End Date</th>
+                                                                <th scope="col">Active Students</th>
+                                                                <th scope="col">Dropped Students</th>
                                                                 <th scope="col">Status</th>
                                                                 <th scope="col">Notes</th>
                                                                 <th scope="col">Action</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="batch: ${batches}"
+                                                            <tr th:each="batch: ${batchesMap.keySet()}"
                                                                 class="text-dark"
                                                                 th:style="${batch.batchStatus.value}=='In Progress' ? 'background-color:#d6feab' :
-                                                  (${batch.batchStatus.value}=='Completed' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
+                                                                         (${batch.batchStatus.value}=='Completed' ? 'background-color:#ebbec3': 'background-color:#abd6fe')">
                                                                 <td th:text="${batch.name}"></td>
                                                                 <td th:text="${batch.batchStartDate}"></td>
                                                                 <td th:text="${batch.getBatchEndDate()}"></td>
+                                                                <td th:text="${batchesMap.get(batch).get(0)}"></td>
+                                                                <td th:text="${batchesMap.get(batch).get(1)}"></td>
                                                                 <td th:text="${batch.batchStatus.value}"></td>
                                                                 <td th:text="${batch.notes}"></td>
                                                                 <td class="actions">
                                                                     <form action="#"
                                                                           data-th-action="@{/batches/allActions/{id}(id=${batch.getId()})}"
                                                                           method="post">
-                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2"
+                                                                        <button class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
-                                                                                value="showGroups">Show Groups
-                                                                        </button>
-                                                                        <button class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2"
-                                                                                type="submit" name="action"
-                                                                                value="showTasks">Show Tasks
+                                                                                value="go">Go
                                                                         </button>
                                                                         <button th:if="${batch.batchStatus.value} == 'Planned'"
                                                                                 class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
@@ -85,7 +90,7 @@
                                                                                 value="delete">Delete
                                                                         </button>
                                                                         <button th:if="${batch.batchStatus.value} == 'In Progress'"
-                                                                                class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                                                                class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2"
                                                                                 type="submit" name="action"
                                                                                 value="complete">Complete
                                                                         </button>

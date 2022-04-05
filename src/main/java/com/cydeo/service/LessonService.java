@@ -12,7 +12,7 @@ public interface LessonService {
     LessonDTO getLessonByLessonId(Long lessonId);
     LessonDTO create(LessonDTO lessonDTO);
     LessonDTO save(LessonDTO lessonDTO, Long lessonId);
-    void delete(Long lessonId);
+    String delete(Long lessonId);
     void addInstructor(Long lessonId, Long instructorId);
     void removeInstructor(Long lessonId, Long instructorId);
     List<Long> getInstructorIdsOfLesson(Long lessonId);
@@ -21,5 +21,7 @@ public interface LessonService {
     Map<UserDTO, String> getInstructorsAndLessonsMap();
     List<UserDTO> getAllInstructors();
     List<UserDTO> listAllInstructorsOfLesson(Long lessonId);
+    void deleteLessonWithAllTasks(Long lessonId);
+    void deleteLessonWithoutTasks(Long lessonId);
 
 }

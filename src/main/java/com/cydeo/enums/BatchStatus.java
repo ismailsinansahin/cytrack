@@ -2,7 +2,7 @@ package com.cydeo.enums;
 
 public enum BatchStatus {
 
-    PLANNED(1, "Planned"), INPROGRESS(2, "In Progress"), COMPLETED(3, "Completed");
+    NOBATCH(1,"No-Batch"), PLANNED(2, "Planned"), INPROGRESS(3, "In Progress"), COMPLETED(4, "Completed");
 
     private int id;
     private String value;
@@ -20,9 +20,10 @@ public enum BatchStatus {
 
     public static BatchStatus getWithId(int id){
         switch (id){
-            case 1: return BatchStatus.PLANNED;
-            case 2: return BatchStatus.INPROGRESS;
-            case 3: return BatchStatus.COMPLETED;
+            case 1: return BatchStatus.NOBATCH;
+            case 2: return BatchStatus.PLANNED;
+            case 3: return BatchStatus.INPROGRESS;
+            case 4: return BatchStatus.COMPLETED;
             default: throw new IllegalArgumentException("Id[" + id +"] not supported.");
         }
     }

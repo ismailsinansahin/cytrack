@@ -43,6 +43,7 @@ public class DashboardController {
     @GetMapping("/student")
     public String showStudent(Model model){
         model.addAttribute("student", dashboardService.getCurrentUser());
+        model.addAttribute("studentStatus", dashboardService.getCurrentStudentStatus());
         model.addAttribute("studentTasks", dashboardService.getAllTasksOfCurrentStudent());
         model.addAttribute("taskBasedNumbers", dashboardService.getTaskBasedNumbers());
         model.addAttribute("weekBasedNumbers", dashboardService.getWeekBasedNumbers());

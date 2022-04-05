@@ -13,5 +13,7 @@ public interface StudentStatisticsService {
     List<StudentTaskDTO> getAllTasksOfStudent(Long studentId);
     Map<String, Integer> getTaskBasedNumbers(Long studentId);
     Map<String, Integer> getWeekBasedNumbers(Long studentId);
+    Map<UserDTO, List<Object>> getStudentsWithGroupNumbersAndStudentStatusMap(Long batchId);
+    List<Object> getStudentGroupStudentStatusList(Long batchId, Long studentId);
 
 }

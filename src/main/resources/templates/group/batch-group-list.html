@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/fragments/head :: header"><title>Group List</title></head>
+
+<body>
+<div class="dashboard-main-wrapper">
+<div th:replace="/fragments/header :: header"></div>
+<div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content">
+                <div class="ecommerce-widget">
+                    <div class="input-group row">
+                        <div class="col-auto">
+                            <form>
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                        th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/batchGroupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                        th:href="@{/groups/groupCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Group</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="studentCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
+                                        th:href="@{/groups/groupAddRemoveStudent/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Add/Remove Student</a>&nbsp&nbsp
+                                    <a id="tasksListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Task List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="taskCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Task</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <h2 class="panel-title">Group List</h2>
+                        </header>
+                        <div th:if="${confirmDeletion}" class="alert alert-danger" role="alert" th:text="${confirmDeletion}"></div>
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+                        <a th:if="${confirmDeletion}" id="cancel" class="btn bg-danger-light text-c mb-1" style="color: #04761e"
+                           th:href="@{/groups/batchGroupList/{batchId}(batchId=${batchId})}">Cancel</a>&nbsp&nbsp
+                        <a th:if="${confirmDeletion}" id="delete" class="btn bg-danger-light text-danger mb-1" style="color: #721c24"
+                           th:href="@{/groups/deleteGroup/{batchId}/{groupId}(batchId=${batchId}, groupId=${groupId})}">Delete</a>
+                        <div class="panel-body">
+                            <div class="users-list-table">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-content fw-container">
+                                                <div class="card-body fw-body">
+                                                    <div class="table-responsive content demo-html">
+                                                        <table id="example" class="table table-striped table-bordered file-export" style="width:100%">
+                                                            <thead>
+                                                            <tr>
+                                                                <th scope="col">Batch</th>
+                                                                <th scope="col">Group Name</th>
+                                                                <th scope="col">Active Students</th>
+                                                                <th scope="col">Dropped Students</th>
+                                                                <th scope="col">Cydeo Mentor</th>
+                                                                <th scope="col">Alumni Mentor</th>
+                                                                <th scope="col">Actions</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="group: ${groupsMap.keySet()}" class="text-dark">
+                                                                <td th:text="${batch.name}"></td>
+                                                                <td th:text="${group.name}"></td>
+                                                                <td th:text="${groupsMap.get(group).get(0)}"></td>
+                                                                <td th:text="${groupsMap.get(group).get(1)}"></td>
+                                                                <td th:if="${group.cydeoMentor!=null}" th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></td>
+                                                                <td th:if="${group.cydeoMentor==null}" th:text="${'-'}"></td>
+                                                                <td  th:if="${group.alumniMentor!=null}" th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>
+                                                                <td th:if="${group.alumniMentor==null}" th:text="${'-'}"></td>
+                                                                <td class="actions">
+                                                                    <form action="#" data-th-action="@{/groups/groupGoEditDelete/{batchId}/{groupId}(batchId=${batch.getId()}, groupId=${group.getId()})}"
+                                                                          method="post">
+                                                                        <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action" value="go">Go
+                                                                        </button>
+                                                                        <button th:if="${batch.batchStatus.value != 'Completed'}"
+                                                                                class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action" value="edit">Edit
+                                                                        </button>
+                                                                        <button th:if="${batch.batchStatus.value != 'Completed'}"
+                                                                                class="btn btn-danger mb-2 mb-sm-0 mr-sm-2"
+                                                                                type="submit" name="action" value="delete">Delete
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:replace="/fragments/footer :: footer"></div>
+<div th:replace="/fragments/javascript :: js"></div>
+</body>
+</html>

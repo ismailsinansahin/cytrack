@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="/fragments/head :: header"><title>Staff Create</title></head>
+<head th:replace="/fragments/head :: header"><title>Student Create</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
@@ -14,21 +14,36 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="staffListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
-                                        Staff List</a>&nbsp&nbsp
-                                    <a id="createStaff" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Staff</a>&nbsp&nbsp
-                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/batchGroupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Group</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="studentCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupAddRemoveStudent/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Add/Remove Student</a>&nbsp&nbsp
+                                    <a id="tasksListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Task List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="taskCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Task</a>
                                 </div>
                             </form>
                         </div>
                     </div><br>
                     <header class="panel-heading">
-                        <h2 class="panel-title">Create Staff</h2>
+                        <h2 class="panel-title">Create Student</h2>
                     </header>
                     <div class="row">
                         <div class="col-12">
@@ -39,29 +54,8 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/users/staffCreate/}"
+                                                      th:action="@{/users/batchStudentCreate/{batchId}(batchId=${batchId})}"
                                                       th:method="post" th:object="${newUser}">
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-8">
-                                                            <div class="form-group">
-                                                                <div class="form-group">
-                                                                    <label for="country">Role</label><br>
-                                                                    <div th:each="each, stat:${userRoles}"
-                                                                         class="custom-control custom-radio custom-control-inline"
-                                                                         th:if="${each.name!='Student'}">
-                                                                        <input type="radio" class="custom-control-input"
-                                                                               th:id="'option'+${stat}"
-                                                                               th:name="'option'+${stat}"
-                                                                               th:value="${each.name}"
-                                                                               th:field="*{userRole.name}">
-                                                                        <label class="custom-control-label"
-                                                                               th:for="'option'+${stat}"
-                                                                               th:text="${each.name}"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
@@ -132,7 +126,7 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Password</label>
-                                                                    <input type="password" th:field="*{password}" placeholder="Password"
+                                                                    <input type="text" th:field="*{password}" placeholder="Password"
                                                                            class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
@@ -141,8 +135,33 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label>Confirm Password</label>
-                                                                    <input type="password" th:field="*{confirmPassword}" placeholder="Confirm Password"
+                                                                    <input type="text" th:field="*{confirmPassword}" placeholder="Confirm Password"
                                                                            class="form-control" required="required" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="batch">Batch</label>
+                                                                    <input id="batch" type="text" th:field="${batch.name}"
+                                                                           class="form-control" required="required" aria-invalid="false" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group">
+                                                                <div class="controls">
+                                                                    <label for="group">Group</label>
+                                                                    <select id="group" class="form-control"
+                                                                            th:field="*{currentGroup}">
+                                                                        <option th:value="''" th:text="Select"></option>
+                                                                        <option th:each= "group:${groups}"
+                                                                                th:value="${group.id}"
+                                                                                th:text="${group.name}"></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -190,4 +209,5 @@
 <div th:replace="/fragments/footer :: footer"></div>
 <div th:replace="/fragments/javascript :: js"></div>
 </body>
+
 </html>

@@ -1,10 +1,13 @@
 package com.cydeo.implementation;
 
 import com.cydeo.dto.BatchDTO;
+import com.cydeo.entity.Batch;
+import com.cydeo.entity.BatchGroupStudent;
 import com.cydeo.entity.StudentTask;
 import com.cydeo.entity.User;
 import com.cydeo.enums.StudentStatus;
 import com.cydeo.mapper.MapperUtil;
+import com.cydeo.repository.BatchGroupStudentRepository;
 import com.cydeo.repository.BatchRepository;
 import com.cydeo.repository.StudentTaskRepository;
 import com.cydeo.repository.UserRepository;
@@ -22,18 +25,21 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
     private final BatchRepository batchRepository;
     private final UserRepository userRepository;
     private final StudentTaskRepository studentTaskRepository;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public CydeoStatisticsServiceImpl(MapperUtil mapperUtil, BatchRepository batchRepository,
-                                      UserRepository userRepository, StudentTaskRepository studentTaskRepository) {
+                                      UserRepository userRepository, StudentTaskRepository studentTaskRepository,
+                                      BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.batchRepository = batchRepository;
         this.userRepository = userRepository;
         this.studentTaskRepository = studentTaskRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
     public List<BatchDTO> getAllBatches() {
-        return batchRepository.findAll()
+        return batchRepository.findAllByIdIsNot(1L)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
                 .peek(batchDTO -> batchDTO.setCompletion(getCompletionRate(batchDTO)))
@@ -52,18 +58,22 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
     }
 
     private int getActiveStudents(BatchDTO batchDTO) {
-        return (int) userRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get())
+        Batch batch = batchRepository.findById(batchDTO.getId()).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
                 .stream()
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.NEW) ||
-                                   student.getStudentStatus().equals(StudentStatus.RETURNING))
+                .map(BatchGroupStudent::getStudentStatus)
+                .filter(studentStatus -> studentStatus == StudentStatus.ALUMNI || studentStatus == StudentStatus.ACTIVE)
                 .count();
     }
 
     private int getDroppedTransferredStudents(BatchDTO batchDTO) {
-        return (int) userRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get())
+        Batch batch = batchRepository.findById(batchDTO.getId()).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
                 .stream()
-                .filter(student -> student.getStudentStatus().equals(StudentStatus.DROPPED) ||
-                        student.getStudentStatus().equals(StudentStatus.TRANSFERRED))
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
+                .filter(batchGroupStudent -> batchGroupStudent.getStudent().getCurrentBatch() != batchGroupStudent.getBatch())
                 .count();
     }
 
@@ -71,7 +81,10 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
         int studentProgress;
         int totalTask = 0;
         int totalCompleted = 0;
-        List<User> studentsInBatch = userRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get());
+        List<User> studentsInBatch = batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchDTO.getId()).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for (User student : studentsInBatch){
             int totalTaskOfStudent = (int) studentTaskRepository.findAllByStudent(student)
                     .stream()

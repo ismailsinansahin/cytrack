@@ -12,5 +12,6 @@ import java.util.List;
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
     List<Batch> findAllByBatchStatusIsNot(BatchStatus batchStatus);
+    List<Batch> findAllByIdIsNot(Long batchId);
 
 }

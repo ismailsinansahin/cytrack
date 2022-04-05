@@ -40,7 +40,7 @@ public class StatisticsController {
 
     @GetMapping("/groupList/{batchId}")
     public String showGroupsOfBatch(@PathVariable("batchId") Long batchId, Model model){
-        model.addAttribute("batch", batchStatisticsService.getBatchById(batchId));
+        model.addAttribute("batch", batchStatisticsService.getBatchWithNumberOfStudents(batchId));
         model.addAttribute("groups", batchStatisticsService.getAllGroupsOfBatch(batchId));
         model.addAttribute("taskBasedNumbers", batchStatisticsService.getTaskBasedNumbers(batchId));
         model.addAttribute("weekBasedNumbers", batchStatisticsService.getWeekBasedNumbers(batchId));
@@ -52,32 +52,43 @@ public class StatisticsController {
         return "redirect:/statistics/groupList/" + batchId;
     }
 
-    @GetMapping("/studentList/{groupId}")
-    public String showStudentsOfGroup(@PathVariable("groupId") Long groupId, Model model){
-        model.addAttribute("group", groupStatisticsService.getGroupById(groupId));
-        model.addAttribute("students", groupStatisticsService.getAllStudentsOfGroup(groupId));
+    @GetMapping("/studentList/{batchId}/{groupId}")
+    public String showStudentsOfGroup(@PathVariable("batchId") Long batchId, @PathVariable("groupId") Long groupId, Model model){
+        model.addAttribute("batch", batchStatisticsService.getBatchById(batchId));
+        model.addAttribute("group", groupStatisticsService.getGroupWithNumberOfStudents(groupId));
+        model.addAttribute("studentsMap", groupStatisticsService.getStudentsWithStudentStatusMap(batchId, groupId));
         model.addAttribute("taskBasedNumbers", groupStatisticsService.getTaskBasedNumbers(groupId));
         model.addAttribute("weekBasedNumbers", groupStatisticsService.getWeekBasedNumbers(groupId));
         return "statistics/statistics-studentList";
     }
 
-    @PostMapping("/studentList/{groupId}")
-    public String goStudentsOfGroup(@PathVariable("groupId") Long groupId){
-        return "redirect:/statistics/studentList/" + groupId;
+    @GetMapping("/batchStudentList/{batchId}")
+    public String showStudentsOfBatch(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batch", batchStatisticsService.getBatchWithNumberOfStudents(batchId));
+        model.addAttribute("studentsMap", studentStatisticsService.getStudentsWithGroupNumbersAndStudentStatusMap(batchId));
+        model.addAttribute("taskBasedNumbers", batchStatisticsService.getTaskBasedNumbers(batchId));
+        model.addAttribute("weekBasedNumbers", batchStatisticsService.getWeekBasedNumbers(batchId));
+        return "statistics/statistics-batch-studentList";
     }
 
-    @GetMapping("/student/{studentId}")
-    public String showStudent(@PathVariable("studentId") Long studentId, Model model){
-        model.addAttribute("student", studentStatisticsService.findStudentById(studentId));
+    @PostMapping("/studentList/{batchId}/{groupId}")
+    public String goStudentsOfGroup(@PathVariable("batchId") Long batchId, @PathVariable("groupId") Long groupId){
+        return "redirect:/statistics/studentList/" + batchId + "/" + groupId;
+    }
+
+    @GetMapping("/student/{batchId}/{studentId}")
+    public String showStudent(@PathVariable("batchId") Long batchId, @PathVariable("studentId") Long studentId, Model model){
+        model.addAttribute("batch", batchStatisticsService.getBatchById(batchId));
+        model.addAttribute("student", studentStatisticsService.getStudentGroupStudentStatusList(batchId, studentId));
         model.addAttribute("studentTasks", studentStatisticsService.getAllTasksOfStudent(studentId));
         model.addAttribute("taskBasedNumbers", studentStatisticsService.getTaskBasedNumbers(studentId));
         model.addAttribute("weekBasedNumbers", studentStatisticsService.getWeekBasedNumbers(studentId));
         return "statistics/statistics-student";
     }
 
-    @PostMapping("/student/{studentId}")
-    public String goStudent(@PathVariable("studentId") Long studentId){
-        return "redirect:/statistics/student/" + studentId;
+    @PostMapping("/student/{batchId}/{studentId}")
+    public String goStudent(@PathVariable("batchId") Long batchId, @PathVariable("studentId") Long studentId){
+        return "redirect:/statistics/student/" + batchId + "/" + studentId;
     }
 
 }

@@ -2,25 +2,17 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.Group;
-import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.User;
+import com.cydeo.entity.*;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
-import com.cydeo.repository.GroupRepository;
-import com.cydeo.repository.StudentTaskRepository;
-import com.cydeo.repository.UserRepository;
+import com.cydeo.repository.*;
 import com.cydeo.service.GroupStatisticsService;
-import com.cydeo.service.StudentStatisticsService;
 import org.springframework.stereotype.Service;
 import org.threeten.extra.Weeks;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,15 +21,20 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
     private final MapperUtil mapperUtil;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final BatchRepository batchRepository;
     private final StudentTaskRepository studentTaskRepository;
+    private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public GroupStatisticsServiceImpl(MapperUtil mapperUtil, UserRepository userRepository,
                                       GroupRepository groupRepository,
-                                      StudentTaskRepository studentTaskRepository) {
+                                      BatchRepository batchRepository, StudentTaskRepository studentTaskRepository,
+                                      BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
+        this.batchRepository = batchRepository;
         this.studentTaskRepository = studentTaskRepository;
+        this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
 
     @Override
@@ -47,11 +44,29 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
 
     @Override
     public List<UserDTO> getAllStudentsOfGroup(Long groupId) {
-        return userRepository.findAllByGroup(groupRepository.findById(groupId).get())
+        return batchGroupStudentRepository.findAllByGroup(groupRepository.findById(groupId).get())
                 .stream()
+                .map(BatchGroupStudent::getStudent)
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .peek(studentDTO -> studentDTO.setStudentProgress(getStudentProgress(studentDTO)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<UserDTO, StudentStatus> getStudentsWithStudentStatusMap(Long batchId, Long groupId) {
+        Map<UserDTO, StudentStatus> studentsWithStudentStatusMap = new HashMap<>();
+        Batch batch = batchRepository.findById(batchId).get();
+        Group group = groupRepository.findById(groupId).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatchAndGroup(batch, group)
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudent() != null)
+                .collect(Collectors.toList());
+        for (BatchGroupStudent batchGroupStudent : batchGroupStudentList) {
+            UserDTO studentDTO = mapperUtil.convert(batchGroupStudent.getStudent(), new UserDTO());
+            studentDTO.setStudentProgress(getStudentProgress(studentDTO));
+            studentsWithStudentStatusMap.put(studentDTO, batchGroupStudent.getStudentStatus());
+        }
+        return studentsWithStudentStatusMap;
     }
 
     private int getStudentProgress(UserDTO studentDTO) {
@@ -109,7 +124,11 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
 
     private int getTotalOfGivenTasks(Long groupId, String taskType) {
         int total = 0;
-        List<User> studentsOfGroup = userRepository.findAllByGroup(groupRepository.findById(groupId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository
+                .findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             total += Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                     .stream()
@@ -121,7 +140,11 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
 
     private int getTotalOfCompletedTasks(Long groupId, String taskType) {
         int completed = 0;
-        List<User> studentsOfGroup = userRepository.findAllByGroup(groupRepository.findById(groupId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository
+                .findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             completed += Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                     .stream()
@@ -141,8 +164,12 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
 
     @Override
     public Map<String, Integer> getWeekBasedNumbers(Long groupId) {
-        Map<String, Integer> weekBasedNumbersMap = new HashMap<>();
-        int numberOfWeeks = calculateNumberOfWeeks(groupRepository.findById(groupId).get().getBatch());
+        Map<String, Integer> weekBasedNumbersMap = new LinkedHashMap<>();
+        Batch batch = batchGroupStudentRepository.findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getBatch)
+                .findFirst().get();
+        int numberOfWeeks = calculateNumberOfWeeks(batch);
         for (int numberOfWeek = 1 ; numberOfWeek < numberOfWeeks ; numberOfWeek++) {
             weekBasedNumbersMap.put(("W" + numberOfWeek), getNumbersForWeekI(groupId, numberOfWeek));
         }
@@ -157,7 +184,11 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
         int completionRate;
         int total = 0;
         int completed = 0;
-        List<User> studentsOfGroup = userRepository.findAllByGroup(groupRepository.findById(groupId).get());
+        List<User> studentsOfGroup = batchGroupStudentRepository
+                .findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getStudent)
+                .collect(Collectors.toList());
         for(User student : studentsOfGroup) {
             total += getTotalOfGivenTasksInGivenWeek(student, groupId, numberOfWeek);
             completed += getTotalOfCompletedTasksInGivenWeek(student, groupId, numberOfWeek);
@@ -171,7 +202,11 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
     }
 
     private int getTotalOfGivenTasksInGivenWeek(User student, Long groupId, int numberOfWeek) {
-        LocalDate weekStartDate = groupRepository.findById(groupId).get().getBatch().getBatchStartDate().plusDays(7 * (numberOfWeek-1));
+        Batch batch = batchGroupStudentRepository.findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getBatch)
+                .findFirst().get();
+        LocalDate weekStartDate = batch.getBatchStartDate().plusDays(7 * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return (int) studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -181,7 +216,11 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
     }
 
     private int getTotalOfCompletedTasksInGivenWeek(User student, Long groupId, int numberOfWeek) {
-        LocalDate weekStartDate = groupRepository.findById(groupId).get().getBatch().getBatchStartDate().plusDays(7 * (numberOfWeek-1));
+        Batch batch = batchGroupStudentRepository.findAllByGroup(groupRepository.findById(groupId).get())
+                .stream()
+                .map(BatchGroupStudent::getBatch)
+                .findFirst().get();
+        LocalDate weekStartDate = batch.getBatchStartDate().plusDays(7 * (numberOfWeek-1));
         LocalDate weekEndDate = weekStartDate.plusDays(7);
         return  Math.toIntExact(studentTaskRepository.findAllByStudent(student)
                 .stream()
@@ -189,6 +228,33 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
                 .map(StudentTask::getTask)
                 .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
                 .count());
+    }
+
+    @Override
+    public GroupDTO getGroupWithNumberOfStudents(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        int activeStudents = getActiveStudents(group);
+        int droppedTransferredStudents = getDroppedTransferredStudents(group);
+        GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
+        groupDTO.setActiveStudents(activeStudents);
+        groupDTO.setDroppedTransferredStudents(droppedTransferredStudents);
+        return groupDTO;
+    }
+
+    private int getActiveStudents(Group group) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByGroup(group);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus()  == StudentStatus.ACTIVE || batchGroupStudent.getStudentStatus() == StudentStatus.ALUMNI)
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(Group group) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByGroup(group);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
+                .count();
     }
 
 }

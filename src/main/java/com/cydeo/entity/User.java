@@ -32,15 +32,14 @@ public class User extends BaseEntity{
     private LocalDate birthday;
     private Country country;
     private Gender gender;
-    private StudentStatus studentStatus;
 
     @ManyToOne
     private UserRole userRole;
 
     @ManyToOne
-    private Batch batch;
+    private Batch currentBatch;
 
     @ManyToOne
-    private Group group;
+    private Group currentGroup;
 
 }

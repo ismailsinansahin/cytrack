@@ -10,6 +10,7 @@ public class StudentStatusEnumConverter implements AttributeConverter<StudentSta
 
     @Override
     public Integer convertToDatabaseColumn(StudentStatus studentStatus) {
+        if(studentStatus==null) return null;
         return studentStatus.getId();
     }
 

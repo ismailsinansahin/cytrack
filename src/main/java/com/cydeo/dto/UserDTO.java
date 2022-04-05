@@ -28,11 +28,10 @@ public class UserDTO {
     private LocalDate birthday;
     private Country country;
     private Gender gender;
-    private StudentStatus studentStatus;
     private UserRoleDTO userRole;
-    private BatchDTO batch;
-    private GroupDTO group;
 
     private int studentProgress;
+    private BatchDTO currentBatch;
+    private GroupDTO currentGroup;
 
 }

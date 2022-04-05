@@ -12,10 +12,10 @@ public class GroupDTO {
 
     private Long id;
     private String name;
-    private BatchDTO batch;
     private UserDTO cydeoMentor;
     private UserDTO alumniMentor;
 
+    private BatchDTO batch;
     private int activeStudents;
     private int droppedTransferredStudents;
     private int studentProgress;

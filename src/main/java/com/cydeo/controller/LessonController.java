@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/lessons")
@@ -28,6 +29,13 @@ public class LessonController {
         return "lesson/lesson-list";
     }
 
+    @GetMapping("/lessonList/{lessonId}")
+    public String goLessonList(@PathVariable("lessonId") Long lessonId, Model model){
+        model.addAttribute("lessonsAndInstructors", lessonService.getLessonsAndInstructorsMap());
+        model.addAttribute("lessonId", lessonId);
+        return "lesson/lesson-list";
+    }
+
     @GetMapping("/lessonCreate")
     public String goLessonCreate(Model model){
         model.addAttribute("newLesson", new LessonDTO());
@@ -43,9 +51,24 @@ public class LessonController {
     }
 
     @PostMapping(value = "/addRemoveInstructorEditDelete/{lessonId}", params = {"action=delete"})
-    public String deleteLesson(@PathVariable("lessonId") Long lessonId){
-        lessonService.delete(lessonId);
-        return "redirect:/lessons/lessonList";
+    public String deleteLesson(@PathVariable("lessonId") Long lessonId, RedirectAttributes redirectAttributes){
+        String result = lessonService.delete(lessonId);
+        if(result.equals("success")) redirectAttributes.addFlashAttribute(result, "The lesson was successfully deleted.");
+        if(result.equals("failure")) redirectAttributes.addFlashAttribute(result, "The lesson has tasks. Do you want to delete anyway?");
+        redirectAttributes.addFlashAttribute("lessonId", lessonId);
+        return "redirect:/lessons/lessonList/"+ lessonId;
+    }
+
+    @GetMapping("/deleteAll/{lessonId}")
+    public String deleteAll(@PathVariable("lessonId") Long lessonId){
+        lessonService.deleteLessonWithAllTasks(lessonId);
+        return "redirect:/lessons/lessonList/" + lessonId;
+    }
+
+    @GetMapping("/keepTasks/{lessonId}")
+    public String keepTasks(@PathVariable("lessonId") Long lessonId){
+        lessonService.deleteLessonWithoutTasks(lessonId);
+        return "redirect:/lessons/lessonList/" + lessonId;
     }
 
     @PostMapping(value = "/addRemoveInstructorEditDelete/{lessonId}", params = {"action=edit"})

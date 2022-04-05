@@ -14,13 +14,35 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/tasks/taskCreate/{batchId}(batchId=${batch.id})}">
-                                        <i class="fa fa-plus mr-1"></i>Create Task</a>
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/batchGroupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Group</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="studentCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupAddRemoveStudent/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Add/Remove Student</a>&nbsp&nbsp
+                                    <a id="tasksListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Task List</a>&nbsp&nbsp
+                                    <a th:if="${batch.batchStatus.value != 'Completed'}" id="taskCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskCreate/{batchId}(batchId=${batch.id})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Task</a>
                                 </div>
                             </form>
                         </div>
-                        </div><br>
+                    </div>
+                    <br>
                         <section class="panel">
                             <header class="panel-heading">
                                 <h2 class="panel-title">Task List</h2>
@@ -60,9 +82,13 @@
                                                                     <td class="actions">
                                                                         <form action="#" data-th-action="@{/tasks/publishCompleteEditDelete/{taskId}(taskId=${task.getId()})}"
                                                                               method="post">
-                                                                            <button th:if="${task.taskStatus.value} == 'Planned'"
+                                                                            <button th:if="(${task.taskStatus.value} == 'Planned') and (${batch.batchStatus.value} == 'In Progress')"
                                                                                     class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
                                                                                     type="submit" name="action" value="publish">Publish
+                                                                            </button>
+                                                                            <button th:if="${task.taskStatus.value} == 'Published'"
+                                                                                    class="btn btn-success mb-2 mb-sm-0 mr-sm-2"
+                                                                                    type="submit" name="action" value="unpublish">Unpublish
                                                                             </button>
                                                                             <button th:if="${task.taskStatus.value} == 'Planned'"
                                                                                     class="btn btn-warning mb-2 mb-sm-0 mr-sm-2"

@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <head th:replace="/fragments/head :: header"><title>User Edit</title></head>
 
 <body>
 <div class="dashboard-main-wrapper">
-    <div th:replace="/fragments/header :: header"></div>
-    <div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
+<div th:replace="/fragments/header :: header"></div>
+<div th:replace="/fragments/left-sidebar :: left-sidebar"></div>
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
                     <div class="input-group row">
-                        <div class="col-4 mr-auto"></div>
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
                                     <a id="staffListLink" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffList}"><i class="fa fa-list mr-1"></i>
                                         Staff List</a>&nbsp&nbsp
-                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
-                                        Student List</a>&nbsp&nbsp
                                     <a id="createStaff" class="btn bg-dark text-light mb-1"
                                        th:href="@{/users/staffCreate}"><i class="fa fa-plus mr-1"></i>
                                         Create Staff</a>&nbsp&nbsp
-                                    <a id="createStudent" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/users/studentCreate}"><i class="fa fa-plus mr-1"></i>
-                                        Create Student</a>
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1"
+                                       th:href="@{/users/studentList}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>
                                 </div>
                             </form>
                         </div>
@@ -44,8 +39,8 @@
                                             <div class="tab-pane fade mt-2 show active" id="account" role="tabpanel"
                                                  aria-labelledby="account-tab">
                                                 <form class="needs-validation" novalidate
-                                                      th:action="@{/users/studentUpdate/{id}(id=${user.getId()})}"
-                                                      th:method="post" th:object="${user}">
+                                                      th:action="@{/users/studentUpdate/{id}(id=${student.getId()})}"
+                                                      th:method="post" th:object="${student}">
                                                     <div class="row">
                                                         <div class="col-12 col-md-4">
                                                             <div class="form-group">
@@ -135,11 +130,13 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="batch">Batch</label>
-                                                                    <select id="batch" class="form-control" th:field="*{batch}" required="required">
+                                                                    <select th:if="${student.currentBatch.id} == '1'"id="batch" class="form-control" th:field="*{currentBatch}">
                                                                         <option th:each= "batch:${batches}"
                                                                                 th:value="${batch.id}"
                                                                                 th:text="${batch.name}"></option>
                                                                     </select>
+                                                                    <input th:if="${student.currentBatch.id} != '1'" type="text" th:field="*{currentBatch.name}"
+                                                                           class="form-control" aria-invalid="false" disabled >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -147,12 +144,8 @@
                                                             <div class="form-group">
                                                                 <div class="controls">
                                                                     <label for="studentStatus">Student Status</label>
-                                                                    <select id="studentStatus" class="form-control" th:field="*{studentStatus}" required="required">
-                                                                        <option th:value="''" th:text="Select"></option>
-                                                                        <option th:each= "studentStatus:${studentStatuses}"
-                                                                                th:value="${studentStatus}"
-                                                                                th:text="${studentStatus.value}"></option>
-                                                                    </select>
+                                                                    <input id="studentStatus" type="text" th:field="${studentStatus.value}" disabled
+                                                                           class="form-control" required="required" aria-invalid="false">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -169,7 +162,7 @@
                                                                     </div>
                                                                     <div class="custom-control custom-radio custom-control-inline">
                                                                         <input type="radio" id="option12" name="option12" class="custom-control-input"
-                                                                               value="MALE" th:field="*{gender}" th:checked>
+                                                                               value="MALE" th:field="*{gender}">
                                                                         <label class="custom-control-label" for="option12">Male</label>
                                                                     </div>
                                                                 </div>

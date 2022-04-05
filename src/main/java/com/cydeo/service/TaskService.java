@@ -17,6 +17,7 @@ public interface TaskService {
     TaskDTO save(TaskDTO taskDTO, Long taskId, Long batchId);
     void delete(Long taskId);
     void publish(Long taskId);
+    void unpublish(Long taskId);
     void complete(Long taskId);
 
 }

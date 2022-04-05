@@ -2,15 +2,10 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.entity.InstructorLesson;
-import com.cydeo.entity.Lesson;
-import com.cydeo.entity.User;
-import com.cydeo.entity.UserRole;
+import com.cydeo.entity.*;
+import com.cydeo.enums.TaskStatus;
 import com.cydeo.mapper.MapperUtil;
-import com.cydeo.repository.InstructorLessonRepository;
-import com.cydeo.repository.LessonRepository;
-import com.cydeo.repository.UserRepository;
-import com.cydeo.repository.UserRoleRepository;
+import com.cydeo.repository.*;
 import com.cydeo.service.LessonService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Service;
@@ -29,16 +24,21 @@ public class LessonServiceImpl implements LessonService {
     private final InstructorLessonRepository instructorLessonRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final TaskRepository taskRepository;
+    private final StudentTaskRepository studentTaskRepository;
 
     public LessonServiceImpl(LessonRepository lessonRepository, MapperUtil mapperUtil, UserService userService,
                              InstructorLessonRepository instructorLessonRepository, UserRepository userRepository,
-                             UserRoleRepository userRoleRepository) {
+                             UserRoleRepository userRoleRepository, TaskRepository taskRepository,
+                             StudentTaskRepository studentTaskRepository) {
         this.lessonRepository = lessonRepository;
         this.mapperUtil = mapperUtil;
         this.userService = userService;
         this.instructorLessonRepository = instructorLessonRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.taskRepository = taskRepository;
+        this.studentTaskRepository = studentTaskRepository;
     }
 
     @Override
@@ -122,8 +122,52 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void delete(Long lessonId) {
+    public String delete(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).get();
+        if(isDeletingSafe(lesson)){
+            lesson.setIsDeleted(true);
+            lessonRepository.save(lesson);
+            return "success";
+        }
+        return "failure";
+    }
+
+    public Boolean isDeletingSafe(Lesson lesson) {
+        return (taskRepository.findAllByLesson(lesson).size() < 1);
+    }
+
+    @Override
+    public void deleteLessonWithAllTasks(Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId).get();
+        List<Task> taskList = taskRepository.findAllByLesson(lesson);
+        for (Task task : taskList) {
+            List<StudentTask> studentTaskList = studentTaskRepository.findAllByTask(task);
+            for (StudentTask studentTask : studentTaskList) {
+                studentTaskRepository.delete(studentTask);
+            }
+        }
+        for (Task task : taskList) {
+            task.setIsDeleted(true);
+            taskRepository.save(task);
+        }
+        lesson.setIsDeleted(true);
+        lessonRepository.save(lesson);
+    }
+
+    @Override
+    public void deleteLessonWithoutTasks(Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId).get();
+        List<Task> taskList = taskRepository.findAllByLesson(lesson);
+        for (Task task : taskList) {
+            List<StudentTask> studentTaskList = studentTaskRepository.findAllByTask(task);
+            for (StudentTask studentTask : studentTaskList) {
+                studentTaskRepository.delete(studentTask);
+            }
+        }
+        for (Task task : taskList) {
+            task.setLesson(null);
+            taskRepository.save(task);
+        }
         lesson.setIsDeleted(true);
         lessonRepository.save(lesson);
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 
@@ -26,7 +27,7 @@ public class BatchController {
 
     @GetMapping("/batchList")
     public String goBatchList(Model model){
-        model.addAttribute("batches", batchService.listAllBatches());
+        model.addAttribute("batchesMap", batchService.getBatchesWithNumberOfStudentsMap());
         return "batch/batch-list";
     }
 
@@ -56,25 +57,9 @@ public class BatchController {
         return "redirect:/batches/batchList";
     }
 
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=showGroups"})
-    public String goGroupsPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/groups/groupList/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=showTasks"})
-    public String goTasksPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/tasks/taskList/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})
-    public String goEditPage(@PathVariable("batchId") Long batchId){
-        return "redirect:/batches/batchEdit/" + batchId;
-    }
-
-    @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
-    public String deleteBatch(@PathVariable("batchId") Long batchId){
-        batchService.delete(batchId);
-        return "redirect:/batches/batchList";
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=go"})
+    public String goBatchGroupsPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/groups/batchGroupList/" + batchId;
     }
 
     @PostMapping(value = "/allActions/{batchId}", params = {"action=start"})
@@ -86,6 +71,29 @@ public class BatchController {
     @PostMapping(value = "/allActions/{batchId}", params = {"action=complete"})
     public String completeBatch(@PathVariable("batchId") Long batchId){
         batchService.complete(batchId);
+        return "redirect:/batches/batchList";
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=edit"})
+    public String goEditPage(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchEdit/" + batchId;
+    }
+
+    @PostMapping(value = "/allActions/{batchId}", params = {"action=delete"})
+    public String goBatchDeleteConfirmation(@PathVariable("batchId") Long batchId){
+        return "redirect:/batches/batchList/" + batchId;
+    }
+
+    @GetMapping("/batchList/{batchId}")
+    public String goBatchList(@PathVariable("batchId") Long batchId, Model model){
+        model.addAttribute("batchesMap", batchService.getBatchesWithNumberOfStudentsMap());
+        model.addAttribute("deleteConfirmation", "Delete Batch?");
+        return "batch/batch-list";
+    }
+
+    @GetMapping("/deleteBatch/{batchId}")
+    public String deleteBatch(@PathVariable("batchId") Long batchId){
+        batchService.delete(batchId);
         return "redirect:/batches/batchList";
     }
 
