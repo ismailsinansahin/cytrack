@@ -3,11 +3,13 @@ package com.cydeo.implementation;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.entity.*;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
 import com.cydeo.service.BatchStatisticsService;
 import org.springframework.stereotype.Service;
+import org.threeten.extra.Days;
 import org.threeten.extra.Weeks;
 
 import java.time.LocalDate;
@@ -46,17 +48,32 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
         return batchGroupStudentRepository.findAllByBatch(batchRepository.findById(batchId).get())
                 .stream()
                 .map(BatchGroupStudent::getGroup)
+                .filter(group -> group.getId() != 1L)
+                .distinct()
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
-//                .peek(groupDTO -> groupDTO.setNumberOfStudents(getNumberOfStudents(groupDTO.getId())))
+                .peek(groupDTO -> groupDTO.setActiveStudents(getActiveStudents(batchId, groupDTO)))
+                .peek(groupDTO -> groupDTO.setDroppedTransferredStudents(getDroppedTransferredStudents(batchId, groupDTO)))
                 .peek(groupDTO -> groupDTO.setStudentProgress(getStudentProgress(groupDTO)))
                 .collect(Collectors.toList());
     }
 
-    private int getNumberOfStudents(Long groupId) {
-        Group group = groupRepository.findById(groupId).get();
-        return (int)batchGroupStudentRepository.findAllByGroup(group)
+    private int getActiveStudents(Long batchId, GroupDTO groupDTO) {
+        Batch batch = batchRepository.findById(batchId).get();
+        Group group = groupRepository.findById(groupDTO.getId()).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatchAndGroup(batch, group);
+        return (int) batchGroupStudentList
                 .stream()
-                .filter(obj -> obj.getStudent() != null)
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus()  == StudentStatus.ACTIVE || batchGroupStudent.getStudentStatus() == StudentStatus.ALUMNI)
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(Long batchId, GroupDTO groupDTO) {
+        Batch batch = batchRepository.findById(batchId).get();
+        Group group = groupRepository.findById(groupDTO.getId()).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatchAndGroup(batch, group);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
                 .count();
     }
 
@@ -209,6 +226,35 @@ public class BatchStatisticsServiceImpl implements BatchStatisticsService {
                 .map(StudentTask::getTask)
                 .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
                 .count());
+    }
+
+    @Override
+    public BatchDTO getBatchWithNumberOfStudents(Long batchId) {
+        Batch batch = batchRepository.findById(batchId).get();
+        int activeStudents = getActiveStudents(batch);
+        int droppedTransferredStudents = getDroppedTransferredStudents(batch);
+        BatchDTO batchDTO = mapperUtil.convert(batch, new BatchDTO());
+        batchDTO.setActiveStudents(activeStudents);
+        batchDTO.setDroppedTransferredStudents(droppedTransferredStudents);
+        return batchDTO;
+    }
+
+    private int getActiveStudents(Batch batch) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
+                .stream()
+                .map(BatchGroupStudent::getStudentStatus)
+                .filter(studentStatus -> studentStatus == StudentStatus.ALUMNI || studentStatus == StudentStatus.ACTIVE)
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(Batch batch) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
+                .filter(batchGroupStudent -> batchGroupStudent.getStudent().getCurrentBatch() != batchGroupStudent.getBatch())
+                .count();
     }
 
 }

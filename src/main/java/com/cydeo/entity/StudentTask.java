@@ -20,7 +20,6 @@ import java.time.LocalDate;
 @Where(clause="is_deleted=false")
 public class StudentTask extends BaseEntity{
 
-    private String name;
     private boolean isCompleted;
 
     @ManyToOne

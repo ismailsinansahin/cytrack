@@ -10,18 +10,34 @@
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
+                    <div class="input-group row">
+                        <div class="col-auto">
+                            <form>
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/groupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/batchStudentList/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Batch Student List</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-sm-2 col-lg-2">
                             <div class="panel panel-primary">
                                 <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Batch Profile</div>
                                 <div class="panel panel-primary bg-primary-light text-dark">
                                     <div><strong th:text="${'Batch Name : '}"></strong><a th:text="${batch.name}"></a></div>
-                                    <div><strong th:text="${'Batch Start Date : '}"></strong></div>
-                                    <div th:text="${batch.batchStartDate}"></div>
-                                    <div><strong th:text="${'Batch End Date : '}"></strong></div>
-                                    <div th:text="${batch.batchEndDate}"></div>
-                                    <div><strong th:text="${'Active Students : '}"></strong><a>221</a></div>
-                                    <div><strong th:text="${'Dropped/Transferred : '}"></strong><a>28</a></div>
+                                    <div><strong th:text="${'Batch Start Date : '}"></strong></div><div th:text="${batch.batchStartDate}"></div>
+                                    <div><strong th:text="${'Batch End Date : '}"></strong></div><div th:text="${batch.batchEndDate}"></div>
+                                    <div><strong th:text="${'Active Students : '}"></strong><a th:text="${batch.activeStudents}"></a></div>
+                                    <div><strong th:text="${'Dropped/Transferred : '}"></strong><a th:text="${batch.droppedTransferredStudents}"></a></div>
                                     <div><br></div>
                                     <div><br></div>
                                 </div>
@@ -135,7 +151,7 @@
                                                                 <tbody>
                                                                 <tr th:each="group: ${groups}"
                                                                     class="text-dark">
-                                                                    <td th:text="${group.batch.name}"></td>
+                                                                    <td th:text="${batch.name}"></td>
                                                                     <td th:text="${group.name}"></td>
                                                                     <td th:text="${group.activeStudents}"></td>
                                                                     <td th:text="${group.droppedTransferredStudents}"></td>
@@ -144,7 +160,7 @@
                                                                     <td th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>
                                                                     <td class="actions">
                                                                         <form action="#"
-                                                                              data-th-action="@{/statistics/studentList/{groupId}(groupId=${group.getId()})}"
+                                                                              data-th-action="@{/statistics/studentList/{batchId}/{groupId}(batchId=${batchId}, groupId=${group.getId()})}"
                                                                               method="post">
                                                                             <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
                                                                                     type="submit"

@@ -39,7 +39,7 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
 
     @Override
     public List<BatchDTO> getAllBatches() {
-        return batchRepository.findAll()
+        return batchRepository.findAllByIdIsNot(1L)
                 .stream()
                 .map(obj -> mapperUtil.convert(obj, new BatchDTO()))
                 .peek(batchDTO -> batchDTO.setCompletion(getCompletionRate(batchDTO)))
@@ -59,15 +59,21 @@ public class CydeoStatisticsServiceImpl implements com.cydeo.service.CydeoStatis
 
     private int getActiveStudents(BatchDTO batchDTO) {
         Batch batch = batchRepository.findById(batchDTO.getId()).get();
-        return (int) batchGroupStudentRepository.findAllByBatchAndStudentStatus(batch, StudentStatus.ACTIVE)
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
                 .stream()
+                .map(BatchGroupStudent::getStudentStatus)
+                .filter(studentStatus -> studentStatus == StudentStatus.ALUMNI || studentStatus == StudentStatus.ACTIVE)
                 .count();
     }
 
     private int getDroppedTransferredStudents(BatchDTO batchDTO) {
         Batch batch = batchRepository.findById(batchDTO.getId()).get();
-        return (int) batchGroupStudentRepository.findAllByBatchAndStudentStatusNot(batch, StudentStatus.ACTIVE)
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatch(batch);
+        return (int) batchGroupStudentList
                 .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
+                .filter(batchGroupStudent -> batchGroupStudent.getStudent().getCurrentBatch() != batchGroupStudent.getBatch())
                 .count();
     }
 

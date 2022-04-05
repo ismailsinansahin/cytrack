@@ -22,7 +22,7 @@
                                 <div><strong th:text="${'Group : '}"></strong><a th:text="${student.currentGroup.name}"></a><br></div>
                                 <div><strong th:text="${'Country : '}"></strong><a th:text="${student.country.value}"></a><br></div>
                                 <div><strong th:text="${'Gender : '}"></strong><a th:text="${student.gender.value}"></a><br></div>
-                                <div><strong th:text="${'Status : '}"></strong><a th:text="${student.studentStatus.value}"></a><br></div>
+                                <div><strong th:text="${'Status : '}"></strong><a th:text="${studentStatus.value}"></a><br></div>
                                 <div><br></div>
                                 <div><br></div>
 <!--                                <div><strong th:text="${'Cydeo Mentor : '}"></strong><a th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></a></div>&ndash;&gt;-->
@@ -126,6 +126,7 @@
                                                         <th scope="col">Name</th>
                                                         <th scope="col">Publishing Date</th>
                                                         <th scope="col">Due Date</th>
+                                                        <th scope="col">Task Status</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                     </thead>
@@ -137,13 +138,14 @@
                                                         <td th:text="${studentTask.task.name}"></td>
                                                         <td th:text="${studentTask.task.publishingDate}"></td>
                                                         <td th:text="${studentTask.task.dueDate}"></td>
+                                                        <td th:text="${studentTask.task.taskStatus.value}"></td>
                                                         <td class="actions">
                                                             <form action="#" data-th-action="@{/dashboards/completeStudentTask/{taskId}(taskId=${studentTask.getTask().getId()})}"
                                                                   method="post">
-                                                                <button th:if="${!studentTask.completed}"
+                                                                <button th:if="${!studentTask.completed} and !(${studentTask.task.taskStatus.value} == 'Out Of Time')"
                                                                         class="btn btn-success mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="completed">+ Completed
                                                                 </button>
-                                                                <button th:if="${studentTask.completed}"
+                                                                <button th:if="${studentTask.completed} and !(${studentTask.task.taskStatus.value} == 'Out Of Time')"
                                                                         class="btn btn-danger mb-2 mb-sm-0 mr-sm-2" type="submit" name="action" value="uncompleted">- Uncompleted
                                                                 </button>
                                                             </form>

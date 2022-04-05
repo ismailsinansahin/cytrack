@@ -10,19 +10,35 @@
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
                 <div class="ecommerce-widget">
+                    <div class="input-group row">
+                        <div class="col-auto">
+                            <form>
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/groupList/{batchId}(batchId=${batchId})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/statistics/batchStudentList/{batchId}(batchId=${batch.id})}"><i class="fa fa-list mr-1"></i>
+                                        Batch Student List</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-sm-2 col-lg-2">
                             <div class="panel panel-primary">
                                 <div class="panel-heading text-center p-3 mb-2 bg-dark text-white">Group Profile</div>
                                 <div class="panel panel-primary bg-primary-light text-dark">
-                                    <div><strong th:text="${'Batch Name : '}"></strong><a th:text="${group.batch.name}"></a></div>
+                                    <div><strong th:text="${'Batch Name : '}"></strong><a th:text="${batch.name}"></a></div>
                                     <div><strong th:text="${'Group Name : '}"></strong><a th:text="${group.name}"></a></div>
-                                    <div><strong th:text="${'Cydeo Mentor : '}"></strong></div>
-                                    <div th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></div>
-                                    <div><strong th:text="${'Alumni Mentor : '}"></strong></div>
-                                    <div th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></div>
-                                    <div><strong th:text="${'Active Students : '}"></strong><a>12</a></div>
-                                    <div><strong th:text="${'Dropped/Transferred : '}"></strong><a>3</a></div>
+                                    <div><strong th:text="${'Cydeo Mentor : '}"></strong></div><div th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></div>
+                                    <div><strong th:text="${'Alumni Mentor : '}"></strong></div><div th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></div>
+                                    <div><strong th:text="${'Active Students : '}"></strong><a th:text="${group.activeStudents}"></a></div>
+                                    <div><strong th:text="${'Dropped/Transferred : '}"></strong><a th:text="${group.droppedTransferredStudents}"></a></div>
                                     <div><br></div>
                                 </div>
                             </div>
@@ -133,19 +149,19 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="student: ${students}"
+                                                            <tr th:each="student: ${studentsMap.keySet()}"
                                                                 class="text-dark"
-                                                                th:style="${student.studentStatus.value}=='Dropped' ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
-                                                                <td th:text="${student.group.batch.name}"></td>
-                                                                <td th:text="${student.group.name}"></td>
+                                                                th:style="${studentsMap.get(student).value}=='Dropped' ? 'background-color:#ebbec3' : 'background-color:#d6feab'">
+                                                                <td th:text="${batch.name}"></td>
+                                                                <td th:text="${group.name}"></td>
                                                                 <td th:text="${student.firstName + ' ' + student.lastName}"></td>
                                                                 <td th:text="${student.studentProgress}"></td>
-                                                                <td th:text="${student.group.cydeoMentor.firstName + ' ' + student.group.cydeoMentor.lastName}"></td>
-                                                                <td th:text="${student.group.alumniMentor.firstName + ' ' + student.group.alumniMentor.lastName}"></td>
-                                                                <td th:text="${student.studentStatus.value}"></td>
+                                                                <td th:text="${group.cydeoMentor.firstName + ' ' + group.cydeoMentor.lastName}"></td>
+                                                                <td th:text="${group.alumniMentor.firstName + ' ' + group.alumniMentor.lastName}"></td>
+                                                                <td th:text="${studentsMap.get(student).value}"></td>
                                                                 <td class="actions">
                                                                     <form action="#"
-                                                                          data-th-action="@{/statistics/student/{studentId}(studentId=${student.getId()})}"
+                                                                          data-th-action="@{/statistics/student/{batchId}/{studentId}(batchId=${batchId}, studentId=${student.getId()})}"
                                                                           method="post">
                                                                         <button class="btn btn-info mb-2 mb-sm-0 mr-sm-2 text-dark"
                                                                                 type="submit"

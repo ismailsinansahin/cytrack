@@ -2,16 +2,11 @@ package com.cydeo.implementation;
 
 import com.cydeo.dto.GroupDTO;
 import com.cydeo.dto.UserDTO;
-import com.cydeo.entity.Batch;
-import com.cydeo.entity.BatchGroupStudent;
-import com.cydeo.entity.StudentTask;
-import com.cydeo.entity.User;
+import com.cydeo.entity.*;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
-import com.cydeo.repository.BatchGroupStudentRepository;
-import com.cydeo.repository.GroupRepository;
-import com.cydeo.repository.StudentTaskRepository;
-import com.cydeo.repository.UserRepository;
+import com.cydeo.repository.*;
 import com.cydeo.service.GroupStatisticsService;
 import org.springframework.stereotype.Service;
 import org.threeten.extra.Weeks;
@@ -26,16 +21,18 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
     private final MapperUtil mapperUtil;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final BatchRepository batchRepository;
     private final StudentTaskRepository studentTaskRepository;
     private final BatchGroupStudentRepository batchGroupStudentRepository;
 
     public GroupStatisticsServiceImpl(MapperUtil mapperUtil, UserRepository userRepository,
                                       GroupRepository groupRepository,
-                                      StudentTaskRepository studentTaskRepository,
+                                      BatchRepository batchRepository, StudentTaskRepository studentTaskRepository,
                                       BatchGroupStudentRepository batchGroupStudentRepository) {
         this.mapperUtil = mapperUtil;
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
+        this.batchRepository = batchRepository;
         this.studentTaskRepository = studentTaskRepository;
         this.batchGroupStudentRepository = batchGroupStudentRepository;
     }
@@ -53,6 +50,23 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
                 .map(obj -> mapperUtil.convert(obj, new UserDTO()))
                 .peek(studentDTO -> studentDTO.setStudentProgress(getStudentProgress(studentDTO)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<UserDTO, StudentStatus> getStudentsWithStudentStatusMap(Long batchId, Long groupId) {
+        Map<UserDTO, StudentStatus> studentsWithStudentStatusMap = new HashMap<>();
+        Batch batch = batchRepository.findById(batchId).get();
+        Group group = groupRepository.findById(groupId).get();
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByBatchAndGroup(batch, group)
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudent() != null)
+                .collect(Collectors.toList());
+        for (BatchGroupStudent batchGroupStudent : batchGroupStudentList) {
+            UserDTO studentDTO = mapperUtil.convert(batchGroupStudent.getStudent(), new UserDTO());
+            studentDTO.setStudentProgress(getStudentProgress(studentDTO));
+            studentsWithStudentStatusMap.put(studentDTO, batchGroupStudent.getStudentStatus());
+        }
+        return studentsWithStudentStatusMap;
     }
 
     private int getStudentProgress(UserDTO studentDTO) {
@@ -214,6 +228,33 @@ public class GroupStatisticsServiceImpl implements GroupStatisticsService {
                 .map(StudentTask::getTask)
                 .filter(task -> task.getDueDate().isAfter(weekStartDate.minusDays(1)) & task.getDueDate().isBefore(weekEndDate))
                 .count());
+    }
+
+    @Override
+    public GroupDTO getGroupWithNumberOfStudents(Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        int activeStudents = getActiveStudents(group);
+        int droppedTransferredStudents = getDroppedTransferredStudents(group);
+        GroupDTO groupDTO = mapperUtil.convert(group, new GroupDTO());
+        groupDTO.setActiveStudents(activeStudents);
+        groupDTO.setDroppedTransferredStudents(droppedTransferredStudents);
+        return groupDTO;
+    }
+
+    private int getActiveStudents(Group group) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByGroup(group);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus()  == StudentStatus.ACTIVE || batchGroupStudent.getStudentStatus() == StudentStatus.ALUMNI)
+                .count();
+    }
+
+    private int getDroppedTransferredStudents(Group group) {
+        List<BatchGroupStudent> batchGroupStudentList = batchGroupStudentRepository.findAllByGroup(group);
+        return (int) batchGroupStudentList
+                .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.DROPPED || batchGroupStudent.getStudentStatus() == StudentStatus.TRANSFERRED)
+                .count();
     }
 
 }

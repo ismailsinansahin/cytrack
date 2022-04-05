@@ -65,6 +65,7 @@ public class GroupServiceImpl implements GroupService {
                 .map(BatchGroupStudent::getGroup)
                 .filter(Objects::nonNull)
                 .distinct()
+                .filter(group -> group.getId() != 1L)
                 .collect(Collectors.toList());
         for (Group group : allGroups) {
             int activeStudents = getActiveStudents(batch, group);
@@ -238,6 +239,7 @@ public class GroupServiceImpl implements GroupService {
                 .map(BatchGroupStudent::getGroup)
                 .filter(Objects::nonNull)
                 .distinct()
+                .filter(group -> group.getId() != 1L)
                 .map(obj -> mapperUtil.convert(obj, new GroupDTO()))
                 .collect(Collectors.toList());
     }

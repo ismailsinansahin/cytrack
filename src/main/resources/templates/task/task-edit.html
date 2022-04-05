@@ -15,9 +15,30 @@
                         <div class="col-auto">
                             <form>
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-right">
-                                    <a id="batchCreateLink" class="btn bg-dark text-light mb-1"
-                                       th:href="@{/tasks/taskList/{batchid}(batchid=${task.batch.getId()})}">
-                                        <i class="fa fa-list mr-1"></i>Task List</a>
+                                    <a id="batchListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/batches/batchList}"><i class="fa fa-list mr-1"></i>
+                                        Batch List</a>&nbsp&nbsp
+                                    <a id="groupListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/batchGroupList/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-list mr-1"></i>
+                                        Group List</a>&nbsp&nbsp
+                                    <a th:if="${task.batch.batchStatus.value != 'Completed'}" id="groupCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupCreate/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Group</a>&nbsp&nbsp
+                                    <a id="studentListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentList/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-list mr-1"></i>
+                                        Student List</a>&nbsp&nbsp
+                                    <a th:if="${task.batch.batchStatus.value != 'Completed'}" id="studentCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/users/batchStudentCreate/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Student</a>&nbsp&nbsp
+                                    <a th:if="${task.batch.batchStatus.value != 'Completed'}" id="addRemoveStudentLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/groups/groupAddRemoveStudent/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-list mr-1"></i>
+                                        Add/Remove Student</a>&nbsp&nbsp
+                                    <a id="tasksListLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskList/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-list mr-1"></i>
+                                        Task List</a>&nbsp&nbsp
+                                    <a th:if="${task.batch.batchStatus.value != 'Completed'}" id="taskCreateLink" class="btn bg-dark text-light mb-1x"
+                                       th:href="@{/tasks/taskCreate/{batchId}(batchId=${task.batch.getId()})}"><i class="fa fa-plus mr-1"></i>
+                                        Create Task</a>
                                 </div>
                             </form>
                         </div>

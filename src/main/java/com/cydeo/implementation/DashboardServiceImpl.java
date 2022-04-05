@@ -3,6 +3,7 @@ package com.cydeo.implementation;
 import com.cydeo.dto.*;
 import com.cydeo.entity.*;
 import com.cydeo.enums.BatchStatus;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskType;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
@@ -50,6 +51,19 @@ public class DashboardServiceImpl implements DashboardService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = (principal instanceof UserDetails) ? ((UserDetails)principal).getUsername() : principal.toString();
         return userRepository.findByUserName(username).getId();
+    }
+
+    @Override
+    public StudentStatus getCurrentStudentStatus() {
+        User student = userRepository.findById(getCurrentUserId()).get();
+        List<StudentStatus> studentStatusesOfStudent = batchGroupStudentRepository.findAllByStudent(student)
+                .stream()
+                .map(BatchGroupStudent::getStudentStatus)
+                .collect(Collectors.toList());
+        if(studentStatusesOfStudent.contains(StudentStatus.ACTIVE)) return StudentStatus.ACTIVE;
+        else if(studentStatusesOfStudent.contains(StudentStatus.ALUMNI)) return StudentStatus.ALUMNI;
+        else if(studentStatusesOfStudent.contains(StudentStatus.DROPPED)) return StudentStatus.DROPPED;
+        else return null;
     }
 
     @Override

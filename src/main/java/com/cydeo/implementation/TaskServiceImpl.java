@@ -4,6 +4,7 @@ import com.cydeo.dto.BatchDTO;
 import com.cydeo.dto.LessonDTO;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.entity.*;
+import com.cydeo.enums.StudentStatus;
 import com.cydeo.enums.TaskStatus;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.*;
@@ -90,13 +91,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void publish(Long taskId) {
         Task task = taskRepository.findById(taskId).get();
-        UserRole userRole = userRoleRepository.findByName("Student");
         List<User> studentList = batchGroupStudentRepository.findAllByBatch(task.getBatch())
                 .stream()
+                .filter(batchGroupStudent -> batchGroupStudent.getStudentStatus() == StudentStatus.ACTIVE)
                 .map(BatchGroupStudent::getStudent)
                 .collect(Collectors.toList());
         for (User student : studentList) {
-            StudentTask studentTask = new StudentTask(task.getName(), false, student, task);
+            StudentTask studentTask = new StudentTask(false, student, task);
             studentTaskRepository.save(studentTask);
         }
         task.setTaskStatus(TaskStatus.PUBLISHED);
