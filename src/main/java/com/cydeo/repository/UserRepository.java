@@ -18,5 +18,4 @@ public interface UserRepository extends JpaRepository <User,Long>{
     List<User> findAllByGroup(Group group);
     List<User> findAllByBatch(Batch batch);
     User findByUserName(String userName);
-
 }

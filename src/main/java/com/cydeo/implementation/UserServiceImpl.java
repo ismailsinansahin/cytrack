@@ -89,7 +89,8 @@ public class UserServiceImpl implements UserService {
         user.setUserRole(userRoleRepository.findByName(userDTO.getUserRole().getName()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return mapperUtil.convert(user, new UserDTO());
+        UserDTO convert = mapperUtil.convert(user, new UserDTO());
+        return convert;
     }
 
     @Override

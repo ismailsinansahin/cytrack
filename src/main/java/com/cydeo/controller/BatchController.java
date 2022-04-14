@@ -4,6 +4,8 @@ import com.cydeo.annotations.ExecutionTime;
 import com.cydeo.dto.BatchDTO;
 import com.cydeo.enums.BatchStatus;
 import com.cydeo.service.BatchService;
+import com.cydeo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,9 @@ import java.util.Arrays;
 public class BatchController {
 
     private final BatchService batchService;
+
+    @Autowired
+    private UserService userService;
 
     public BatchController(BatchService batchService) {
         this.batchService = batchService;
